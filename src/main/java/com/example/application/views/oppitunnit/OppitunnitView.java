@@ -167,11 +167,11 @@ public class OppitunnitView extends Div {
 
     private List<Client> getClients() {
         return Arrays.asList(
-                createClient(4957, "https://randomuser.me/api/portraits/women/42.jpg", "Amarachi Nkechi", 47427.0,
+                createClient(4957, "https://randomuser.me/api/portraits/women/42.jpg", "Matikka", 47427.0,
                         "Success", "2019-05-09"),
-                createClient(675, "https://randomuser.me/api/portraits/women/24.jpg", "Bonelwa Ngqawana", 70503.0,
+                createClient(675, "https://randomuser.me/api/portraits/women/24.jpg", "Käyttäjä ystävä", 70503.0,
                         "Success", "2019-05-09"),
-                createClient(6816, "https://randomuser.me/api/portraits/men/42.jpg", "Debashis Bhuiyan", 58931.0,
+                createClient(6816, "https://randomuser.me/api/portraits/men/42.jpg", "Fysiikka", 58931.0,
                         "Success", "2019-05-07"),
                 createClient(5144, "https://randomuser.me/api/portraits/women/76.jpg", "Jacqueline Asong", 25053.0,
                         "Pending", "2019-04-25"),
