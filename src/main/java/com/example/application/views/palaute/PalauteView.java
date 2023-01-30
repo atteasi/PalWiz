@@ -1,5 +1,7 @@
 package com.example.application.views.palaute;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -11,6 +13,7 @@ import com.vaadin.flow.router.RouteAlias;
 
 
 
+@RolesAllowed (value = { "USER" }) 
 @PageTitle("Palaute")
 @Route(value = "palaute", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)

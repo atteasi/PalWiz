@@ -1,19 +1,34 @@
 package com.example.application.views;
 
 
+import java.io.ByteArrayInputStream;
+
 import com.example.application.components.appnav.AppNav;
 import com.example.application.components.appnav.AppNavItem;
+import com.example.application.data.entity.User;
+import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.oppitunnit.OppitunnitView;
 import com.example.application.views.palaute.PalauteView;
+import com.example.application.views.aanesta.AanestaView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.server.StreamResource;
+import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -22,11 +37,18 @@ public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
 
-    public MainLayout() {
+    private AuthenticatedUser authenticatedUser;
+    private AccessAnnotationChecker accessChecker;
+
+    public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+        this.authenticatedUser = authenticatedUser;
+        this.accessChecker = accessChecker;
+
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
     }
+
 
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
@@ -55,12 +77,54 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
         nav.addItem(new AppNavItem("Oppitunnit", OppitunnitView.class, "la la-user-graduate"));
+        nav.addItem(new AppNavItem("Äänestä", AanestaView.class, "la la-user-graduate"));
 
+        if (accessChecker.hasAccess(PalauteView.class)) {
+            nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
+
+        }
+        if (accessChecker.hasAccess(OppitunnitView.class)) {
+            nav.addItem(new AppNavItem("Oppitunnit", OppitunnitView.class, "la la-user-graduate"));
+
+        }
         return nav;
     }
 
     private Footer createFooter() {
         Footer layout = new Footer();
+
+        java.util.Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+
+            Avatar avatar = new Avatar(user.getName());
+            StreamResource resource = new StreamResource("profile-pic",
+                    () -> new ByteArrayInputStream(user.getProfilePicture()));
+            avatar.setImageResource(resource);
+            avatar.setThemeName("xsmall");
+            avatar.getElement().setAttribute("tabindex", "-1");
+
+            MenuBar userMenu = new MenuBar();
+            userMenu.setThemeName("tertiary-inline contrast");
+
+            MenuItem userName = userMenu.addItem("");
+            Div div = new Div();
+            div.add(avatar);
+            div.add(user.getName());
+            div.add(new Icon("lumo", "dropdown"));
+            div.getElement().getStyle().set("display", "flex");
+            div.getElement().getStyle().set("align-items", "center");
+            div.getElement().getStyle().set("gap", "var(--lumo-space-s)");
+            userName.add(div);
+            userName.getSubMenu().addItem("Sign out", e -> {
+                authenticatedUser.logout();
+            });
+
+            layout.add(userMenu);
+        } else {
+            Anchor loginLink = new Anchor("login", "Sign in");
+            layout.add(loginLink);
+        }
 
         return layout;
     }
