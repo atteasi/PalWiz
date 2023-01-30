@@ -10,36 +10,31 @@ import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
-import com.vaadin.flow.data.renderer.NumberRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 @PageTitle("Oppitunnit")
 @Route(value = "oppitunnit", layout = MainLayout.class)
 public class OppitunnitView extends Div {
 
-    private GridPro<Client> grid;
-    private GridListDataView<Client> gridListDataView;
+    private GridPro<Oppitunti> grid;
+    private GridListDataView<Oppitunti> gridListDataView;
 
-    private Grid.Column<Client> clientColumn;
-    private Grid.Column<Client> amountColumn;
-    private Grid.Column<Client> statusColumn;
-    private Grid.Column<Client> dateColumn;
+    private Grid.Column<Oppitunti> oppituntiColumn;
+    private Grid.Column<Oppitunti> statusColumn;
+    private Grid.Column<Oppitunti> dateColumn;
 
     public OppitunnitView() {
         addClassName("oppitunnit-view");
@@ -60,83 +55,64 @@ public class OppitunnitView extends Div {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_COLUMN_BORDERS);
         grid.setHeight("100%");
 
-        List<Client> clients = getClients();
-        gridListDataView = grid.setItems(clients);
+        List<Oppitunti> oppitunnit = getOppitunnit();
+        gridListDataView = grid.setItems(oppitunnit);
     }
 
     private void addColumnsToGrid() {
-        createClientColumn();
-        createAmountColumn();
+        createOppituntiColumn();
         createStatusColumn();
         createDateColumn();
     }
 
-    private void createClientColumn() {
-        clientColumn = grid.addColumn(new ComponentRenderer<>(client -> {
+    private void createOppituntiColumn() {
+        oppituntiColumn = grid.addColumn(new ComponentRenderer<>(oppitunti -> {
             HorizontalLayout hl = new HorizontalLayout();
             hl.setAlignItems(Alignment.CENTER);
-            Image img = new Image(client.getImg(), "");
             Span span = new Span();
             span.setClassName("name");
-            span.setText(client.getClient());
-            hl.add(img, span);
+            span.setText(oppitunti.getNimi());
+            hl.add(span);
             return hl;
-        })).setComparator(client -> client.getClient()).setHeader("Client");
-    }
-
-    private void createAmountColumn() {
-        amountColumn = grid
-                .addEditColumn(Client::getAmount,
-                        new NumberRenderer<>(client -> client.getAmount(), NumberFormat.getCurrencyInstance(Locale.US)))
-                .text((item, newValue) -> item.setAmount(Double.parseDouble(newValue)))
-                .setComparator(client -> client.getAmount()).setHeader("Amount");
+        })).setComparator(oppitunti -> oppitunti.getNimi()).setHeader("Oppitunti");
     }
 
     private void createStatusColumn() {
-        statusColumn = grid.addEditColumn(Client::getClient, new ComponentRenderer<>(client -> {
+        statusColumn = grid.addEditColumn(Oppitunti::getNimi, new ComponentRenderer<>(ot -> {
             Span span = new Span();
-            span.setText(client.getStatus());
-            span.getElement().setAttribute("theme", "badge " + client.getStatus().toLowerCase());
+            span.setText(ot.getStatus());
+            span.getElement().setAttribute("theme", "badge " + ot.getStatus().toLowerCase());
             return span;
-        })).select((item, newValue) -> item.setStatus(newValue), Arrays.asList("Pending", "Success", "Error"))
-                .setComparator(client -> client.getStatus()).setHeader("Status");
+        })).select((item, newValue) -> item.setStatus(newValue), Arrays.asList("Ei Vastattu", "Vastattu", "Virhe"))
+                .setComparator(ot -> ot.getStatus()).setHeader("Status");
     }
 
     private void createDateColumn() {
         dateColumn = grid
-                .addColumn(new LocalDateRenderer<>(client -> LocalDate.parse(client.getDate()),
+                .addColumn(new LocalDateRenderer<>(ot -> LocalDate.parse(ot.getDate()),
                         () -> DateTimeFormatter.ofPattern("M/d/yyyy")))
-                .setComparator(client -> client.getDate()).setHeader("Date").setWidth("180px").setFlexGrow(0);
-    }
-
+                .setComparator(ot -> ot.getDate()).setHeader("Date").setWidth("180px").setFlexGrow(0);
+    } 
+    
     private void addFiltersToGrid() {
         HeaderRow filterRow = grid.appendHeaderRow();
 
-        TextField clientFilter = new TextField();
-        clientFilter.setPlaceholder("Filter");
-        clientFilter.setClearButtonVisible(true);
-        clientFilter.setWidth("100%");
-        clientFilter.setValueChangeMode(ValueChangeMode.EAGER);
-        clientFilter.addValueChangeListener(event -> gridListDataView
-                .addFilter(client -> StringUtils.containsIgnoreCase(client.getClient(), clientFilter.getValue())));
-        filterRow.getCell(clientColumn).setComponent(clientFilter);
-
-        TextField amountFilter = new TextField();
-        amountFilter.setPlaceholder("Filter");
-        amountFilter.setClearButtonVisible(true);
-        amountFilter.setWidth("100%");
-        amountFilter.setValueChangeMode(ValueChangeMode.EAGER);
-        amountFilter.addValueChangeListener(event -> gridListDataView.addFilter(client -> StringUtils
-                .containsIgnoreCase(Double.toString(client.getAmount()), amountFilter.getValue())));
-        filterRow.getCell(amountColumn).setComponent(amountFilter);
+        TextField oppituntiFilter = new TextField();
+        oppituntiFilter.setPlaceholder("Filter");
+        oppituntiFilter.setClearButtonVisible(true);
+        oppituntiFilter.setWidth("100%");
+        oppituntiFilter.setValueChangeMode(ValueChangeMode.EAGER);
+        oppituntiFilter.addValueChangeListener(event -> gridListDataView
+                .addFilter(ot -> StringUtils.containsIgnoreCase(ot.getNimi(), oppituntiFilter.getValue())));
+        filterRow.getCell(oppituntiColumn).setComponent(oppituntiFilter);
 
         ComboBox<String> statusFilter = new ComboBox<>();
-        statusFilter.setItems(Arrays.asList("Pending", "Success", "Error"));
+        statusFilter.setItems(Arrays.asList("Ei Vastattu", "Vastattu", "Virhe"));
         statusFilter.setPlaceholder("Filter");
         statusFilter.setClearButtonVisible(true);
         statusFilter.setWidth("100%");
         statusFilter.addValueChangeListener(
-                event -> gridListDataView.addFilter(client -> areStatusesEqual(client, statusFilter)));
+                event -> gridListDataView.addFilter(ot -> areStatusesEqual(ot, statusFilter)));
         filterRow.getCell(statusColumn).setComponent(statusFilter);
 
         DatePicker dateFilter = new DatePicker();
@@ -144,58 +120,42 @@ public class OppitunnitView extends Div {
         dateFilter.setClearButtonVisible(true);
         dateFilter.setWidth("100%");
         dateFilter.addValueChangeListener(
-                event -> gridListDataView.addFilter(client -> areDatesEqual(client, dateFilter)));
+                event -> gridListDataView.addFilter(ot -> areDatesEqual(ot, dateFilter)));
         filterRow.getCell(dateColumn).setComponent(dateFilter);
+
+        
     }
 
-    private boolean areStatusesEqual(Client client, ComboBox<String> statusFilter) {
+    private boolean areStatusesEqual(Oppitunti ot, ComboBox<String> statusFilter) {
         String statusFilterValue = statusFilter.getValue();
         if (statusFilterValue != null) {
-            return StringUtils.equals(client.getStatus(), statusFilterValue);
+            return StringUtils.equals(ot.getStatus(), statusFilterValue);
         }
         return true;
     }
 
-    private boolean areDatesEqual(Client client, DatePicker dateFilter) {
+    private boolean areDatesEqual(Oppitunti ot, DatePicker dateFilter) {
         LocalDate dateFilterValue = dateFilter.getValue();
         if (dateFilterValue != null) {
-            LocalDate clientDate = LocalDate.parse(client.getDate());
-            return dateFilterValue.equals(clientDate);
+            LocalDate otDate = LocalDate.parse(ot.getDate());
+            return dateFilterValue.equals(otDate);
         }
         return true;
     }
 
-    private List<Client> getClients() {
+    private List<Oppitunti> getOppitunnit() {
         return Arrays.asList(
-                createClient(4957, "https://randomuser.me/api/portraits/women/42.jpg", "Amarachi Nkechi", 47427.0,
-                        "Success", "2019-05-09"),
-                createClient(675, "https://randomuser.me/api/portraits/women/24.jpg", "Bonelwa Ngqawana", 70503.0,
-                        "Success", "2019-05-09"),
-                createClient(6816, "https://randomuser.me/api/portraits/men/42.jpg", "Debashis Bhuiyan", 58931.0,
-                        "Success", "2019-05-07"),
-                createClient(5144, "https://randomuser.me/api/portraits/women/76.jpg", "Jacqueline Asong", 25053.0,
-                        "Pending", "2019-04-25"),
-                createClient(9800, "https://randomuser.me/api/portraits/men/24.jpg", "Kobus van de Vegte", 7319.0,
-                        "Pending", "2019-04-22"),
-                createClient(3599, "https://randomuser.me/api/portraits/women/94.jpg", "Mattie Blooman", 18441.0,
-                        "Error", "2019-04-17"),
-                createClient(3989, "https://randomuser.me/api/portraits/men/76.jpg", "Oea Romana", 33376.0, "Pending",
-                        "2019-04-17"),
-                createClient(1077, "https://randomuser.me/api/portraits/men/94.jpg", "Stephanus Huggins", 75774.0,
-                        "Success", "2019-02-26"),
-                createClient(8942, "https://randomuser.me/api/portraits/men/16.jpg", "Torsten Paulsson", 82531.0,
-                        "Pending", "2019-02-21"));
+                createOppitunti(1, "Suunnittelumallit", "Ei vastattu", "2023-05-09")
+        );
     }
 
-    private Client createClient(int id, String img, String client, double amount, String status, String date) {
-        Client c = new Client();
-        c.setId(id);
-        c.setImg(img);
-        c.setClient(client);
-        c.setAmount(amount);
-        c.setStatus(status);
-        c.setDate(date);
+    private Oppitunti createOppitunti(int id, String nimi, String status, String date) {
+        Oppitunti ot = new Oppitunti();
+        ot.setId(id);
+        ot.setNimi(nimi);
+        ot.setStatus(status);
+        ot.setDate(date);
 
-        return c;
+        return ot;
     }
 };

@@ -1,11 +1,9 @@
 package com.example.application.views.oppitunnit;
 
-public class Client {
+public class Oppitunti {
 
     private int id;
-    private String img;
-    private String client;
-    private double amount;
+    private String nimi;
     private String status;
     private String date;
 
@@ -15,30 +13,6 @@ public class Client {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public String getStatus() {
@@ -56,4 +30,13 @@ public class Client {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getNimi(){
+        return nimi;
+    }
+
+    public void setNimi(String n){
+        nimi = n;
+    }
+
 }
