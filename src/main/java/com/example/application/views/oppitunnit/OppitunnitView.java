@@ -23,7 +23,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.security.RolesAllowed;
+
 import org.apache.commons.lang3.StringUtils;
+
+@RolesAllowed(value = { "ADMIN", "USER" }) 
 
 @PageTitle("Oppitunnit")
 @Route(value = "oppitunnit", layout = MainLayout.class)
