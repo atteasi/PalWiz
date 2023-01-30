@@ -1,5 +1,7 @@
 package com.example.application.views.aanesta;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
@@ -9,6 +11,7 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+@RolesAllowed (value = { "USER", "ADMIN" }) 
 @PageTitle("Äänestä")
 @Route(value = "aanesta", layout = MainLayout.class)
 public class AanestaView  extends VerticalLayout{
