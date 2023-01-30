@@ -11,8 +11,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
-
-
 @RolesAllowed (value = { "USER" }) 
 @PageTitle("Palaute")
 @Route(value = "palaute", layout = MainLayout.class)
