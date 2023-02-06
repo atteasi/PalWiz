@@ -1,4 +1,4 @@
-package com.example.application.views.palaute;
+package com.example.application.views.kiitos;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -7,26 +7,24 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 
-@RolesAllowed (value = { "USER" }) 
-@PageTitle("Palaute")
-@Route(value = "palaute", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
-public class PalauteView extends VerticalLayout {
-	
+@RolesAllowed(value = { "USER", "ADMIN" })
+@PageTitle("Kiitos")
+@Route(value = "kiitos", layout = MainLayout.class)
 
-    public PalauteView() {
+public class KiitosView extends VerticalLayout{
+	public KiitosView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");
         img.setWidth("200px");
         add(img);
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+        add(new H2("Kiitos palautteesta!"));
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
