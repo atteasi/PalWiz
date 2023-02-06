@@ -6,6 +6,7 @@ public class Oppitunti {
     private String nimi;
     private String status;
     private String date;
+    private Palautetyyppi pt;
 
     public int getId() {
         return id;
@@ -39,4 +40,10 @@ public class Oppitunti {
         nimi = n;
     }
 
+    public void setPt(Palautetyyppi pt) {
+        this.pt = pt;
+    }
+    public Palautetyyppi getPt() {
+        return pt;
+    }
 }

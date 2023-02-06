@@ -21,7 +21,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -149,9 +153,15 @@ public class OppitunnitView extends Div {
     }
 
     private List<Oppitunti> getOppitunnit() {
-        return Arrays.asList(
-                createOppitunti(1, "Suunnittelumallit", "Ei vastattu", "2023-05-09")
+        List oppitunnit = Arrays.asList(
+            createOppitunti(1, "Maanantai", "Ei vastattu", "2023-05-09"),
+            createOppitunti(2, "Tiistai", "Ei vastattu", "2023-05-10")
         );
+        List kurssit = Arrays.asList(
+            createKurssi("Suunnittelumallit", oppitunnit, new GregorianCalendar(2023, Calendar.JANUARY, 1), new GregorianCalendar(2023, Calendar.MARCH, 20))
+        );
+
+        return kurssit;
     }
 
     private Oppitunti createOppitunti(int id, String nimi, String status, String date) {
@@ -160,7 +170,11 @@ public class OppitunnitView extends Div {
         ot.setNimi(nimi);
         ot.setStatus(status);
         ot.setDate(date);
-
         return ot;
+    }
+    
+    private Kurssi createKurssi(String nimi, List ot, GregorianCalendar ap, GregorianCalendar lp) {
+    	Kurssi k = new Kurssi(nimi, ot, ap, lp);
+    	return k;
     }
 };
