@@ -7,7 +7,6 @@ import com.example.application.components.appnav.AppNav;
 import com.example.application.components.appnav.AppNavItem;
 import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.oppitunnit.OppitunnitView;
 import com.example.application.views.palaute.PalauteView;
 import com.example.application.views.aanesta.AanestaView;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -76,15 +75,10 @@ public class MainLayout extends AppLayout {
         AppNav nav = new AppNav();
 
         nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
-        nav.addItem(new AppNavItem("Oppitunnit", OppitunnitView.class, "la la-user-graduate"));
         nav.addItem(new AppNavItem("Äänestä", AanestaView.class, "la la-user-graduate"));
 
         if (accessChecker.hasAccess(PalauteView.class)) {
             nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
-
-        }
-        if (accessChecker.hasAccess(OppitunnitView.class)) {
-            nav.addItem(new AppNavItem("Oppitunnit", OppitunnitView.class, "la la-user-graduate"));
 
         }
         return nav;
