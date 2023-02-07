@@ -1,9 +1,15 @@
 package com.example.application.views.aanesta;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.annotation.security.RolesAllowed;
 
 import org.springframework.data.domain.Page;
 
+import com.example.application.data.entity.Palaute;
+import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -29,8 +35,13 @@ public class AanestaView extends VerticalLayout {
 	private final RoundButtons greenBtn;
 	private final RoundButtons yellowBtn;
 	private final RoundButtons redBtn;
+	PalauteService service;
+	private Palaute palaute;
+	 //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+	 LocalDate date = LocalDate.now();  
 
-	public AanestaView() {
+	public AanestaView(PalauteService service) {
+		this.service = service;
 		addClassName("aanesta-view");
 		setHeightFull();
 		//setHeight("500px");
@@ -49,15 +60,21 @@ public class AanestaView extends VerticalLayout {
 		greenBtn.addClickListener(clickEvent -> {
 			System.out.println("GREEN");
 			greenBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
+			Palaute p = new Palaute(1, date); 
+			savePalaute(p);
 		});
 
 		yellowBtn.addClickListener(clickEvent -> {
 			System.out.println("YELLOW");
+			Palaute p = new Palaute(2, date); 
+			savePalaute(p);
 			yellowBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
 
 		redBtn.addClickListener(clickEvent -> {
 			System.out.println("RED");
+			Palaute p = new Palaute(3, date); 
+			savePalaute(p);
 			redBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
 	
@@ -91,5 +108,13 @@ public class AanestaView extends VerticalLayout {
 //				}
 //		});
 	}
-
+	
+	public void setPalaute(Palaute palaute) {
+		this.palaute = palaute;
+	}
+	
+	private void savePalaute(Palaute palaute) {
+		 service.savePalaute(palaute);
+}
+	
 }
