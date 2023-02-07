@@ -9,6 +9,7 @@ import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.palaute.PalauteView;
 import com.example.application.views.aanesta.AanestaView;
+import com.example.application.views.koodi.KoodiView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -60,7 +61,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("My App");
+        H1 appName = new H1("PalWiz");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
@@ -74,13 +75,10 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
+        nav.addItem(new AppNavItem("Koodi", KoodiView.class, "la la-file"));
         nav.addItem(new AppNavItem("Äänestä", AanestaView.class, "la la-user-graduate"));
+        nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
 
-        if (accessChecker.hasAccess(PalauteView.class)) {
-            nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
-
-        }
         return nav;
     }
 
