@@ -25,11 +25,13 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.router.RouterLayout;
 
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Äänestä")
 @Route(value = "aanesta", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 @CssImport("./themes/myapp/views/roundBtn.css")
 public class AanestaView extends VerticalLayout {
 	private final RoundButtons greenBtn;

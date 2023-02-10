@@ -49,11 +49,11 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         i18n.getHeader().setDescription("Kirjaudu käyttäen tunnuksia user/user or admin/admin");
         i18n.setAdditionalInformation(null);
         
-        addForgotPasswordListener(event -> {
+       /*addForgotPasswordListener(event -> {
             setOpened(false);
             UI.getCurrent().navigate("LuoTunnukset");
             
-      });
+      }); */ 
         
         setI18n(i18n);
         
