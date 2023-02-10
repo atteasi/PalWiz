@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 
-import com.example.application.data.service.KoodiService;
+import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
@@ -17,15 +17,15 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.example.application.data.entity.Koodi;
+import com.example.application.data.entity.Kurssi;
 
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Koodi")
 @Route(value = "koodi", layout = MainLayout.class)
 
 public class KoodiView extends VerticalLayout{
-	KoodiService ks;
-	public KoodiView(KoodiService s) {
+	KurssiService ks;
+	public KoodiView(KurssiService s) {
 		ks = s;
         setSpacing(false);
 
@@ -35,10 +35,12 @@ public class KoodiView extends VerticalLayout{
        
         Button go = new Button("Äänestämään!");
         go.addClickListener(clickEvent -> {
-        	List<Koodi> koodit = ks.findKoodit();
-        	for(Koodi k : koodit) {
+        	List<Kurssi> kurssit = ks.findKurssit();
+        	for(Kurssi k : kurssit) {
         		if(tf.getValue().matches(k.getKoodi())) {
         			go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
+        		} else {
+        			
         		}
         	}
         });
@@ -57,7 +59,7 @@ public class KoodiView extends VerticalLayout{
     }
 	
 	private void pohjustaKoodit() {
-		ks.pohjustaKoodit();
+		ks.pohjustaKurssit();
 		System.out.println("done");
 	}
 

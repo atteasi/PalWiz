@@ -1,7 +1,5 @@
 package com.example.application.data.service;
 
-
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -22,17 +20,17 @@ public class PalauteService {
 		return palauteRepository.findAll();
 
 	}
-	
-	  public long countPalautteet() {
-	        return palauteRepository.count();
-	    }
-	  
-	  public void savePalaute(Palaute palaute) {
-	        if (palaute == null) { 
-	            System.err.println("Palaute is null. Joku on pielessä?");
-	            return;
-	        }
-	        palauteRepository.save(palaute);
-	    }
+
+	public long countPalautteet() {
+		return palauteRepository.count();
+	}
+
+	public void savePalaute(Palaute palaute) {
+		if (palaute == null) {
+			System.err.println("Palaute is null. Joku on pielessä?");
+			return;
+		}
+		palauteRepository.save(palaute);
+	}
 
 }
