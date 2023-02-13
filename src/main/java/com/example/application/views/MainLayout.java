@@ -1,8 +1,6 @@
 package com.example.application.views;
 
-
 import java.io.ByteArrayInputStream;
-
 import com.example.application.components.appnav.AppNav;
 import com.example.application.components.appnav.AppNavItem;
 import com.example.application.data.entity.User;
@@ -38,11 +36,11 @@ public class MainLayout extends AppLayout {
     private H2 viewTitle;
 
     private AuthenticatedUser authenticatedUser;
-    private AccessAnnotationChecker accessChecker;
+    //private AccessAnnotationChecker accessChecker;
 
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
-        this.accessChecker = accessChecker;
+       // this.accessChecker = accessChecker;
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();

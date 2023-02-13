@@ -14,7 +14,7 @@ import com.example.application.data.entity.Kurssi;
 
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Kurssilistaus")
-@Route(value = "kiitos", layout = MainLayout.class)
+@Route(value = "kurssit", layout = MainLayout.class)
 
 public class KurssitView extends VerticalLayout {
 	KurssiService service;

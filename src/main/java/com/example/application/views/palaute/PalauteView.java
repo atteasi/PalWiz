@@ -1,7 +1,6 @@
 package com.example.application.views.palaute;
 
 import javax.annotation.security.RolesAllowed;
-
 import com.example.application.views.MainLayout;
 import com.example.application.views.palaute.ServiceHealth.Status;
 import com.vaadin.flow.component.Component;
