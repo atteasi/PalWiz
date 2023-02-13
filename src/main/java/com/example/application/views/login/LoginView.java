@@ -1,21 +1,15 @@
 package com.example.application.views.login;
 
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.aanesta.AanestaView;
-import com.example.application.views.signUp.LuoTunnukset;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.router.internal.RouteUtil;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.UI;
 
 @AnonymousAllowed
 @PageTitle("Login")
