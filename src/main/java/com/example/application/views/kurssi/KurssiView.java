@@ -49,6 +49,7 @@ public class KurssiView extends Div {
         add(createButtonLayout());
         
         save.addClickListener(e -> {
+        	
             ks.saveKurssi(new Kurssi(nimi.getValue(), koodi.getValue(),
             		Date.valueOf(aloitusPvm.getValue().format(formatter)), Date.valueOf(lopetusPvm.getValue().format(formatter))));
         });

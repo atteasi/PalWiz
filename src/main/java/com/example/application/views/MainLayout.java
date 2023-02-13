@@ -11,6 +11,7 @@ import com.example.application.views.palaute.PalauteView;
 import com.example.application.views.aanesta.AanestaView;
 import com.example.application.views.koodi.KoodiView;
 import com.example.application.views.kurssi.KurssiView;
+import com.example.application.views.kurssit.KurssitView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -80,7 +81,8 @@ public class MainLayout extends AppLayout {
         nav.addItem(new AppNavItem("Äänestä", AanestaView.class, "la la-user-graduate"));
         nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
         nav.addItem(new AppNavItem("Kurssi", KurssiView.class, "la la-file"));
-
+        nav.addItem(new AppNavItem("Kurssilistaus", KurssitView.class, "la la-file"));
+        
         return nav;
     }
 
