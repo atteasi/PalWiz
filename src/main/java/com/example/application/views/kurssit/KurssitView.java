@@ -3,20 +3,14 @@ package com.example.application.views.kurssit;
 import javax.annotation.security.RolesAllowed;
 
 import com.example.application.data.service.KurssiService;
-import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.example.application.data.entity.Kurssi;
-import com.example.application.data.entity.Palaute;
 
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Kurssilistaus")
