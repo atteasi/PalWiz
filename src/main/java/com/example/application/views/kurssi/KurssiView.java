@@ -29,7 +29,6 @@ public class KurssiView extends Div {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private TextField nimi = new TextField("Kurssin nimi");
-    private TextField koodi = new TextField("Kurssin koodi");
     private DatePicker aloitusPvm = new DatePicker("Aloitus päivämäärä");
     private DatePicker lopetusPvm = new DatePicker("Lopetus päivämäärä");
 
@@ -37,25 +36,26 @@ public class KurssiView extends Div {
 
     public KurssiView(KurssiService ks) {
         addClassName("kurssi-view");
-
+        
         add(createTitle());
         add(createFormLayout());
         add(createButtonLayout());
         
         save.addClickListener(e -> {
         	
-            ks.saveKurssi(new Kurssi(nimi.getValue(), koodi.getValue(),
+            ks.saveKurssi(new Kurssi(nimi.getValue(), "faux",
             		Date.valueOf(aloitusPvm.getValue().format(formatter)), Date.valueOf(lopetusPvm.getValue().format(formatter))));
         });
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Kurssin tiedot");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        formLayout.add(nimi, koodi, aloitusPvm, lopetusPvm);
+        formLayout.add(nimi, aloitusPvm, lopetusPvm);
+        formLayout.setColspan(nimi, 3);
         return formLayout;
     }
 

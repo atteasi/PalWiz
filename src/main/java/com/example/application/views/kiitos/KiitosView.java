@@ -14,7 +14,7 @@ import com.example.application.data.entity.Palaute;
 
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Kiitos")
-@Route(value = "kiitos", layout = MainLayout.class)
+@Route(value = "kiitos", layout = MainLayout.class)	
 
 public class KiitosView extends VerticalLayout {
 	PalauteService service;
