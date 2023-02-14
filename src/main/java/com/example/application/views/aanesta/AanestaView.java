@@ -2,7 +2,6 @@ package com.example.application.views.aanesta;
 
 import java.time.LocalDate;
 import javax.annotation.security.RolesAllowed;
-
 import com.example.application.data.entity.Palaute;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;

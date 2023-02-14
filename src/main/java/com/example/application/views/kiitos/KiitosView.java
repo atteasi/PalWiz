@@ -34,7 +34,6 @@ public class KiitosView extends VerticalLayout {
 		grid.setItems(service.findAllPalautteet());
 		add(grid);
 		 
-
 		setSizeFull();
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
