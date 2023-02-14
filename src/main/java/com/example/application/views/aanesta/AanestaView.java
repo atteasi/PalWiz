@@ -13,11 +13,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+@AnonymousAllowed
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Äänestä")
 @Route(value = "aanesta", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
 @CssImport("./themes/myapp/views/roundBtn.css")
 
 public class AanestaView extends VerticalLayout {

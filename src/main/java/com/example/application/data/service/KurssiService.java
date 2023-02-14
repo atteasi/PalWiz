@@ -28,7 +28,4 @@ public class KurssiService {
 		kurssiRepository.save(kurssi);
 	}
 
-	public void pohjustaKurssit() {
-		saveKurssi(new Kurssi("Suunnittelumallit", "Suunnittelumallit23", Date.valueOf("2023-01-01"), Date.valueOf("2023-08-01")));
-	}
 }
