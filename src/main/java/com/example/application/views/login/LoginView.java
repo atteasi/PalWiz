@@ -1,6 +1,7 @@
 package com.example.application.views.login;
 
 import com.example.application.security.AuthenticatedUser;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -43,11 +44,11 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         i18n.getHeader().setDescription("Kirjaudu käyttäen tunnuksia user/user or admin/admin");
         i18n.setAdditionalInformation(null);
         
-       /*addForgotPasswordListener(event -> {
+        addForgotPasswordListener(event -> {
             setOpened(false);
-            UI.getCurrent().navigate("LuoTunnukset");
+            UI.getCurrent().navigate("register");
             
-      }); */ 
+      }); 
         
         setI18n(i18n);
         

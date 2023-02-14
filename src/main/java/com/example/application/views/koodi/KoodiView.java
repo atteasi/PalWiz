@@ -12,11 +12,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.example.application.data.entity.Kurssi;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+@AnonymousAllowed
 @RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Koodi")
 @Route(value = "koodi", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 
 public class KoodiView extends VerticalLayout{
 	KurssiService ks;
@@ -26,7 +30,6 @@ public class KoodiView extends VerticalLayout{
 
         add(new H2("Oisko siulla miulle koodia? :3"));
         TextField tf = new TextField();
-        tf.setHelperText("Testatkaa koodia 'aanesta', 'kakka' tai 'moi");
        
         Button go = new Button("Äänestämään!");
         go.addClickListener(clickEvent -> {
@@ -41,21 +44,11 @@ public class KoodiView extends VerticalLayout{
         });
         add(go, tf);
         
-        Button pohjusta = new Button ("Pohjustus koodeille koska oon huono devaaja");
-        	pohjusta.addClickListener(clickEvent ->{ 
-        		pohjustaKoodit();
-        });
-        add(pohjusta);
-        
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
     }
-	
-	private void pohjustaKoodit() {
-		ks.pohjustaKurssit();
-		System.out.println("done");
-	}
+
 
 }
