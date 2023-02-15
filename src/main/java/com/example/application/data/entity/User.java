@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
@@ -16,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
+	
     private String username;
     private String name;
     @JsonIgnore
@@ -23,10 +27,19 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @Lob
-    @Column(length = 1000000)
-    private byte[] profilePicture;
 
+    
+    public User(String username, String name, String hashedPassword, Set<Role> roles) {
+    	this.username = username;
+    	this.name = name;
+    	this.hashedPassword = hashedPassword;
+    	this.roles = roles;
+    }
+    
+    public User() {
+    	
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -50,12 +63,6 @@ public class User extends AbstractEntity {
     }
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
 }

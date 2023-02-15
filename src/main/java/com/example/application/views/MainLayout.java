@@ -69,9 +69,15 @@ public class MainLayout extends AppLayout {
 
         Tabs tabs = new Tabs();
         tabs.getStyle().set("margin", "auto");
+        if (accessChecker.hasAccess(KurssiView.class)) {
+        	tabs.add(createTab("Kurssi", KurssiView.class));
+        }
+        if (accessChecker.hasAccess(KurssitView.class)) {
+        	createTab("Kurssilistaus", KurssitView.class);
+        }
+        
         tabs.add(createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),
-                createTab("Palaute", PalauteView.class), createTab("Kurssi", KurssiView.class),
-                createTab("Kurssilistaus", KurssitView.class));
+                createTab("Palaute", PalauteView.class));
         return tabs;
     }
 

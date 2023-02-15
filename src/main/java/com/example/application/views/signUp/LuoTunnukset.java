@@ -1,5 +1,6 @@
 package com.example.application.views.signUp;
 
+import com.example.application.data.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
@@ -13,8 +14,9 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 @Route("register")
 public class LuoTunnukset extends Composite {
-    
 
+	
+	
     @Override
     protected Component initContent() {
         TextField username = new TextField("Käyttäjätunnus");
@@ -34,6 +36,8 @@ public class LuoTunnukset extends Composite {
     }
 
     private void register(String username, String password1, String password2){
-        
+        if(password1.matches(password2)) {
+        	
+        }
     }
 }
