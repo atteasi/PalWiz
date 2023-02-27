@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.example.application.data.entity.Kurssi;
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
@@ -25,7 +27,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@AnonymousAllowed
+@RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssien Lisäys")
 @Route(value = "kurssi", layout = MainLayout.class)
 @Uses(Icon.class)

@@ -13,8 +13,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.example.application.data.entity.Kurssi;
 
-@AnonymousAllowed
-@RolesAllowed(value = { "USER", "ADMIN" })
+@RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssilistaus")
 @Route(value = "kurssit", layout = MainLayout.class)
 
