@@ -39,11 +39,11 @@ public class MainLayout extends AppLayout {
     private H2 viewTitle;
 
     private AuthenticatedUser authenticatedUser;
-    //private AccessAnnotationChecker accessChecker;
+    private AccessAnnotationChecker accessChecker;
 
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
-       // this.accessChecker = accessChecker;
+        this.accessChecker = accessChecker;
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();

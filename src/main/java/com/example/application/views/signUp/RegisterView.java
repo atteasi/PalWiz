@@ -70,6 +70,7 @@ public class RegisterView extends Composite {
 			Set<Role> roles = new HashSet();
 			roles.add(Role.ADMIN);
 			service.update(new User(firstName, surName, username, password1, roles));
+			Notification.show("Uusikäyttäjä nimeltä " + username + " luotu");
 		}
 	}
 }
