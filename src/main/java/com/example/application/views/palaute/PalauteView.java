@@ -2,7 +2,6 @@ package com.example.application.views.palaute;
 
 import javax.annotation.security.RolesAllowed;
 import javax.swing.plaf.synth.SynthToggleButtonUI;
-
 import org.hibernate.engine.transaction.jta.platform.internal.SunOneJtaPlatform;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
