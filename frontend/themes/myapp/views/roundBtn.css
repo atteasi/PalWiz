@@ -1,14 +1,23 @@
 vaadin-button.round-button {
-	height: 200px;
-	width: 200px;
-	border-radius: 100px;
-	margin: 35px 15px 15px 15px;
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  margin: 35px 15px 15px 15px;
 }
 
-div.otsikko{
-	margin-top: 25px;
+div.otsikko {
+  margin-top: 25px;
 }
 
-
- 
-
+@media only screen and (max-width: 750px) {
+  vaadin-button.round-button {
+    display: block;
+    margin-top: 5px;
+  }
+  div.otsikko {
+    margin: 0px;
+  }
+  h2.aanestysOtsikko {
+    margin-top: 5px;
+  }
+}

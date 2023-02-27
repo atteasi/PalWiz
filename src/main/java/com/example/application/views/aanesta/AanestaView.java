@@ -31,7 +31,6 @@ public class AanestaView extends VerticalLayout {
 	public AanestaView(PalauteService service) {
 		this.service = service;
 		addClassName("aanesta-view");
-		setHeightFull();
 
 		add(luoOtsikko(), luoNappulat());
 		getStyle().set("text-align", "center");
@@ -69,12 +68,15 @@ public class AanestaView extends VerticalLayout {
 		greenBtn = new RoundButton(greenBtnImg);
 		yellowBtn = new RoundButton(yellowBtnImg);
 		redBtn = new RoundButton(redBtnImg);
-
-		return new Div(greenBtn, yellowBtn, redBtn);
+		Div nappulat = new Div(greenBtn, yellowBtn, redBtn);
+		nappulat.setClassName("nappulat");
+		return nappulat;
 	}
 
 	private Div luoOtsikko() {
-		Div otsikko = new Div(new H2("Mitä pidit oppitunnista? 🤗"));
+		H2 o = new H2("Mitä pidit oppitunnista? 🤗");
+		o.addClassName("aanestysOtsikko");
+		Div otsikko = new Div(o);
 		otsikko.setClassName("otsikko");
 		return otsikko;
 
