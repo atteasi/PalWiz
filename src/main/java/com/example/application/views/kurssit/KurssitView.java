@@ -10,9 +10,10 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.example.application.data.entity.Kurssi;
 
-@RolesAllowed(value = { "USER", "ADMIN" })
+@RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssilistaus")
 @Route(value = "kurssit", layout = MainLayout.class)
 

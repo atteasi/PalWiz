@@ -25,7 +25,10 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -46,65 +49,50 @@ public class MainLayout extends AppLayout {
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
-        addHeaderContent();
-    }
-
-
-    private void addHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.getElement().setAttribute("aria-label", "Menu toggle");
-
-        viewTitle = new H2();
-        viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-
-        addToNavbar(true, toggle, viewTitle);
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("PalWiz");
-        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+    	H1 appName = new H1("PalWiz");
+    	appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
+                .set("left", "var(--lumo-space-l)").set("margin", "0")
+                .set("position", "absolute");
         Header header = new Header(appName);
 
-        Scroller scroller = new Scroller(createNavigation());
-
-        addToDrawer(header, scroller, createFooter());
+        Tabs tabs = createNavigation();
+        addToNavbar(header, tabs);
+        createFooter();
     }
 
-    private AppNav createNavigation() {
+    private Tabs createNavigation() {
         // AppNav is not yet an official component.
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
-        AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Koodi", KoodiView.class, "la la-file"));
-        nav.addItem(new AppNavItem("Äänestä", AanestaView.class, "la la-user-graduate"));
-        nav.addItem(new AppNavItem("Palaute", PalauteView.class, "la la-file"));
-        nav.addItem(new AppNavItem("Kurssi", KurssiView.class, "la la-file"));
-        nav.addItem(new AppNavItem("Kurssilistaus", KurssitView.class, "la la-file"));
+        Tabs tabs = new Tabs();
+        tabs.getStyle().set("margin", "auto");
+        if (accessChecker.hasAccess(KurssiView.class)) {
+        	tabs.add(createTab("Kurssi", KurssiView.class));
+        }
+        if (accessChecker.hasAccess(KurssitView.class)) {
+        	createTab("Kurssilistaus", KurssitView.class);
+        }
         
-        return nav;
+        tabs.add(createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),
+                createTab("Palaute", PalauteView.class));
+        return tabs;
     }
 
-    private Footer createFooter() {
-        Footer layout = new Footer();
+    private void createFooter() {
 
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
-
-            Avatar avatar = new Avatar(user.getName());
-            StreamResource resource = new StreamResource("profile-pic",
-                    () -> new ByteArrayInputStream(user.getProfilePicture()));
-            avatar.setImageResource(resource);
-            avatar.setThemeName("xsmall");
-            avatar.getElement().setAttribute("tabindex", "-1");
 
             MenuBar userMenu = new MenuBar();
             userMenu.setThemeName("tertiary-inline contrast");
 
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
-            div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getUsername());
             div.add(new Icon("lumo", "dropdown"));
             div.getElement().getStyle().set("display", "flex");
             div.getElement().getStyle().set("align-items", "center");
@@ -114,23 +102,33 @@ public class MainLayout extends AppLayout {
                 authenticatedUser.logout();
             });
 
-            layout.add(userMenu);
+            addToNavbar(userMenu);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+            Anchor loginLink = new Anchor("login", "Kirjaudu Sisään");
+            loginLink.getStyle().set("font-size", "var(--lumo-font-size-l)")
+            .set("right", "var(--lumo-space-l)").set("margin", "0")
+            .set("position", "absolute");
+            addToNavbar(loginLink);
         }
 
-        return layout;
     }
 
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
     }
 
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
+    }
+    
+    private Tab createTab(String viewName, Class viewClass) {
+        RouterLink link = new RouterLink();
+        link.add(viewName);
+        link.setRoute(viewClass);
+        link.setTabIndex(-1);
+
+        return new Tab(link);
     }
 }

@@ -1,12 +1,18 @@
 package com.example.application.views.login;
 
+import com.example.application.data.entity.Palaute;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.UserService;
 import com.example.application.security.AuthenticatedUser;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.router.internal.RouteUtil;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -18,7 +24,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
     private final AuthenticatedUser authenticatedUser;
 
-    public LoginView(AuthenticatedUser authenticatedUser) {
+    public LoginView(AuthenticatedUser authenticatedUser, UserService service) {
         this.authenticatedUser = authenticatedUser;
         setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
 
@@ -31,7 +37,6 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         i18nOma.setPassword("Salasana");
         i18nOma.setSubmit("Kirjaudu sisään");
         i18nOma.setForgotPassword("Luo tunnukset");
-        
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
         i18nErrorMessage.setTitle("Väärä käyttäjätunnus tai salasana");
         i18nErrorMessage.setMessage(
@@ -43,17 +48,16 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         i18n.getHeader().setDescription("Kirjaudu käyttäen tunnuksia user/user or admin/admin");
         i18n.setAdditionalInformation(null);
         
-       /*addForgotPasswordListener(event -> {
+        addForgotPasswordListener(event -> {
             setOpened(false);
-            UI.getCurrent().navigate("LuoTunnukset");
+            UI.getCurrent().navigate("register");
             
-      }); */ 
+      }); 
         
         setI18n(i18n);
         
         setForgotPasswordButtonVisible(true);
         setOpened(true);
-        
         
         
         
