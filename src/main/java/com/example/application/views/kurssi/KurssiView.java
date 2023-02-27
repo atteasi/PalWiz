@@ -83,7 +83,7 @@ public class KurssiView extends Div {
 			// ks = koodiService
 			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
 					Date.valueOf(lopetusPvm.getValue().format(formatter))));
-					Notification.show("Uusikurssi nimeltä " + nimi.getValue() + " luotu");
+					Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
 		});
 	}
 
