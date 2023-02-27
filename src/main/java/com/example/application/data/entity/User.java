@@ -15,25 +15,30 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 @Entity
 @Table(name = "application_user")
 public class User extends AbstractEntity {
-
 	
+	private String firstName;
+	private String surName;
     private String username;
-    private String name;
     @JsonIgnore
     private String hashedPassword;
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Set<Role> role;
 
-    
-    public User(String username, String name, String hashedPassword, Set<Role> roles) {
+
+    public User(String fn, String sn, String username, String password, Set<Role> role) {
+    	firstName = fn;
+    	surName = sn;
     	this.username = username;
-    	this.name = name;
-    	this.hashedPassword = hashedPassword;
-    	this.roles = roles;
+    	String hashed = BCrypt.hashpw(password, BCrypt.gensalt(10));
+    	System.out.println(hashed);
+    	hashedPassword = hashed;
+    	this.role = role;
     }
     
     public User() {
@@ -46,12 +51,6 @@ public class User extends AbstractEntity {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getHashedPassword() {
         return hashedPassword;
     }
@@ -59,10 +58,11 @@ public class User extends AbstractEntity {
         this.hashedPassword = hashedPassword;
     }
     public Set<Role> getRoles() {
-        return roles;
+        return role;
     }
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        this.role
+        = roles;
     }
 
 }
