@@ -5,6 +5,7 @@ import javax.annotation.security.RolesAllowed;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -31,11 +32,17 @@ public class KiitosView extends VerticalLayout {
 		img.setWidth("200px");
 		//configureGrid();
 		add(img);
+		Button palaa = new Button("Palaa takaisin");
+		palaa.addClickListener(e ->
+			palaa.getUI().ifPresent(ui ->
+				ui.navigate("koodi"))
+		);
 
-		add(new H2("Kiitos palautteesta!"));
-		Grid<Palaute> grid = new Grid<>(Palaute.class);
-		grid.setItems(service.findAllPalautteet());
-		add(grid);
+
+		add(new H2("Kiitos palautteesta!"), palaa);
+		// Grid<Palaute> grid = new Grid<>(Palaute.class);
+		// grid.setItems(service.findAllPalautteet());
+		// add(grid);
 		 
 		setSizeFull();
 		setJustifyContentMode(JustifyContentMode.CENTER);
