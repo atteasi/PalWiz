@@ -75,7 +75,7 @@ public class MainLayout extends AppLayout {
         }
         
         tabs.add(createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),
-                createTab("Palaute", PalauteView.class));
+                createTab("Palaute", PalauteView.class),createTab("Kurssilistaus", KurssitView.class));
         return tabs;
     }
 
