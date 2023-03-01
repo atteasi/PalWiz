@@ -20,9 +20,10 @@ public class KurssiService {
 		return kurssiRepository.findAll();
 	}
 
-	public Kurssi findByKoodi(String koodi) {
-		return kurssiRepository.findByKoodi(koodi);
+		public Kurssi findKurssi(int id) {
+		return kurssiRepository.findKurssiById(id);
 	}
+
 	public void saveKurssi(Kurssi kurssi) {
 		if (kurssi == null) {
 			System.err.println("Kurssi is null. Joku nyt mättää");
@@ -30,5 +31,7 @@ public class KurssiService {
 		}
 		kurssiRepository.save(kurssi);
 	}
+
+	
 
 }

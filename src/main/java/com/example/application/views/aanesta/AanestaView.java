@@ -47,20 +47,20 @@ public class AanestaView extends VerticalLayout {
 		greenBtn.addClickListener(clickEvent -> {
 			System.out.println("GREEN");
 			greenBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
-			Palaute p = new Palaute(1, date,kurssi.getID());
+			Palaute p = new Palaute(1, date);
 			savePalaute(p);
 		});
 
 		yellowBtn.addClickListener(clickEvent -> {
 			System.out.println("YELLOW");
-			Palaute p = new Palaute(2, date,kurssi.getID());
+			Palaute p = new Palaute(2, date);
 			savePalaute(p);
 			yellowBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
 
 		redBtn.addClickListener(clickEvent -> {
 			System.out.println("RED");
-			Palaute p = new Palaute(3, date,kurssi.getID());
+			Palaute p = new Palaute(3, date);
 			savePalaute(p);
 			redBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});

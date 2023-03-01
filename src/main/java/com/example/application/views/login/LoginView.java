@@ -4,6 +4,7 @@ import com.example.application.data.entity.Palaute;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.UserService;
 import com.example.application.security.AuthenticatedUser;
+import com.example.application.views.kurssit.KurssitView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.login.LoginI18n;
@@ -53,22 +54,33 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
             UI.getCurrent().navigate("register");
             
       }); 
+
+      addLoginListener(event ->{
+        setOpened(false);
+        UI.getCurrent().navigate("kurssit");
+    });
         
         setI18n(i18n);
         
         setForgotPasswordButtonVisible(true);
         setOpened(true);
         
-        
+       
         
     }
+   
+    
+
     
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (authenticatedUser.get().isPresent()) {
             // Already logged in
+            
             setOpened(false);
             event.forwardTo("");
+            
+            
         }
 
         setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));

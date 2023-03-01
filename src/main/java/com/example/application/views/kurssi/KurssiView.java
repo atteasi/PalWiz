@@ -84,6 +84,9 @@ public class KurssiView extends Div {
 			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
 					Date.valueOf(lopetusPvm.getValue().format(formatter))));
 					Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
+					
+					save.getUI().ifPresent(ui ->
+           ui.navigate("kurssit"));
 		});
 	}
 

@@ -25,15 +25,17 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route(value = "koodi", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 
-public class KoodiView extends VerticalLayout{
-	KurssiService ks;
-	public KoodiView(KurssiService s) {
-		ks = s;
+public class KoodiView extends VerticalLayout {
+    KurssiService ks;
+
+    public KoodiView(KurssiService s) {
+        ks = s;
         setSpacing(false);
 
         add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
         TextField tf = new TextField();
-       
+        tf.setPlaceholder("Kirjoita kurssin koodi");
+
         Button go = new Button("Äänestämään!");
         go.addClickListener(clickEvent -> {
         	List<Kurssi> kurssit = ks.findKurssit();
@@ -43,15 +45,15 @@ public class KoodiView extends VerticalLayout{
         			go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
         		} else {
         		}
-        	}
+            }
         });
-        add(go, tf);
-        
+
+        add(tf, go);
+
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
     }
-
 
 }

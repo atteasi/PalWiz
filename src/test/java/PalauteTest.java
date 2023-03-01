@@ -15,7 +15,7 @@ public class PalauteTest {
 	@Test
 	@DisplayName("Testaa tallentuuko palautteen päivä oikein")
     public void getPalautePaivamaara() {
-		Palaute p = new Palaute(1, LocalDate.now(), 1);
+		Palaute p = new Palaute(1, LocalDate.now());
 		assertEquals(LocalDate.now(), p.getPaivamaara(),"Päivämäärä on väärin");
     }
 }

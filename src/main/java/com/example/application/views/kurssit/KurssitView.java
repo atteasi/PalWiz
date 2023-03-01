@@ -1,12 +1,18 @@
 package com.example.application.views.kurssit;
 
+import java.util.Optional;
+
 import javax.annotation.security.RolesAllowed;
 
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -16,6 +22,7 @@ import com.example.application.data.entity.Kurssi;
 @RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssilistaus")
 @Route(value = "kurssit", layout = MainLayout.class)
+
 
 public class KurssitView extends VerticalLayout {
 	KurssiService service;
@@ -30,10 +37,10 @@ public class KurssitView extends VerticalLayout {
 		//configureGrid();
 		add(img);
 
-		add(new H2("Kiitos palautteesta!"));
+		add(new H2("Kurssit"));
 		Grid<Kurssi> grid = new Grid<>(Kurssi.class);
 		grid.setItems(service.findKurssit());
-		add(grid);
+		
 		 
 
 		setSizeFull();
@@ -41,6 +48,21 @@ public class KurssitView extends VerticalLayout {
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 		getStyle().set("text-align", "center");
 		
+		 grid.addSelectionListener(selection -> {
+            Optional<Kurssi> optionalKurssi = selection.getFirstSelectedItem();
+            if (optionalKurssi.isPresent()) {
+							Notification.show( optionalKurssi.get().getNimi() + " valittu, " + optionalKurssi.get().getId());
+							Component c = UI.getCurrent() ;
+							String key = "kurssiID" ;
+							Object value = optionalKurssi.get().getId() ;
+							ComponentUtil.setData( c , key , value ) ;
+							
+							getUI().ifPresent(ui ->
+           			ui.navigate("palaute"));
+            }
+        });
+
+				add(grid);
 		
 	}
 	
