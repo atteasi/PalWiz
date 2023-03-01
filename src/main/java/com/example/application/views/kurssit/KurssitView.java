@@ -20,6 +20,7 @@ import com.example.application.data.entity.Kurssi;
 @PageTitle("Kurssilistaus")
 @Route(value = "kurssit", layout = MainLayout.class)
 
+
 public class KurssitView extends VerticalLayout {
 	KurssiService service;
 
