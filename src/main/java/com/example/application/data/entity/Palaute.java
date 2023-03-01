@@ -20,7 +20,7 @@ public class Palaute {
 	private int id;
 
 	private int vastaus;
-	private LocalDate paivamaara; // oikeesti joku date tyyppi?
+	private LocalDate paivamaara;
 	@ManyToOne
 	private Kurssi kurssi;
 
