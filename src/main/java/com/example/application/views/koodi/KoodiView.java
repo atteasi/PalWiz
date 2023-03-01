@@ -6,8 +6,11 @@ import javax.annotation.security.RolesAllowed;
 
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -28,7 +31,7 @@ public class KoodiView extends VerticalLayout{
 		ks = s;
         setSpacing(false);
 
-        add(new H2("Oisko siulla miulle koodia? :3"));
+        add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
         TextField tf = new TextField();
        
         Button go = new Button("Äänestämään!");
@@ -36,9 +39,9 @@ public class KoodiView extends VerticalLayout{
         	List<Kurssi> kurssit = ks.findKurssit();
         	for(Kurssi k : kurssit) {
         		if(tf.getValue().matches(k.getKoodi())) {
+        			ComponentUtil.setData(UI.getCurrent(), Kurssi.class, k);
         			go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
         		} else {
-        			
         		}
         	}
         });

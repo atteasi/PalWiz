@@ -20,11 +20,13 @@ public class Palaute {
 
 	private int vastaus;
 	private LocalDate paivamaara; // oikeesti joku date tyyppi?
+	private int kurssiID;
 	// private int kurssiID; //foreign key
 
-	public Palaute(int annettuVastaus, LocalDate paivamaara) {
+	public Palaute(int annettuVastaus, LocalDate paivamaara, int kurssiID) {
 		this.vastaus = annettuVastaus;
 		this.paivamaara = paivamaara;
+		this.kurssiID = kurssiID;
 	}
 	
 	public Palaute() {}
@@ -36,8 +38,6 @@ public class Palaute {
 	public int getAnnettuVastaus() {
 		return vastaus;
 	}
-
-	
 
 	public LocalDate getPaivamaara() {
 		return paivamaara;

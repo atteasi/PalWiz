@@ -2,9 +2,13 @@ package com.example.application.views.aanesta;
 
 import java.time.LocalDate;
 import javax.annotation.security.RolesAllowed;
+
+import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -38,23 +42,25 @@ public class AanestaView extends VerticalLayout {
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
+		Kurssi kurssi = ComponentUtil.getData(UI.getCurrent(), Kurssi.class);
+		
 		greenBtn.addClickListener(clickEvent -> {
 			System.out.println("GREEN");
 			greenBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
-			Palaute p = new Palaute(1, date);
+			Palaute p = new Palaute(1, date,kurssi.getID());
 			savePalaute(p);
 		});
 
 		yellowBtn.addClickListener(clickEvent -> {
 			System.out.println("YELLOW");
-			Palaute p = new Palaute(2, date);
+			Palaute p = new Palaute(2, date,kurssi.getID());
 			savePalaute(p);
 			yellowBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
 
 		redBtn.addClickListener(clickEvent -> {
 			System.out.println("RED");
-			Palaute p = new Palaute(3, date);
+			Palaute p = new Palaute(3, date,kurssi.getID());
 			savePalaute(p);
 			redBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});

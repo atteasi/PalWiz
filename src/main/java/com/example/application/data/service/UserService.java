@@ -20,6 +20,9 @@ public class UserService {
         return repository.findById(id);
     }
 
+    public User getByUsername(String username){
+    	return repository.findByUsername(username);
+    }
     public User update(User entity) {
         return repository.save(entity);
     }

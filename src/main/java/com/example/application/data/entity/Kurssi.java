@@ -66,6 +66,9 @@ public class Kurssi {
 	public void setLopetusPvm(Date lopetusPvm) {
 		this.lopetusPvm = lopetusPvm;
 	}
-	
+
+	public int getID() {
+		return id;
+	}
 	
 }
