@@ -28,8 +28,9 @@ public class Palaute {
 		this.vastaus = annettuVastaus;
 		this.paivamaara = paivamaara;
 	}
-	
-	public Palaute() {}
+
+	public Palaute() {
+	}
 
 	public void setAnnettuVastaus(int vastaus) {
 		this.vastaus = vastaus;
@@ -43,8 +44,8 @@ public class Palaute {
 		return paivamaara;
 	}
 
-	public String toString(){
-		return "palaute id: " + id + ", kurssi: " + kurssi.getNimi();
+	public String toString() {
+		return "palaute id: " + id + ", kurssi: " + kurssi.getNimi() + ", vastaus: " + vastaus;
 	}
 
 }
