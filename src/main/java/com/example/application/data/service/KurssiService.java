@@ -20,7 +20,7 @@ public class KurssiService {
 		return kurssiRepository.findAll();
 	}
 
-		public List<Kurssi> findKurssi(int id) {
+		public Kurssi findKurssi(int id) {
 		return kurssiRepository.findKurssiById(id);
 	}
 

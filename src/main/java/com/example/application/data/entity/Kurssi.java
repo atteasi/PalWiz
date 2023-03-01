@@ -22,6 +22,7 @@ public class Kurssi {
 	private String koodi;
 	private Date aloitusPvm;
 	private Date lopetusPvm;
+
 	//OpeID viel lisäks foreign keyks
 	
 	public Kurssi() {
@@ -33,6 +34,7 @@ public class Kurssi {
 		koodi = k;
 		aloitusPvm = ap;
 		lopetusPvm = lp;
+		
 	}
 
 	public String getNimi() {
@@ -46,6 +48,7 @@ public class Kurssi {
 	public String getKoodi() {
 		return koodi;
 	}
+
 
 	public void setKoodi(String koodi) {
 		this.koodi = koodi;
@@ -66,9 +69,13 @@ public class Kurssi {
 	public void setLopetusPvm(Date lopetusPvm) {
 		this.lopetusPvm = lopetusPvm;
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

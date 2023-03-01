@@ -31,7 +31,7 @@ public class Palaute {
 
 	public Palaute() {
 	}
-
+	
 	public void setAnnettuVastaus(int vastaus) {
 		this.vastaus = vastaus;
 	}

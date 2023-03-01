@@ -192,7 +192,7 @@ public class PalauteView extends Main {
             series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
             series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
         } else {
-            Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID).get(0);
+            Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID);
             series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
             series.add(new DataSeriesItem("Neutraali", service.findAllNeutralByID(kurssi).size()));
             series.add(new DataSeriesItem("Huono", service.findAllBadByID(kurssi).size()));

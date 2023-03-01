@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.example.application.data.entity.Kurssi;
 
 public interface KurssiRepository extends JpaRepository<Kurssi, Long> {
-  @Query("SELECT k FROM Kurssi k WHERE "
-		+"(k.id = :id)")
-List<Kurssi> findKurssiById(@Param("id") int id);
+
+	Kurssi findKurssiById(@Param("id") int id);
+
 }
