@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,14 +21,16 @@ public class Palaute {
 
 	private int vastaus;
 	private LocalDate paivamaara; // oikeesti joku date tyyppi?
-	// private int kurssiID; //foreign key
+	@ManyToOne
+	private Kurssi kurssi;
 
 	public Palaute(int annettuVastaus, LocalDate paivamaara) {
 		this.vastaus = annettuVastaus;
 		this.paivamaara = paivamaara;
 	}
-	
-	public Palaute() {}
+
+	public Palaute() {
+	}
 
 	public void setAnnettuVastaus(int vastaus) {
 		this.vastaus = vastaus;
@@ -37,10 +40,12 @@ public class Palaute {
 		return vastaus;
 	}
 
-	
-
 	public LocalDate getPaivamaara() {
 		return paivamaara;
+	}
+
+	public String toString() {
+		return "palaute id: " + id + ", kurssi: " + kurssi.getNimi() + ", vastaus: " + vastaus;
 	}
 
 }

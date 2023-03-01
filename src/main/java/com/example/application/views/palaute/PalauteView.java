@@ -3,10 +3,16 @@ package com.example.application.views.palaute;
 import javax.annotation.security.RolesAllowed;
 import javax.swing.plaf.synth.SynthToggleButtonUI;
 import org.hibernate.engine.transaction.jta.platform.internal.SunOneJtaPlatform;
+
+import com.example.application.data.entity.Kurssi;
+import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.kurssit.KurssitView;
 import com.example.application.views.palaute.ServiceHealth.Status;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
@@ -33,7 +39,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 
-
 @AnonymousAllowed
 @PageTitle("Palaute")
 @Route(value = "palaute", layout = MainLayout.class)
@@ -41,12 +46,13 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 @RolesAllowed("ADMIN")
 public class PalauteView extends Main {
     PalauteService service;
-       
-    public PalauteView(PalauteService service) {
+    KurssiService kurssiService;
+
+    public PalauteView(PalauteService service, KurssiService kService) {
         this.service = service;
-        
+        this.kurssiService = kService;
         addClassName("palaute-view");
-        
+
         Board board = new Board();
         board.addRow(createHighlight("Current users", "745", 33.7), createHighlight("View events", "54.6k", -112.45),
                 createHighlight("Conversion rate", "18%", 3.9), createHighlight("Custom metric", "-123.45", 0.0));
@@ -59,7 +65,7 @@ public class PalauteView extends Main {
         VaadinIcon icon = VaadinIcon.ARROW_UP;
         String prefix = "";
         String theme = "badge";
-        
+
         if (percentage == 0) {
             prefix = "±";
         } else if (percentage > 0) {
@@ -165,9 +171,9 @@ public class PalauteView extends Main {
     }
 
     private Component createResponseTimes() {
-        
+
         HorizontalLayout header = createHeader("Response times", "Average across all systems");
-        
+
         // Chart
         Chart chart = new Chart(ChartType.PIE);
         Configuration conf = chart.getConfiguration();
@@ -175,11 +181,25 @@ public class PalauteView extends Main {
         chart.setThemeName("gradient");
 
         DataSeries series = new DataSeries();
-        
-        series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
-        series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
-        series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
-        
+
+        Component c = UI.getCurrent();
+        Object valittuKurssiID = ComponentUtil.getData(c, "kurssiID");
+
+        if (valittuKurssiID == null)
+
+        {
+            series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
+            series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
+            series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+        } else {
+            Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID).get(0);
+            series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
+            series.add(new DataSeriesItem("Neutraali", service.findAllNeutralByID(kurssi).size()));
+            series.add(new DataSeriesItem("Huono", service.findAllBadByID(kurssi).size()));
+            System.out.println(
+                    service.findAllGoodByID(kurssi));
+        }
+
         conf.addSeries(series);
 
         // Add it all together
@@ -221,8 +241,6 @@ public class PalauteView extends Main {
             return status.toString();
         }
     }
-
-   
 
     private String getStatusTheme(ServiceHealth serviceHealth) {
         Status status = serviceHealth.getStatus();

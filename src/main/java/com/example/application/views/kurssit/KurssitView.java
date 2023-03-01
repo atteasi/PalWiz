@@ -6,6 +6,9 @@ import javax.annotation.security.RolesAllowed;
 
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -48,9 +51,14 @@ public class KurssitView extends VerticalLayout {
 		 grid.addSelectionListener(selection -> {
             Optional<Kurssi> optionalKurssi = selection.getFirstSelectedItem();
             if (optionalKurssi.isPresent()) {
-							Notification.show( optionalKurssi.get().getNimi() + " valittu ");
-							Notification.show( optionalKurssi.get().getId() + " valittu ");
+							Notification.show( optionalKurssi.get().getNimi() + " valittu, " + optionalKurssi.get().getId());
+							Component c = UI.getCurrent() ;
+							String key = "kurssiID" ;
+							Object value = optionalKurssi.get().getId() ;
+							ComponentUtil.setData( c , key , value ) ;
 							
+							getUI().ifPresent(ui ->
+           			ui.navigate("palaute"));
             }
         });
 

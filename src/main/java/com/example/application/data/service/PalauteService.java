@@ -2,6 +2,8 @@ package com.example.application.data.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 
 @Service
@@ -33,6 +35,17 @@ public class PalauteService {
 		return palauteRepository.findAnyMatchingPalaute(3);
 	}
 
+	public List<Palaute> findAllGoodByID(Kurssi kurssi){
+		return palauteRepository.findPalauteByValueAndKurssi(1,  kurssi);
+	}
+
+	public List<Palaute> findAllNeutralByID(Kurssi kurssi){
+		return palauteRepository.findPalauteByValueAndKurssi(2,  kurssi);
+	}
+
+	public List<Palaute> findAllBadByID(Kurssi kurssi){
+		return palauteRepository.findPalauteByValueAndKurssi(3, kurssi);
+	}
 
 	public long countPalautteet() {
 		return palauteRepository.count();
