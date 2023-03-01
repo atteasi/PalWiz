@@ -67,5 +67,8 @@ public class Kurssi {
 		this.lopetusPvm = lopetusPvm;
 	}
 	
+	public int getId(){
+		return id;
+	}
 	
 }

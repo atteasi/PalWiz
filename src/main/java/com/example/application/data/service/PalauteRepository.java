@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 
 public interface PalauteRepository extends JpaRepository<Palaute, Long>,JpaSpecificationExecutor<Palaute>  {
@@ -12,5 +14,9 @@ public interface PalauteRepository extends JpaRepository<Palaute, Long>,JpaSpeci
     @Query("SELECT p FROM Palaute p WHERE "
 		+"(:value is null or p.vastaus = :value)")
 List<Palaute> findAnyMatchingPalaute(@Param("value") int value);
+
+@Query("SELECT p FROM Palaute p WHERE "
+		+"(:value is null or p.vastaus = :value)" + "AND" + "(:kurssi is null or p.kurssi = :kurssi)")
+List<Palaute> findPalauteByValueAndKurssi(@Param("value") int value, @Param("kurssi") Kurssi kurssi);
 		
 }
