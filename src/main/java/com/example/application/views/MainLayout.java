@@ -69,9 +69,8 @@ public class MainLayout extends AppLayout {
         tabs.getStyle().set("margin", "auto");
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
-            tabs.add(createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),
-                    createTab("Palaute", PalauteView.class), createTab("Kurssi", KurssiView.class),
-                    createTab("Kurssilistaus", KurssitView.class));
+            tabs.add(createTab("Kurssit", KurssitView.class), /*createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),*/
+                     createTab("Lisää kurssi", KurssiView.class), createTab("Palaute", PalauteView.class));
             return tabs;
         } else {
             tabs.add(createTab("Koodi", KoodiView.class));
