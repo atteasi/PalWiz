@@ -49,6 +49,8 @@ public class KurssitView extends VerticalLayout {
             Optional<Kurssi> optionalKurssi = selection.getFirstSelectedItem();
             if (optionalKurssi.isPresent()) {
 							Notification.show( optionalKurssi.get().getNimi() + " valittu ");
+							Notification.show( optionalKurssi.get().getId() + " valittu ");
+							
             }
         });
 
