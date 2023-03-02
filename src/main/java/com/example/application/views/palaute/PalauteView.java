@@ -54,9 +54,9 @@ public class PalauteView extends Main {
         addClassName("palaute-view");
 
         Board board = new Board();
-        board.addRow(createHighlight("Current users", "745", 33.7), createHighlight("View events", "54.6k", -112.45),
-                createHighlight("Conversion rate", "18%", 3.9), createHighlight("Custom metric", "-123.45", 0.0));
-        board.addRow(createViewEvents());
+        // board.addRow(createHighlight("Current users", "745", 33.7), createHighlight("View events", "54.6k", -112.45),
+        //         createHighlight("Conversion rate", "18%", 3.9), createHighlight("Custom metric", "-123.45", 0.0));
+        // board.addRow(createViewEvents());
         board.addRow(createServiceHealth(), createResponseTimes());
         add(board);
     }
@@ -136,8 +136,10 @@ public class PalauteView extends Main {
     }
 
     private Component createServiceHealth() {
+        Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
+        Kurssi kurzzi = kurssiService.findKurssi((int)valittuKurssiID);
         // Header
-        HorizontalLayout header = createHeader("Service health", "Input / output");
+        HorizontalLayout header = createHeader(kurzzi.getNimi(), "Koodi: " + kurzzi.getKoodi());
 
         // Grid
         Grid<ServiceHealth> grid = new Grid();
