@@ -43,24 +43,21 @@ public class AanestaView extends VerticalLayout {
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
 		Kurssi kurssi = ComponentUtil.getData(UI.getCurrent(), Kurssi.class);
-		
+
 		greenBtn.addClickListener(clickEvent -> {
-			System.out.println("GREEN");
 			greenBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
-			Palaute p = new Palaute(1, date);
+			Palaute p = new Palaute(1, date, kurssi);
 			savePalaute(p);
 		});
 
 		yellowBtn.addClickListener(clickEvent -> {
-			System.out.println("YELLOW");
-			Palaute p = new Palaute(2, date);
+			Palaute p = new Palaute(2, date, kurssi);
 			savePalaute(p);
 			yellowBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
 
 		redBtn.addClickListener(clickEvent -> {
-			System.out.println("RED");
-			Palaute p = new Palaute(3, date);
+			Palaute p = new Palaute(3, date, kurssi);
 			savePalaute(p);
 			redBtn.getUI().ifPresent(ui -> ui.navigate("kiitos"));
 		});
@@ -88,7 +85,6 @@ public class AanestaView extends VerticalLayout {
 		return otsikko;
 
 	}
-
 
 	private void savePalaute(Palaute palaute) {
 		service.savePalaute(palaute);

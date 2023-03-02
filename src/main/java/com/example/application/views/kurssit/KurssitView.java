@@ -23,10 +23,8 @@ import com.example.application.data.entity.Kurssi;
 @PageTitle("Kurssilistaus")
 @Route(value = "kurssit", layout = MainLayout.class)
 
-
 public class KurssitView extends VerticalLayout {
 	KurssiService service;
-
 
 	public KurssitView(KurssiService service) {
 		this.service = service;
@@ -34,37 +32,33 @@ public class KurssitView extends VerticalLayout {
 
 		Image img = new Image("images/empty-plant.png", "placeholder plant");
 		img.setWidth("200px");
-		//configureGrid();
+		// configureGrid();
 		add(img);
 
 		add(new H2("Kurssit"));
 		Grid<Kurssi> grid = new Grid<>(Kurssi.class);
 		grid.setItems(service.findKurssit());
-		
-		 
 
 		setSizeFull();
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 		getStyle().set("text-align", "center");
-		
-		 grid.addSelectionListener(selection -> {
-            Optional<Kurssi> optionalKurssi = selection.getFirstSelectedItem();
-            if (optionalKurssi.isPresent()) {
-							Notification.show( optionalKurssi.get().getNimi() + " valittu, " + optionalKurssi.get().getId());
-							Component c = UI.getCurrent() ;
-							String key = "kurssiID" ;
-							Object value = optionalKurssi.get().getId() ;
-							ComponentUtil.setData( c , key , value ) ;
-							
-							getUI().ifPresent(ui ->
-           			ui.navigate("palaute"));
-            }
-        });
 
-				add(grid);
-		
+		grid.addSelectionListener(selection -> {
+			Optional<Kurssi> optionalKurssi = selection.getFirstSelectedItem();
+			if (optionalKurssi.isPresent()) {
+				Notification.show(optionalKurssi.get().getNimi() + " valittu, " + optionalKurssi.get().getId());
+				// Component c = UI.getCurrent() ;
+				// String key = "kurssi" ;
+				// Object value = optionalKurssi;//optionalKurssi.get().getId() ;
+				ComponentUtil.setData(UI.getCurrent(), "kurssi", optionalKurssi.get().getId());
+
+				getUI().ifPresent(ui -> ui.navigate("palaute"));
+			}
+		});
+
+		add(grid);
+
 	}
-	
 
 }

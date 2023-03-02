@@ -182,8 +182,7 @@ public class PalauteView extends Main {
 
         DataSeries series = new DataSeries();
 
-        Component c = UI.getCurrent();
-        Object valittuKurssiID = ComponentUtil.getData(c, "kurssiID");
+        Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
 
         if (valittuKurssiID == null)
 
@@ -196,8 +195,6 @@ public class PalauteView extends Main {
             series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
             series.add(new DataSeriesItem("Neutraali", service.findAllNeutralByID(kurssi).size()));
             series.add(new DataSeriesItem("Huono", service.findAllBadByID(kurssi).size()));
-            System.out.println(
-                    service.findAllGoodByID(kurssi));
         }
 
         conf.addSeries(series);
