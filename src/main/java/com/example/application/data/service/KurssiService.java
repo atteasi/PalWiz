@@ -6,11 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.application.data.entity.Kurssi;
+import com.example.application.data.entity.Palaute;
 
 @Service
 public class KurssiService {
 	private final KurssiRepository kurssiRepository;
-
+	
 	public KurssiService(KurssiRepository kr) {
 		super();
 		kurssiRepository = kr;

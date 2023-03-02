@@ -18,5 +18,6 @@ List<Palaute> findAnyMatchingPalaute(@Param("value") int value);
 @Query("SELECT p FROM Palaute p WHERE "
 		+"(:value is null or p.vastaus = :value)" + "AND" + "(:kurssi is null or p.kurssi = :kurssi)")
 List<Palaute> findPalauteByValueAndKurssi(@Param("value") int value, @Param("kurssi") Kurssi kurssi);
+
 		
 }
