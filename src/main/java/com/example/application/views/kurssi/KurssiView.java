@@ -1,11 +1,14 @@
 package com.example.application.views.kurssi;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -15,6 +18,8 @@ import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -24,6 +29,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -38,6 +44,9 @@ public class KurssiView extends Div {
 	private TextField nimi = new TextField("Kurssin nimi");
 	private DatePicker aloitusPvm = new DatePicker("Aloitus päivämäärä");
 	private DatePicker lopetusPvm = new DatePicker("Lopetus päivämäärä");
+	CheckboxGroup<String> checkboxGroup = new CheckboxGroup<>();
+	TimePicker palauteAlkaa = new TimePicker();
+	TimePicker palauteLoppuu = new TimePicker();
 
 	private Button save = new Button("Save");
 
@@ -53,6 +62,16 @@ public class KurssiView extends Div {
 
 		aloitusPvm.addValueChangeListener(e -> lopetusPvm.setMin(e.getValue()));
 		lopetusPvm.addValueChangeListener(e -> aloitusPvm.setMax(e.getValue()));
+		
+		checkboxGroup.setLabel("Minä päivinä tunteja pidetään?");
+		checkboxGroup.setItems("Maanantai", "Tiistai", "Keskiviikko", "Torstai",
+		        "Perjantai", "Lauantai", "Sunnuntai");
+		//checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+		
+		palauteAlkaa.setLabel("Palautteen antaminen alkaa:");
+		palauteAlkaa.setStep(Duration.ofMinutes(15));
+		palauteLoppuu.setLabel("Palautteen antaminen loppuu:");
+		palauteLoppuu.setStep(Duration.ofMinutes(15));
 
 		addClassName("kurssi-view");
 
@@ -80,12 +99,36 @@ public class KurssiView extends Div {
 				}
 				koodi += "(" + vanhojaKoodeja + ")";
 			}
-			// ks = kurssiService
-			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
-					Date.valueOf(lopetusPvm.getValue().format(formatter))));
-			Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
 
-			save.getUI().ifPresent(ui -> ui.navigate("kurssit"));
+			String[] viikonpaivat = {
+				"Sunnuntai",
+				"Maanantai",
+				"Tiistai",
+				"Keskiviikko",
+				"Torstai",
+				"Perjantai",
+				"Lauantai"
+			};
+			Set<String> aanestyspaivat = checkboxGroup.getSelectedItems();
+			String viikonpaivaKoodi = "";
+
+			for(int i = 0; i < viikonpaivat.length; i++) {
+				if(aanestyspaivat.contains(viikonpaivat[i])){
+					viikonpaivaKoodi += Integer.toString(i+1);
+				}
+			}
+
+			// ks = koodiService
+
+			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
+					Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
+					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue())));
+			
+			Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
+					
+					save.getUI().ifPresent(ui ->
+           ui.navigate("kurssit"));
+
 		});
 	}
 
@@ -95,8 +138,9 @@ public class KurssiView extends Div {
 
 	private Component createFormLayout() {
 		FormLayout formLayout = new FormLayout();
-		formLayout.add(nimi, aloitusPvm, lopetusPvm);
+		formLayout.add(nimi, aloitusPvm, lopetusPvm, checkboxGroup, palauteAlkaa, palauteLoppuu);
 		formLayout.setColspan(nimi, 3);
+		formLayout.setColspan(checkboxGroup, 3);
 		return formLayout;
 	}
 
