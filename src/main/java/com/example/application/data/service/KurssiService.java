@@ -21,7 +21,7 @@ public class KurssiService {
 		return kurssiRepository.findAll();
 	}
 
-		public Kurssi findKurssi(int id) {
+	public Kurssi findKurssi(int id) {
 		return kurssiRepository.findKurssiById(id);
 	}
 
@@ -32,7 +32,5 @@ public class KurssiService {
 		}
 		kurssiRepository.save(kurssi);
 	}
-
-	
 
 }

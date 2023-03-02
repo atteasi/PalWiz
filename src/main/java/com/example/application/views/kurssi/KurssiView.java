@@ -54,7 +54,7 @@ public class KurssiView extends Div {
 		DatePicker.DatePickerI18n suomiI18n = luoI18n();
 
 		LocalDate now = LocalDate.now(ZoneId.systemDefault());
-		
+
 		aloitusPvm.setI18n(suomiI18n);
 		aloitusPvm.setMin(now);
 		lopetusPvm.setMin(now);
@@ -72,6 +72,7 @@ public class KurssiView extends Div {
 		palauteAlkaa.setStep(Duration.ofMinutes(15));
 		palauteLoppuu.setLabel("Palautteen antaminen loppuu:");
 		palauteLoppuu.setStep(Duration.ofMinutes(15));
+
 		addClassName("kurssi-view");
 
 		add(createTitle());
@@ -83,21 +84,22 @@ public class KurssiView extends Div {
 			String koodi = nimi.getValue().substring(0, 4) + String.valueOf(vuosi);
 			List<Kurssi> kurssit = ks.findKurssit();
 			boolean onEnnestaan = false;
-			for(Kurssi k : kurssit) {
-				if(k.getKoodi().matches(koodi)) {
+			for (Kurssi k : kurssit) {
+				if (k.getKoodi().matches(koodi)) {
 					onEnnestaan = true;
 				}
 			}
-			if(onEnnestaan) { 
+			if (onEnnestaan) {
 				int vanhojaKoodeja = 0;
-				for(Kurssi k : kurssit) {
-					String testattavaKoodi = k.getKoodi().substring(0,6);
-					if(testattavaKoodi.matches(koodi)) {
+				for (Kurssi k : kurssit) {
+					String testattavaKoodi = k.getKoodi().substring(0, 6);
+					if (testattavaKoodi.matches(koodi)) {
 						vanhojaKoodeja++;
 					}
 				}
 				koodi += "(" + vanhojaKoodeja + ")";
 			}
+
 			String[] viikonpaivat = {
 				"Sunnuntai",
 				"Maanantai",
@@ -117,6 +119,7 @@ public class KurssiView extends Div {
 			}
 
 			// ks = koodiService
+
 			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
 					Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
 					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue())));
@@ -125,6 +128,7 @@ public class KurssiView extends Div {
 					
 					save.getUI().ifPresent(ui ->
            ui.navigate("kurssit"));
+
 		});
 	}
 
