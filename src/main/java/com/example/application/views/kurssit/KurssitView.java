@@ -42,9 +42,6 @@ public class KurssitView extends VerticalLayout {
 		user = userService.getByUsername(authentication.getName());
 		}
 
-
-
-
 		setSpacing(false);
 
 		Image img = new Image("images/empty-plant.png", "placeholder plant");

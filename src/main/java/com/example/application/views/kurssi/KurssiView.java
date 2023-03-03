@@ -69,15 +69,10 @@ public class KurssiView extends Div {
 
 	public KurssiView(KurssiService ks, UserService userService) {
 		
-		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			user = userService.getByUsername(authentication.getName());
-    		//currentUserName = authentication.getName();
-			//System.out.println("USER: " + currentUserName);
-			 
-		}
+    		}
 		
 
 		
