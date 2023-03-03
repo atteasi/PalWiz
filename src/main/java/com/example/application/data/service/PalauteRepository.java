@@ -10,7 +10,6 @@ import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 
 public interface PalauteRepository extends JpaRepository<Palaute, Long>, JpaSpecificationExecutor<Palaute> {
-
 	@Query("SELECT p FROM Palaute p WHERE "
 			+ "(:value is null or p.vastaus = :value)")
 	List<Palaute> findAnyMatchingPalaute(@Param("value") int value);

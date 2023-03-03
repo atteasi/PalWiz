@@ -1,5 +1,9 @@
 package com.example.application.views.koodi;
 
+import java.util.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -26,34 +30,52 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @RouteAlias(value = "", layout = MainLayout.class)
 
 public class KoodiView extends VerticalLayout {
-    KurssiService ks;
+	KurssiService ks;
 
-    public KoodiView(KurssiService s) {
-        ks = s;
-        setSpacing(false);
+	public KoodiView(KurssiService s) {
+		ks = s;
+		setSpacing(false);
+		Calendar kalenteri = Calendar.getInstance();
+		Date tanaan = new Date();
 
-        add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
-        TextField tf = new TextField();
-        tf.setPlaceholder("Kirjoita kurssin koodi");
+		kalenteri.setTime(tanaan);
+		add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
+		TextField tf = new TextField();
+		tf.setPlaceholder("Kirjoita kurssin koodi");
 
-        Button go = new Button("Äänestämään!");
-        go.addClickListener(clickEvent -> {
-        	List<Kurssi> kurssit = ks.findKurssit();
-        	for(Kurssi k : kurssit) {
-        		if(tf.getValue().matches(k.getKoodi())) {
-        			ComponentUtil.setData(UI.getCurrent(), Kurssi.class, k);
-        			go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
-        		} else {
-        		}
-            }
-        });
+		Button go = new Button("Äänestämään!");
+		go.addClickListener(clickEvent -> {
+			List<Kurssi> kurssit = ks.findKurssit();
+			for (Kurssi k : kurssit) {
+				if (tf.getValue().matches(k.getKoodi())) {
+					if (tanaan.after(k.getAloitusPvm()) && tanaan.before(k.getLopetusPvm())) {
+						String viikonpaiva = Integer.toString(kalenteri.get(Calendar.DAY_OF_WEEK));
+						System.out.println(viikonpaiva);
+						if (k.getAanestyspaivakoodi().contains(viikonpaiva)) {
+							LocalTime nyt = LocalTime.now();
+							if ((nyt.compareTo(k.getAanestysAlkaa().toLocalTime()) > 0
+									&& (nyt.compareTo(k.getAanestysLoppuu().toLocalTime()) < 0))) {
+								ComponentUtil.setData(UI.getCurrent(), Kurssi.class, k);
+								go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
+							} else {
+								Notification.show("Äänestys ei taida olla vielä auki!");
+							}
+						} else {
+							Notification.show("Tänään ei voi antaa kyseiselle kursille palautetta!");
+						}
+					} else {
+						Notification.show("Äänestys kyseiselle kurssille on joko loppunut tai ei ole vielä alkanut!");
+					}
+				}
+			}
+		});
 
-        add(tf, go);
+		add(tf, go);
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
-    }
+		setSizeFull();
+		setJustifyContentMode(JustifyContentMode.CENTER);
+		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+		getStyle().set("text-align", "center");
+	}
 
 }

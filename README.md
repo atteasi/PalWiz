@@ -1,47 +1,48 @@
-# My App
+# Palwiz
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+Palwiz on opettajille ja oppilaille suunniteltu web-sovellus, jossa opiskelijat voivat antaa palautetta oppitunneista. Palautetta annetaan valitsemalla kolmesta väristä sopiva vaihtoehto. Punainen kuvastaa huonoa kokemusta, keltainen kuvastaa keskivertoa ja vihreä kuvastaa hyvää kokemusta. Opettaja näkee oppilaiden vastaukset anonyymeinä. Oppilas antaa sovellukseen kurssin koodin, jonka jälkeen hän pääsee antamaan palautetta. Palautteen antaminen on avoinna vain kurssille määriteltyinä ajankohtina.
 
-## Running the application
+Opettaja pystyy luomaan itselleen tunnukset sovellukseen. Sovellukseen kirjautuneena pystyy lisäämään uusia kursseja ja tarkastelemaan saatuja palautteita kurssikohtaisesti. Palautteet tallennetaan tietokantaan. Palautteiden avulla opettajan on mahdollista kehittää oppituntejaan paremmiksi.
 
-The project is a standard Maven project. To run it from the command line,
-type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
-http://localhost:8080 in your browser.
+Projekti on Java-ohjelmointikielellä toteutettu Vaadin sovellus, joka hyödyntää Spring Bootia.
 
-You can also import the project to your IDE of choice as you would with any
-Maven project. Read more on [how to import Vaadin projects to different 
-IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
+Sovelluksen ovat kehittäneet Atte Asikainen, Juho Ahola, Eveliina Heino ja Sebastian Wolf.
 
-## Deploying to Production
 
-To create a production build, call `mvnw clean package -Pproduction` (Windows),
-or `./mvnw clean package -Pproduction` (Mac & Linux).
-This will build a JAR file with all the dependencies and front-end resources,
-ready to be deployed. The file can be found in the `target` folder after the build completes.
+## Sovelluksen käyttöönotto
 
-Once the JAR file is built, you can run it using
+Sovellus on toteutettu Maven projektina. Voit kloonata projektin GitHubista omalle koneellesi ja sen jälkeen avata sen mieleisessäsi IDE:ssä tavallisen Maven projektin tapaan. Vaadin tukee muun muassa Eclipseä, IntelliJ IDEA, NetBeansia ja VS Codea. [Tarkemmat ohjeet löytyvät täältä.](https://vaadin.com/docs/latest/guide/step-by-step/importing). Koneella tulee olla asennettuna Node.js. Noden voi ladata osoitteesta [nodejs.org](https://nodejs.org/en/). Sovellus käynnistetään `Application.java`-tiedostosta.
+
+Sovellusta pääset käyttämään osoitteessa: []().
+
+
+## Projektin rakenne
+
+- `MainLayout.java` tiedosto sijaitsee kansiossa `src/main/java`. Se sisältää sovelluksen navigointi palkin asettelun. Näkymässä käytetään Vaadinin
+  [App Layoutia](https://vaadin.com/docs/components/app-layout).
+- `views` pakkaus, joka sijaitsee `src/main/java` -kansiossa, sisältää sovelluksen eri näkymät.
+- `themes` kansio `frontend/` kansiossa sisältää itse määritetyt CSS-tiedostot.
+
+## Projektin kehitysympäristö
+
+Sovellus on luotu käyttämällä Vaadin Flow full-stack sovelluskehystä. Vaadinia käyttäessä sekä frontend että backend voidaan kirjoittaa Javalla. Vaadin Flow -sovellukset renderöidään selaimessa starndardi HTML:ksi. Sovellukset toimivat suoraan kaikissa moderneissa selaimissa ja laitteissa. Vaadinista löytyy paljon valmiita UI komponentteja, mutta on mahdollista myös muokata ja luoda omia komponentteja. Palwiz-sovelluksessa on hyödynnetty Vaadinin valmiita komponentteja sekä luotu omia. Sovelluksen pohja on luotu hyödyntämällä [Vaadin Startia](https://start.vaadin.com/). Vaadinin Core -versio on ilmainen open-source platform. Palwiz -projektissa on hyödynnetty myös Pro-version ominaisuuksia. Pro-version saa ilmaiseksi käyttöön opiskelijana.
+
+Sovelluksessa käytetään Spring Bootia, joka sisältää sulautetun web-palvelimen. Se mahdollistaa sovelluksen suorittamisen suoraan Java-sovelluksena. Sping Bootin vaatimat määrittelyt `pom.xml` -tiedostoa varten löytyvät osoitteesta [vaadin.com](https://vaadin.com/docs/latest/integrations/spring/spring-boot). Sovellus käynnistetään `Application.java`-tiedostosta, josta löytyy Spring Bootin vaatima `@SpringBootApplication`-annotaatio.
+
+Sovelluksessa hyödynnetään MariaDB-tietokantaa, joka on käynnissä palvelinkoneella Metropolian Educloud-pilvipalvelimella. Omaan tietokantaan yhdistäminen tapahtuu tekemällä tarvittavat muutokset `application.properties`-tiedostoon. Tarkemmat ohjeet löytyvät [täältä](https://vaadin.com/docs/latest/integrations/databases/mysql).
+
+## Tuotantoversion luominen
+
+Luodaksesi tuotantoversion suorita `mvnw clean package -Pproduction` (Windows),
+tai `./mvnw clean package -Pproduction` (Mac & Linux). Komento luo
+JAR tiedoston, joka sisältää kaikki tarvittavat asiat tuotantoon viemiseksi. JAR-tiedosto löytyy `target`-kansiosta, kun se on valmis.
+
+Voit käynnistää JAR-tiedoston komennolla:
 `java -jar target/myapp-1.0-SNAPSHOT.jar`
 
-## Project structure
 
-- `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the
-  side/top bar and the main menu). This setup uses
-  [App Layout](https://vaadin.com/docs/components/app-layout).
-- `views` package in `src/main/java` contains the server-side Java views of your application.
-- `views` folder in `frontend/` contains the client-side JavaScript views of your application.
-- `themes` folder in `frontend/` contains the custom CSS styles.
+## Hyödyllisiä linkkejä
 
-## Useful links
-
-- Read the documentation at [vaadin.com/docs](https://vaadin.com/docs).
-- Follow the tutorials at [vaadin.com/tutorials](https://vaadin.com/tutorials).
-- Watch training videos and get certified at [vaadin.com/learn/training](https://vaadin.com/learn/training).
-- Create new projects at [start.vaadin.com](https://start.vaadin.com/).
-- Search UI components and their usage examples at [vaadin.com/components](https://vaadin.com/components).
-- View use case applications that demonstrate Vaadin capabilities at [vaadin.com/examples-and-demos](https://vaadin.com/examples-and-demos).
-- Build any UI without custom CSS by discovering Vaadin's set of [CSS utility classes](https://vaadin.com/docs/styling/lumo/utility-classes). 
-- Find a collection of solutions to common use cases at [cookbook.vaadin.com](https://cookbook.vaadin.com/).
-- Find add-ons at [vaadin.com/directory](https://vaadin.com/directory).
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
-- Report issues, create pull requests in [GitHub](https://github.com/vaadin).
+- Lue Vaadinin dokumentaatiota [vaadin.com/docs](https://vaadin.com/docs).
+- Lue tutoriaaleja [vaadin.com/tutorials](https://vaadin.com/tutorials).
+- Katso videoita [vaadin.com/learn/training](https://vaadin.com/learn/training).
