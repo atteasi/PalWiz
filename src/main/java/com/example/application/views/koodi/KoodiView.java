@@ -48,8 +48,6 @@ public class KoodiView extends VerticalLayout {
 			List<Kurssi> kurssit = ks.findKurssit();
 			for (Kurssi k : kurssit) {
 				if (tf.getValue().equals(k.getKoodi())) {
-					System.out.println("TEXKFIELD KOODII:"+ tf.getValue()+":");
-					System.out.println("KOOOODIIII:" + k.getKoodi()+":");
 						if (tanaan.after(k.getAloitusPvm()) && tanaan.before(k.getLopetusPvm())) {
 						String viikonpaiva = Integer.toString(kalenteri.get(Calendar.DAY_OF_WEEK));
 						System.out.println(viikonpaiva);
