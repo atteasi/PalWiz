@@ -50,8 +50,8 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-    	H1 appName = new H1("PalWiz");
-    	appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
+        H1 appName = new H1("PalWiz");
+        appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
                 .set("left", "var(--lumo-space-l)").set("margin", "0")
                 .set("position", "absolute");
         Header header = new Header(appName);
@@ -69,8 +69,11 @@ public class MainLayout extends AppLayout {
         tabs.getStyle().set("margin", "auto");
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
-            tabs.add(createTab("Kurssit", KurssitView.class), /*createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),*/
-                     createTab("Lisää kurssi", KurssiView.class), createTab("Palaute", PalauteView.class));
+            tabs.add(createTab("Kurssit", KurssitView.class), /*
+                                                               * createTab("Koodi", KoodiView.class),
+                                                               * createTab("Äänestä", AanestaView.class),
+                                                               */
+                    createTab("Lisää kurssi", KurssiView.class)/* , createTab("Palaute", PalauteView.class) */);
             return tabs;
         } else {
             tabs.add(createTab("Koodi", KoodiView.class));
@@ -103,8 +106,8 @@ public class MainLayout extends AppLayout {
         } else {
             Anchor loginLink = new Anchor("login", "Kirjaudu Sisään");
             loginLink.getStyle().set("font-size", "var(--lumo-font-size-l)")
-            .set("right", "var(--lumo-space-l)").set("margin", "0")
-            .set("position", "absolute");
+                    .set("right", "var(--lumo-space-l)").set("margin", "0")
+                    .set("position", "absolute");
             addToNavbar(loginLink);
         }
 
@@ -119,7 +122,7 @@ public class MainLayout extends AppLayout {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
-    
+
     private Tab createTab(String viewName, Class viewClass) {
         RouterLink link = new RouterLink();
         link.add(viewName);

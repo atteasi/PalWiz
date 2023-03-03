@@ -30,7 +30,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility.BoxSizing;
 import com.vaadin.flow.theme.lumo.LumoUtility.FontSize;
@@ -44,9 +46,10 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 @Route(value = "palaute", layout = MainLayout.class)
 
 @RolesAllowed("ADMIN")
+// @PreserveOnRefresh
 public class PalauteView extends Main {
-    PalauteService service;
-    KurssiService kurssiService;
+    private PalauteService service;
+    private KurssiService kurssiService;
 
     public PalauteView(PalauteService service, KurssiService kService) {
         this.service = service;
@@ -183,13 +186,16 @@ public class PalauteView extends Main {
         DataSeries series = new DataSeries();
 
         Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
+        VaadinSession.getCurrent().setAttribute("kurssiID", valittuKurssiID);
 
         if (valittuKurssiID == null)
 
         {
-            series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
-            series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
-            series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+            /*
+             * series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
+             * series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
+             * series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+             */
         } else {
             Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID);
             series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
