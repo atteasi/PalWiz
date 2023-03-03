@@ -70,7 +70,7 @@ public class MainLayout extends AppLayout {
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             tabs.add(createTab("Kurssit", KurssitView.class), /*createTab("Koodi", KoodiView.class), createTab("Äänestä", AanestaView.class),*/
-                     createTab("Lisää kurssi", KurssiView.class), createTab("Palaute", PalauteView.class));
+                     createTab("Lisää kurssi", KurssiView.class));
             return tabs;
         } else {
             tabs.add(createTab("Koodi", KoodiView.class));
