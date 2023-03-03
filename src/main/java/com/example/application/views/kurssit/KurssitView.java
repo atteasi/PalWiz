@@ -52,6 +52,7 @@ public class KurssitView extends VerticalLayout {
 				// String key = "kurssi" ;
 				// Object value = optionalKurssi;//optionalKurssi.get().getId() ;
 				ComponentUtil.setData(UI.getCurrent(), "kurssi", optionalKurssi.get().getId());
+				service.setNykyinenKurssiId(optionalKurssi.get().getId());
 
 				getUI().ifPresent(ui -> ui.navigate("palaute"));
 			}
