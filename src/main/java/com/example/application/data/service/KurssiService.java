@@ -22,9 +22,16 @@ public class KurssiService {
 		return kurssiRepository.findAll();
 	}
 
+	public List<Kurssi> findUserKurssit(long id) {
+		return kurssiRepository.findKurssiByUserId(id);
+	}
+
 	public Kurssi findKurssi(int id) {
 		return kurssiRepository.findKurssiById(id);
 	}
+
+	
+
 
 	public void saveKurssi(Kurssi kurssi) {
 		if (kurssi == null) {

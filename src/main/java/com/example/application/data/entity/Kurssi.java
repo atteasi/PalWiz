@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +21,9 @@ public class Kurssi {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
+
+	@ManyToOne
+    private User user;
 	
 	private String nimi;
 	private String koodi;
@@ -27,13 +32,13 @@ public class Kurssi {
 	private String aanestyspaivakoodi;
 	private Time aanestysAlkaa;
 	private Time aanestysLoppuu;
-	//OpeID viel lisäks foreign keyks
+	
 	
 	public Kurssi() {
 		
 	} 
 	
-	public Kurssi(String n, String k, Date ap, Date lp, String apk, Time aa, Time al) {
+	public Kurssi(String n, String k, Date ap, Date lp, String apk, Time aa, Time al, User user) {
 		nimi = n;
 		koodi = k;
 		aloitusPvm = ap;
@@ -41,6 +46,8 @@ public class Kurssi {
 		aanestyspaivakoodi = apk;
 		aanestysAlkaa = aa;
 		aanestysLoppuu = al;
+		this.user = user;
+		
 	}
 
 	public Time getAanestysAlkaa() {
