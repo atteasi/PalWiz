@@ -12,8 +12,16 @@ import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 
+import org.apache.http.client.UserTokenHandler;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.example.application.data.entity.Kurssi;
+import com.example.application.data.entity.User;
 import com.example.application.data.service.KurssiService;
+import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -33,14 +41,23 @@ import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 @RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssien Lisäys")
 @Route(value = "kurssi", layout = MainLayout.class)
 @Uses(Icon.class)
+
+
+
+
 public class KurssiView extends Div {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+	private User user;
+	private String currentUserName;
+	
+	
+	
 	private TextField nimi = new TextField("Kurssin nimi");
 	private DatePicker aloitusPvm = new DatePicker("Aloitus päivämäärä");
 	private DatePicker lopetusPvm = new DatePicker("Lopetus päivämäärä");
@@ -50,7 +67,20 @@ public class KurssiView extends Div {
 
 	private Button save = new Button("Save");
 
-	public KurssiView(KurssiService ks) {
+	public KurssiView(KurssiService ks, UserService userService) {
+		
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			user = userService.getByUsername(authentication.getName());
+    		//currentUserName = authentication.getName();
+			//System.out.println("USER: " + currentUserName);
+			 
+		}
+		
+
+		
 		DatePicker.DatePickerI18n suomiI18n = luoI18n();
 
 		LocalDate now = LocalDate.now(ZoneId.systemDefault());
@@ -122,7 +152,7 @@ public class KurssiView extends Div {
 
 			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
 					Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
-					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue())));
+					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue()), user));
 			
 			Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
 					
