@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 
+import net.bytebuddy.asm.Advice.Local;
+
 public interface PalauteRepository extends JpaRepository<Palaute, Long>, JpaSpecificationExecutor<Palaute> {
 	@Query("SELECT p FROM Palaute p WHERE "
 			+ "(:value is null or p.vastaus = :value)")
@@ -34,4 +36,8 @@ public interface PalauteRepository extends JpaRepository<Palaute, Long>, JpaSpec
 	@Query("SELECT p FROM Palaute p WHERE "
 			+ "(:kurssi is null or p.kurssi = :kurssi)")
 	List<Palaute> findPalautteet(@Param("kurssi") Kurssi kurssi);
+
+	@Query("SELECT p FROM Palaute p WHERE "
+			+ "(:kurssi is null or p.kurssi = :kurssi)" + "AND" + "(:date is null or p.paivamaara = :date)")
+	List<Palaute> findAllPalautteetByIDAndDate(@Param("kurssi") Kurssi kurssi, @Param("date") LocalDate date);
 }

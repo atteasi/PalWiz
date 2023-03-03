@@ -78,6 +78,11 @@ public class PalauteService {
 		return palauteRepository.count();
 	}
 
+	public int countAllPalautteetByIDAndDate(Kurssi kurssi, LocalDate date) {
+		List<Palaute> lista = palauteRepository.findAllPalautteetByIDAndDate(kurssi, date);
+		return lista.size();
+	}
+
 	public void setNykyinenPalautePvm(LocalDate date) {
 		nykyinenPalaute = date;
 	}

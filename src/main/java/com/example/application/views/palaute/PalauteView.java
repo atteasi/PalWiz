@@ -148,10 +148,15 @@ public class PalauteView extends Main {
         HorizontalLayout header = createHeader(kurzzi.getNimi(), kurzzi.getKoodi());
 
         Grid<Palaute> grid = new Grid<>(Palaute.class, false);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         Set<LocalDate> dateSet = new HashSet<>();
         List<Palaute> palautteet = service.findPalautteetByKurssi(kurzzi);
         List<Palaute> distinctPalaute = palautteet.stream().filter(e -> dateSet.add(e.getPaivamaara())).collect(Collectors.toList());
+        for (Palaute palaute : distinctPalaute) {
+            palaute.setKokonaismaara(service.countAllPalautteetByIDAndDate(kurzzi, palaute.getPaivamaara()));
+        }
         grid.addColumn(Palaute::getPaivamaara).setHeader("Päivämäärä");
+        grid.addColumn(Palaute::getKokonaismaara).setHeader("Palautemäärä");
         grid.setItems(distinctPalaute);
 
         if (!palautteet.isEmpty()) {

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "palaute")
@@ -23,6 +24,8 @@ public class Palaute {
 	private LocalDate paivamaara;
 	@ManyToOne
 	private Kurssi kurssi;
+	@Transient
+	private int kokonaismaara;
 
 	public Palaute(int annettuVastaus, LocalDate paivamaara, Kurssi kurssi) {
 		this.vastaus = annettuVastaus;
@@ -43,6 +46,14 @@ public class Palaute {
 
 	public LocalDate getPaivamaara() {
 		return paivamaara;
+	}
+
+	public int getKokonaismaara() {
+		return kokonaismaara;
+	}
+
+	public void setKokonaismaara(int maara) {
+		kokonaismaara = maara;
 	}
 
 	public String toString() {
