@@ -12,4 +12,6 @@ public interface KurssiRepository extends JpaRepository<Kurssi, Long> {
 
 	Kurssi findKurssiById(@Param("id") int id);
 
+	List<Kurssi> findKurssiByUserId(@Param("user_id") long id);
+
 }

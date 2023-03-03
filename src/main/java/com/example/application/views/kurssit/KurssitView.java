@@ -4,7 +4,12 @@ import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.example.application.data.service.KurssiService;
+import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -18,6 +23,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.example.application.data.entity.Kurssi;
+import com.example.application.data.entity.User;
 
 @RolesAllowed(value = { "ADMIN" })
 @PageTitle("Kurssilistaus")
@@ -25,9 +31,20 @@ import com.example.application.data.entity.Kurssi;
 
 public class KurssitView extends VerticalLayout {
 	KurssiService service;
+	private User user;
 
-	public KurssitView(KurssiService service) {
+	public KurssitView(KurssiService service, UserService userService) {
 		this.service = service;
+
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		user = userService.getByUsername(authentication.getName());
+		}
+
+
+
+
 		setSpacing(false);
 
 		Image img = new Image("images/empty-plant.png", "placeholder plant");
@@ -37,7 +54,7 @@ public class KurssitView extends VerticalLayout {
 
 		add(new H2("Kurssit"));
 		Grid<Kurssi> grid = new Grid<>(Kurssi.class);
-		grid.setItems(service.findKurssit());
+		grid.setItems(service.findUserKurssit(user.getId()));
 
 		setSizeFull();
 		setJustifyContentMode(JustifyContentMode.CENTER);
