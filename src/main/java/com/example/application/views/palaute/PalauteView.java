@@ -199,11 +199,16 @@ public class PalauteView extends Main {
         PlotOptionsPie options = new PlotOptionsPie();
         options.setCenter("300", "200");
         options.setSize("65%");
+        options.setAllowPointSelect(true);
+        options.setCursor(Cursor.POINTER);
+        options.setShowInLegend(true);
 
         Configuration conf = chart2.getConfiguration();
         conf.getChart().setStyledMode(true);
         conf.setPlotOptions(options);
         chart2.setThemeName("gradient");
+        conf.getLegend().setLabelFormat("{name} - ({y})");
+        conf.getLegend().setAlign(HorizontalAlign.RIGHT);
         
 
         DataSeries series = new DataSeries();

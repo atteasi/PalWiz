@@ -53,7 +53,8 @@ public class MainLayout extends AppLayout {
     	H1 appName = new H1("PalWiz");
     	appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
                 .set("left", "var(--lumo-space-l)").set("margin", "0")
-                .set("position", "absolute");
+                .set("position", "absolute").set("font-size", "30px")
+                .set("top", "10px").set("width", "50px");
         Header header = new Header(appName);
 
         Tabs tabs = createNavigation();
