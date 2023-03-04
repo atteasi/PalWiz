@@ -197,7 +197,7 @@ public class PalauteView extends Main {
 
         // Chart
         PlotOptionsPie options = new PlotOptionsPie();
-        options.setCenter("300", "200");
+        options.setCenter("200", "150");
         options.setSize("65%");
         options.setAllowPointSelect(true);
         options.setCursor(Cursor.POINTER);
