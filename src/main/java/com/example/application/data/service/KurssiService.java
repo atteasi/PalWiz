@@ -30,9 +30,6 @@ public class KurssiService {
 		return kurssiRepository.findKurssiById(id);
 	}
 
-	
-
-
 	public void saveKurssi(Kurssi kurssi) {
 		if (kurssi == null) {
 			System.err.println("Kurssi is null. Joku nyt mättää");
@@ -47,6 +44,11 @@ public class KurssiService {
 
 	public int getNykyinenKurssiId() {
 		return nykyinenKurssiId;
+	}
+
+	public void poistaKurssi(Kurssi kurssi) {
+		kurssiRepository.delete(kurssi);
+		;
 	}
 
 }

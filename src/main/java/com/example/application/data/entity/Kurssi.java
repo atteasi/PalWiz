@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,15 +17,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "kurssi")
 public class Kurssi {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
 	@ManyToOne
-    private User user;
-	
+	private User user;
+
 	private String nimi;
 	private String koodi;
 	private Date aloitusPvm;
@@ -32,12 +33,11 @@ public class Kurssi {
 	private String aanestyspaivakoodi;
 	private Time aanestysAlkaa;
 	private Time aanestysLoppuu;
-	
-	
+
 	public Kurssi() {
-		
-	} 
-	
+
+	}
+
 	public Kurssi(String n, String k, Date ap, Date lp, String apk, Time aa, Time al, User user) {
 		nimi = n;
 		koodi = k;
@@ -47,7 +47,7 @@ public class Kurssi {
 		aanestysAlkaa = aa;
 		aanestysLoppuu = al;
 		this.user = user;
-		
+
 	}
 
 	public Time getAanestysAlkaa() {
@@ -86,7 +86,6 @@ public class Kurssi {
 		return koodi;
 	}
 
-
 	public void setKoodi(String koodi) {
 		this.koodi = koodi;
 	}
@@ -114,5 +113,5 @@ public class Kurssi {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 }

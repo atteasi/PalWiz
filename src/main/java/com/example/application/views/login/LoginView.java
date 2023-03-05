@@ -29,8 +29,6 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         this.authenticatedUser = authenticatedUser;
         setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
 
-        
-        
         LoginI18n i18n = LoginI18n.createDefault();
         LoginI18n.Form i18nOma = i18n.getForm();
         i18nOma.setTitle("Kirjaudu");
@@ -41,46 +39,40 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
         i18nErrorMessage.setTitle("Väärä käyttäjätunnus tai salasana");
         i18nErrorMessage.setMessage(
-        "Tarkista että käyttäjätunnus ja salasana ovat oikein ja yritä uudestaan.");
-        
+                "Tarkista että käyttäjätunnus ja salasana ovat oikein ja yritä uudestaan.");
 
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("PalWiz");
-        i18n.getHeader().setDescription("Kirjaudu käyttäen tunnuksia user/user or admin/admin");
+        i18n.getHeader().setDescription(
+                "Kirjaudu sisään omilla tunnuksillasi. Jos olet uusi käyttäjä, klikkaa Luo tunnukset -painiketta. ");
         i18n.setAdditionalInformation(null);
-        
+
         addForgotPasswordListener(event -> {
             setOpened(false);
             UI.getCurrent().navigate("register");
-            
-      }); 
 
-      addLoginListener(event ->{
-        setOpened(false);
-        UI.getCurrent().navigate("kurssit");
-    });
-        
+        });
+
+        addLoginListener(event -> {
+            setOpened(false);
+            UI.getCurrent().navigate("kurssit");
+        });
+
         setI18n(i18n);
-        
+
         setForgotPasswordButtonVisible(true);
         setOpened(true);
-        
-       
-        
-    }
-   
-    
 
-    
+    }
+
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (authenticatedUser.get().isPresent()) {
             // Already logged in
-            
+
             setOpened(false);
             event.forwardTo("");
-            
-            
+
         }
 
         setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));

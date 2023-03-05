@@ -10,9 +10,8 @@ import com.example.application.data.entity.Palaute;
 
 @Service
 
-	
 public class PalauteService {
-	
+
 	LocalDate nykyinenPalaute;
 
 	private final PalauteRepository palauteRepository;
@@ -26,27 +25,27 @@ public class PalauteService {
 		return palauteRepository.findAll();
 	}
 
-	public List<Palaute> findAllGood(){
+	public List<Palaute> findAllGood() {
 		return palauteRepository.findAnyMatchingPalaute(1);
 	}
 
-	public List<Palaute> findAllNeutral(){
+	public List<Palaute> findAllNeutral() {
 		return palauteRepository.findAnyMatchingPalaute(2);
 	}
 
-	public List<Palaute> findAllBad(){
+	public List<Palaute> findAllBad() {
 		return palauteRepository.findAnyMatchingPalaute(3);
 	}
 
-	public List<Palaute> findAllGoodByID(Kurssi kurssi){
-		return palauteRepository.findPalauteByValueAndKurssi(1,  kurssi);
+	public List<Palaute> findAllGoodByID(Kurssi kurssi) {
+		return palauteRepository.findPalauteByValueAndKurssi(1, kurssi);
 	}
 
-	public List<Palaute> findAllNeutralByID(Kurssi kurssi){
-		return palauteRepository.findPalauteByValueAndKurssi(2,  kurssi);
+	public List<Palaute> findAllNeutralByID(Kurssi kurssi) {
+		return palauteRepository.findPalauteByValueAndKurssi(2, kurssi);
 	}
 
-	public List<Palaute> findAllBadByID(Kurssi kurssi){
+	public List<Palaute> findAllBadByID(Kurssi kurssi) {
 		return palauteRepository.findPalauteByValueAndKurssi(3, kurssi);
 	}
 
@@ -62,16 +61,16 @@ public class PalauteService {
 		return palauteRepository.findPalautteet(kurssi);
 	}
 
-	public List<Palaute> findAllGoodByIDAndDate(Kurssi kurssi, LocalDate date){
-		return palauteRepository.findPalauteByValueAndKurssiAndDate(1,  kurssi, date);
+	public List<Palaute> findAllGoodByIDAndDate(Kurssi kurssi, LocalDate date) {
+		return palauteRepository.findPalauteByValueAndKurssiAndDate(1, kurssi, date);
 	}
 
-	public List<Palaute> findAllNeutralByIDAndDate(Kurssi kurssi, LocalDate date){
-		return palauteRepository.findPalauteByValueAndKurssiAndDate(2,  kurssi, date);
+	public List<Palaute> findAllNeutralByIDAndDate(Kurssi kurssi, LocalDate date) {
+		return palauteRepository.findPalauteByValueAndKurssiAndDate(2, kurssi, date);
 	}
 
-	public List<Palaute> findAllBadByIDAndDate(Kurssi kurssi, LocalDate date){
-		return palauteRepository.findPalauteByValueAndKurssiAndDate(3,  kurssi, date);
+	public List<Palaute> findAllBadByIDAndDate(Kurssi kurssi, LocalDate date) {
+		return palauteRepository.findPalauteByValueAndKurssiAndDate(3, kurssi, date);
 	}
 
 	public long countPalautteet() {
@@ -97,6 +96,10 @@ public class PalauteService {
 			return;
 		}
 		palauteRepository.save(palaute);
+	}
+
+	public void poistaPalauteet(Kurssi kurssi) {
+		palauteRepository.deleteKurssilla(kurssi);
 	}
 
 }

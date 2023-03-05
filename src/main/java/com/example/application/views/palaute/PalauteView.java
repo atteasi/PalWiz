@@ -39,7 +39,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility.BoxSizing;
 import com.vaadin.flow.theme.lumo.LumoUtility.FontSize;
@@ -53,6 +55,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 @Route(value = "palaute", layout = MainLayout.class)
 
 @RolesAllowed("ADMIN")
+// @PreserveOnRefresh
 public class PalauteView extends Main {
     PalauteService service;
     KurssiService kurssiService;
@@ -151,7 +154,8 @@ public class PalauteView extends Main {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         Set<LocalDate> dateSet = new HashSet<>();
         List<Palaute> palautteet = service.findPalautteetByKurssi(kurzzi);
-        List<Palaute> distinctPalaute = palautteet.stream().filter(e -> dateSet.add(e.getPaivamaara())).collect(Collectors.toList());
+        List<Palaute> distinctPalaute = palautteet.stream().filter(e -> dateSet.add(e.getPaivamaara()))
+                .collect(Collectors.toList());
         for (Palaute palaute : distinctPalaute) {
             palaute.setKokonaismaara(service.countAllPalautteetByIDAndDate(kurzzi, palaute.getPaivamaara()));
         }
@@ -162,18 +166,18 @@ public class PalauteView extends Main {
         if (!palautteet.isEmpty()) {
             service.setNykyinenPalautePvm(palautteet.get(0).getPaivamaara());
         }
-        
+
         grid.addSelectionListener(selection -> {
-			Optional<Palaute> optionalPalautePvm = selection.getFirstSelectedItem();
-			if (optionalPalautePvm.isPresent()) {
-				Notification.show(optionalPalautePvm.get().getPaivamaara() + " valittu");
+            Optional<Palaute> optionalPalautePvm = selection.getFirstSelectedItem();
+            if (optionalPalautePvm.isPresent()) {
+                Notification.show(optionalPalautePvm.get().getPaivamaara() + " valittu");
                 service.setNykyinenPalautePvm(optionalPalautePvm.get().getPaivamaara());
                 series2.clear();
                 updateGraphSeries(series2);
                 chart2.getConfiguration().setSeries(series2);
                 chart2.drawChart();
-			}
-		});
+            }
+        });
 
         VerticalLayout serviceHealth = new VerticalLayout(header, grid);
         serviceHealth.addClassName(Padding.LARGE);
@@ -185,9 +189,12 @@ public class PalauteView extends Main {
 
     private DataSeries updateGraphSeries(DataSeries series) {
         Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
-        series.add(new DataSeriesItem("Hyvä", service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-        series.add(new DataSeriesItem("Neutraali", service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-        series.add(new DataSeriesItem("Huono", service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        series.add(new DataSeriesItem("Hyvä",
+                service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        series.add(new DataSeriesItem("Neutraali",
+                service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        series.add(new DataSeriesItem("Huono",
+                service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
         return series;
     }
 
@@ -209,7 +216,6 @@ public class PalauteView extends Main {
         chart2.setThemeName("gradient");
         conf.getLegend().setLabelFormat("{name} - ({y})");
         conf.getLegend().setAlign(HorizontalAlign.RIGHT);
-        
 
         DataSeries series = new DataSeries();
 
@@ -223,9 +229,12 @@ public class PalauteView extends Main {
             series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
         } else {
             Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
-            series2.add(new DataSeriesItem("Hyvä", service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-            series2.add(new DataSeriesItem("Neutraali", service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-            series2.add(new DataSeriesItem("Huono", service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+            series2.add(new DataSeriesItem("Hyvä",
+                    service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+            series2.add(new DataSeriesItem("Neutraali",
+                    service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+            series2.add(new DataSeriesItem("Huono",
+                    service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
         }
 
         conf.addSeries(series2);
@@ -235,7 +244,7 @@ public class PalauteView extends Main {
         return serviceHealth;
     }
 
-    //Tämä oli vertailukohtana toiselle piechartille
+    // Tämä oli vertailukohtana toiselle piechartille
     private Component createResponseTimes() {
 
         HorizontalLayout header = createHeader("Palautejako", "");
@@ -249,13 +258,16 @@ public class PalauteView extends Main {
         DataSeries series = new DataSeries();
 
         Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
+        VaadinSession.getCurrent().setAttribute("kurssiID", valittuKurssiID);
 
         if (valittuKurssiID == null)
 
         {
-            series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
-            series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
-            series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+            /*
+             * series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
+             * series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
+             * series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+             */
         } else {
             Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID);
             series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
