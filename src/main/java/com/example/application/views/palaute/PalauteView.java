@@ -1,10 +1,18 @@
 package com.example.application.views.palaute;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.annotation.security.RolesAllowed;
 import javax.swing.plaf.synth.SynthToggleButtonUI;
 import org.hibernate.engine.transaction.jta.platform.internal.SunOneJtaPlatform;
 
 import com.example.application.data.entity.Kurssi;
+import com.example.application.data.entity.Palaute;
 import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
@@ -24,6 +32,7 @@ import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -48,8 +57,10 @@ import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 @RolesAllowed("ADMIN")
 // @PreserveOnRefresh
 public class PalauteView extends Main {
-    private PalauteService service;
-    private KurssiService kurssiService;
+    PalauteService service;
+    KurssiService kurssiService;
+    DataSeries series2 = new DataSeries();
+    Chart chart2 = new Chart(ChartType.PIE);
 
     public PalauteView(PalauteService service, KurssiService kService) {
         this.service = service;
@@ -57,10 +68,7 @@ public class PalauteView extends Main {
         addClassName("palaute-view");
 
         Board board = new Board();
-        // board.addRow(createHighlight("Current users", "745", 33.7), createHighlight("View events", "54.6k", -112.45),
-        //         createHighlight("Conversion rate", "18%", 3.9), createHighlight("Custom metric", "-123.45", 0.0));
-        // board.addRow(createViewEvents());
-        board.addRow(createServiceHealth(), createResponseTimes());
+        board.addRow(createServiceHealth(), createResponseTimes2());
         add(board);
     }
 
@@ -139,34 +147,38 @@ public class PalauteView extends Main {
     }
 
     private Component createServiceHealth() {
-        Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
-        Kurssi kurzzi = kurssiService.findKurssi((int)valittuKurssiID);
-        // Header
-        HorizontalLayout header = createHeader(kurzzi.getNimi(), "Koodi: " + kurzzi.getKoodi());
+        Kurssi kurzzi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
+        HorizontalLayout header = createHeader(kurzzi.getNimi(), kurzzi.getKoodi());
 
-        // Grid
-        Grid<ServiceHealth> grid = new Grid();
+        Grid<Palaute> grid = new Grid<>(Palaute.class, false);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setAllRowsVisible(true);
+        Set<LocalDate> dateSet = new HashSet<>();
+        List<Palaute> palautteet = service.findPalautteetByKurssi(kurzzi);
+        List<Palaute> distinctPalaute = palautteet.stream().filter(e -> dateSet.add(e.getPaivamaara()))
+                .collect(Collectors.toList());
+        for (Palaute palaute : distinctPalaute) {
+            palaute.setKokonaismaara(service.countAllPalautteetByIDAndDate(kurzzi, palaute.getPaivamaara()));
+        }
+        grid.addColumn(Palaute::getPaivamaara).setHeader("Päivämäärä");
+        grid.addColumn(Palaute::getKokonaismaara).setHeader("Palautemäärä");
+        grid.setItems(distinctPalaute);
 
-        grid.addColumn(new ComponentRenderer<>(serviceHealth -> {
-            Span status = new Span();
-            String statusText = getStatusDisplayName(serviceHealth);
-            status.getElement().setAttribute("aria-label", "Status: " + statusText);
-            status.getElement().setAttribute("title", "Status: " + statusText);
-            status.getElement().getThemeList().add(getStatusTheme(serviceHealth));
-            return status;
-        })).setHeader("").setFlexGrow(0).setAutoWidth(true);
-        grid.addColumn(ServiceHealth::getCity).setHeader("City").setFlexGrow(1);
-        grid.addColumn(ServiceHealth::getInput).setHeader("Input").setAutoWidth(true).setTextAlign(ColumnTextAlign.END);
-        grid.addColumn(ServiceHealth::getOutput).setHeader("Output").setAutoWidth(true)
-                .setTextAlign(ColumnTextAlign.END);
+        if (!palautteet.isEmpty()) {
+            service.setNykyinenPalautePvm(palautteet.get(0).getPaivamaara());
+        }
 
-        grid.setItems(new ServiceHealth(Status.EXCELLENT, "Münster", 324, 1540),
-                new ServiceHealth(Status.OK, "Cluj-Napoca", 311, 1320),
-                new ServiceHealth(Status.FAILING, "Ciudad Victoria", 300, 1219));
+        grid.addSelectionListener(selection -> {
+            Optional<Palaute> optionalPalautePvm = selection.getFirstSelectedItem();
+            if (optionalPalautePvm.isPresent()) {
+                Notification.show(optionalPalautePvm.get().getPaivamaara() + " valittu");
+                service.setNykyinenPalautePvm(optionalPalautePvm.get().getPaivamaara());
+                series2.clear();
+                updateGraphSeries(series2);
+                chart2.getConfiguration().setSeries(series2);
+                chart2.drawChart();
+            }
+        });
 
-        // Add it all together
         VerticalLayout serviceHealth = new VerticalLayout(header, grid);
         serviceHealth.addClassName(Padding.LARGE);
         serviceHealth.setPadding(false);
@@ -175,9 +187,67 @@ public class PalauteView extends Main {
         return serviceHealth;
     }
 
+    private DataSeries updateGraphSeries(DataSeries series) {
+        Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
+        series.add(new DataSeriesItem("Hyvä",
+                service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        series.add(new DataSeriesItem("Neutraali",
+                service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        series.add(new DataSeriesItem("Huono",
+                service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        return series;
+    }
+
+    private Component createResponseTimes2() {
+
+        HorizontalLayout header = createHeader("Palautejako", "");
+
+        // Chart
+        PlotOptionsPie options = new PlotOptionsPie();
+        options.setCenter("300", "200");
+        options.setSize("65%");
+        options.setAllowPointSelect(true);
+        options.setCursor(Cursor.POINTER);
+        options.setShowInLegend(true);
+
+        Configuration conf = chart2.getConfiguration();
+        conf.getChart().setStyledMode(true);
+        conf.setPlotOptions(options);
+        chart2.setThemeName("gradient");
+        conf.getLegend().setLabelFormat("{name} - ({y})");
+        conf.getLegend().setAlign(HorizontalAlign.RIGHT);
+
+        DataSeries series = new DataSeries();
+
+        Object valittuKurssiID = kurssiService.getNykyinenKurssiId();
+
+        if (valittuKurssiID == null)
+
+        {
+            series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
+            series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
+            series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
+        } else {
+            Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
+            series2.add(new DataSeriesItem("Hyvä",
+                    service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+            series2.add(new DataSeriesItem("Neutraali",
+                    service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+            series2.add(new DataSeriesItem("Huono",
+                    service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
+        }
+
+        conf.addSeries(series2);
+
+        // Add it all together
+        VerticalLayout serviceHealth = new VerticalLayout(header, chart2);
+        return serviceHealth;
+    }
+
+    // Tämä oli vertailukohtana toiselle piechartille
     private Component createResponseTimes() {
 
-        HorizontalLayout header = createHeader("Response times", "Average across all systems");
+        HorizontalLayout header = createHeader("Palautejako", "");
 
         // Chart
         Chart chart = new Chart(ChartType.PIE);
@@ -232,30 +302,6 @@ public class PalauteView extends Main {
         header.setSpacing(false);
         header.setWidthFull();
         return header;
-    }
-
-    private String getStatusDisplayName(ServiceHealth serviceHealth) {
-        Status status = serviceHealth.getStatus();
-        if (status == Status.OK) {
-            return "Ok";
-        } else if (status == Status.FAILING) {
-            return "Failing";
-        } else if (status == Status.EXCELLENT) {
-            return "Excellent";
-        } else {
-            return status.toString();
-        }
-    }
-
-    private String getStatusTheme(ServiceHealth serviceHealth) {
-        Status status = serviceHealth.getStatus();
-        String theme = "badge primary small";
-        if (status == Status.EXCELLENT) {
-            theme += " success";
-        } else if (status == Status.FAILING) {
-            theme += " error";
-        }
-        return theme;
     }
 
 }

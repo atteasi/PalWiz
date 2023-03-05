@@ -2,6 +2,8 @@ package com.example.application.data.entity;
 
 import com.example.application.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,13 +15,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Entity
 @Table(name = "application_user")
 public class User extends AbstractEntity {
+
+    //@OneToMany(mappedBy = "user")
+    
 	
 	private String firstName;
 	private String surName;

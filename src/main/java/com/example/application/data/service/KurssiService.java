@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.application.data.entity.Kurssi;
-import com.example.application.data.entity.Palaute;
 
 @Service
 public class KurssiService {
 	private final KurssiRepository kurssiRepository;
-	
+
+	int nykyinenKurssiId;
+
 	public KurssiService(KurssiRepository kr) {
 		super();
 		kurssiRepository = kr;
@@ -19,6 +20,10 @@ public class KurssiService {
 
 	public List<Kurssi> findKurssit() {
 		return kurssiRepository.findAll();
+	}
+
+	public List<Kurssi> findUserKurssit(long id) {
+		return kurssiRepository.findKurssiByUserId(id);
 	}
 
 	public Kurssi findKurssi(int id) {
@@ -31,6 +36,19 @@ public class KurssiService {
 			return;
 		}
 		kurssiRepository.save(kurssi);
+	}
+
+	public void setNykyinenKurssiId(int kurssi) {
+		nykyinenKurssiId = kurssi;
+	}
+
+	public int getNykyinenKurssiId() {
+		return nykyinenKurssiId;
+	}
+
+	public void poistaKurssi(Kurssi kurssi) {
+		kurssiRepository.delete(kurssi);
+		;
 	}
 
 }
