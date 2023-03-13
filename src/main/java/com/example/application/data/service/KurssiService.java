@@ -50,5 +50,10 @@ public class KurssiService {
 		kurssiRepository.delete(kurssi);
 		;
 	}
+	
+	public void muokkaaKurssia(Kurssi kurssi) {
+		kurssiRepository.updateKurssi(kurssi.getNimi(), kurssi.getKoodi(), kurssi.getAanestysAlkaa(), kurssi.getAanestysLoppuu(),
+				kurssi.getAloitusPvm(), kurssi.getLopetusPvm(), kurssi.getAanestyspaivakoodi(), kurssi.getId());
+	}
 
 }
