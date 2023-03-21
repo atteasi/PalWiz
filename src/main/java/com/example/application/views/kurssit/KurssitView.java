@@ -46,7 +46,9 @@ public class KurssitView extends VerticalLayout {
 	Grid<Kurssi> grid;
 	List<Kurssi> kurssit;
 	private static Div hint;
-	private Kurssi poistetavaKurssi = new Kurssi();
+	private Kurssi poistettavaKurssi = new Kurssi();
+	private Kurssi muokattavaKurssi = new Kurssi();
+
 
 	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService) {
 		this.kurssiService = service;
@@ -64,7 +66,7 @@ public class KurssitView extends VerticalLayout {
 		dialog.setConfirmText("Poista");
 		dialog.setConfirmButtonTheme("error primary");
 		dialog.addConfirmListener(event -> {
-			this.poistaKurssi(poistetavaKurssi);
+			this.poistaKurssi(poistettavaKurssi);
 		});
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -93,12 +95,27 @@ public class KurssitView extends VerticalLayout {
 							ButtonVariant.LUMO_TERTIARY);
 					button.addClickListener(e -> {
 						this.setPoistettavaKurssi(kurssi);
-						dialog.setHeader("Poista kurssi " + poistetavaKurssi.getNimi() + "?");
+						dialog.setHeader("Poista kurssi " + poistettavaKurssi.getNimi() + "?");
 						dialog.open();
 					});
 					button.setIcon(new Icon(VaadinIcon.TRASH));
 				})).setHeader("Poista");
 
+		grid.addColumn(
+				new ComponentRenderer<>(Button::new, (button, kurssi) -> {
+					button.addThemeVariants(ButtonVariant.LUMO_ICON,
+							ButtonVariant.LUMO_CONTRAST,
+							ButtonVariant.LUMO_TERTIARY);
+					button.addClickListener(e -> {
+						this.setMuokattavaKurssi(kurssi);
+						ComponentUtil.setData(UI.getCurrent(), Kurssi.class, muokattavaKurssi);
+						kurssiService.setNykyinenKurssiId(muokattavaKurssi.getId());
+						button.getUI().ifPresent(ui -> ui.navigate("kurssi"));
+					});
+					button.setIcon(new Icon(VaadinIcon.ADJUST));
+				})).setHeader("Muokkaa");
+
+		
 		kurssit = service.findUserKurssit(user.getId());
 		grid.setItems(kurssit);
 
@@ -149,7 +166,11 @@ public class KurssitView extends VerticalLayout {
 	}
 
 	private void setPoistettavaKurssi(Kurssi kurssi) {
-		this.poistetavaKurssi = kurssi;
+		this.poistettavaKurssi = kurssi;
+	}
+	
+	private void setMuokattavaKurssi(Kurssi kurssi) {
+		muokattavaKurssi = kurssi;
 	}
 
 }
