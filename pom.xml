@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<vaadin.version>23.3.5</vaadin.version>
 		<!-- this parameter is needed as spring-boot bom overwrites it -->
 		<selenium.version>4.5.3</selenium.version>
@@ -191,7 +191,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<release>11</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 		</plugins>
