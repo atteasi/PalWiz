@@ -44,6 +44,8 @@ public class MainLayout extends AppLayout {
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
+        LanguageSelector languageSelector = new LanguageSelector();
+        addToNavbar(languageSelector);
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();

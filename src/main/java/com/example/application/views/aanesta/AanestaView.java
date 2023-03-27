@@ -1,12 +1,13 @@
 package com.example.application.views.aanesta;
 
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 import javax.annotation.security.RolesAllowed;
-
 import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import javax.annotation.PostConstruct;
 
 @AnonymousAllowed
 @RolesAllowed(value = { "USER", "ADMIN" })
@@ -26,18 +28,29 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @CssImport("./themes/myapp/views/roundBtn.css")
 
 public class AanestaView extends VerticalLayout {
+	private ResourceBundle messages;
 	private RoundButton greenBtn;
 	private RoundButton yellowBtn;
 	private RoundButton redBtn;
 	PalauteService service;
 
 	LocalDate date = LocalDate.now();
+	
+	@PostConstruct
+    public void init() {
+        messages = TranslationUtils.getMessages();
+        
+        add(luoOtsikko());
+       
+    }
 
 	public AanestaView(PalauteService service) {
-		this.service = service;
+		
+	    this.service = service;
 		addClassName("aanesta-view");
 
-		add(luoOtsikko(), luoNappulat());
+		//add(luoOtsikko(), luoNappulat());
+		add(luoNappulat());
 		getStyle().set("text-align", "center");
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -78,14 +91,15 @@ public class AanestaView extends VerticalLayout {
 	}
 
 	private Div luoOtsikko() {
-		H2 o = new H2("Mitä pidit oppitunnista? 🤗");
+		//H2 o = new H2("Mitä pidit oppitunnista? 🤗");
+		H2 o = new H2(messages.getString("classFeedback"));
 		o.addClassName("aanestysOtsikko");
 		Div otsikko = new Div(o);
 		otsikko.setClassName("otsikko");
 		return otsikko;
 
 	}
-
+	//H2 o = new H2(messages.getString("classFeedback"));
 	private void savePalaute(Palaute palaute) {
 		service.savePalaute(palaute);
 	}
