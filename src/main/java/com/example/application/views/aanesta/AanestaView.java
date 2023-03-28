@@ -19,7 +19,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import javax.annotation.PostConstruct;
+
+import java.util.Locale;
 
 @AnonymousAllowed
 @RolesAllowed(value = { "USER", "ADMIN" })
@@ -28,29 +29,23 @@ import javax.annotation.PostConstruct;
 @CssImport("./themes/myapp/views/roundBtn.css")
 
 public class AanestaView extends VerticalLayout {
+	Locale currentLocale = TranslationUtils.getCurrentLocale();
 	private ResourceBundle messages;
 	private RoundButton greenBtn;
 	private RoundButton yellowBtn;
 	private RoundButton redBtn;
 	PalauteService service;
-
 	LocalDate date = LocalDate.now();
 	
-	@PostConstruct
-    public void init() {
-        messages = TranslationUtils.getMessages();
-        
-        add(luoOtsikko());
-       
-    }
+
 
 	public AanestaView(PalauteService service) {
-		
+		messages = ResourceBundle.getBundle("messages", currentLocale);
 	    this.service = service;
 		addClassName("aanesta-view");
 
 		//add(luoOtsikko(), luoNappulat());
-		add(luoNappulat());
+		add(luoOtsikko(),luoNappulat());
 		getStyle().set("text-align", "center");
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);

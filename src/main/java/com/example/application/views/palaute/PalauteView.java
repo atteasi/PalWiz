@@ -3,7 +3,9 @@ package com.example.application.views.palaute;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ import com.example.application.data.entity.Palaute;
 import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.example.application.views.kurssit.KurssitView;
 import com.example.application.views.palaute.ServiceHealth.Status;
 import com.vaadin.flow.component.Component;
@@ -61,8 +64,11 @@ public class PalauteView extends Main {
     KurssiService kurssiService;
     DataSeries series2 = new DataSeries();
     Chart chart2 = new Chart(ChartType.PIE);
+    Locale currentLocale = TranslationUtils.getCurrentLocale();
+	private ResourceBundle messages;
 
     public PalauteView(PalauteService service, KurssiService kService) {
+        messages = ResourceBundle.getBundle("messages", currentLocale);
         this.service = service;
         this.kurssiService = kService;
         addClassName("palaute-view");
@@ -159,8 +165,8 @@ public class PalauteView extends Main {
         for (Palaute palaute : distinctPalaute) {
             palaute.setKokonaismaara(service.countAllPalautteetByIDAndDate(kurzzi, palaute.getPaivamaara()));
         }
-        grid.addColumn(Palaute::getPaivamaara).setHeader("Päivämäärä");
-        grid.addColumn(Palaute::getKokonaismaara).setHeader("Palautemäärä");
+        grid.addColumn(Palaute::getPaivamaara).setHeader(messages.getString("date"));
+        grid.addColumn(Palaute::getKokonaismaara).setHeader(messages.getString("feedbackAmmount"));
         grid.setItems(distinctPalaute);
 
         if (!palautteet.isEmpty()) {
@@ -170,7 +176,7 @@ public class PalauteView extends Main {
         grid.addSelectionListener(selection -> {
             Optional<Palaute> optionalPalautePvm = selection.getFirstSelectedItem();
             if (optionalPalautePvm.isPresent()) {
-                Notification.show(optionalPalautePvm.get().getPaivamaara() + " valittu");
+                Notification.show(optionalPalautePvm.get().getPaivamaara() + " " + messages.getString("chosen"));
                 service.setNykyinenPalautePvm(optionalPalautePvm.get().getPaivamaara());
                 series2.clear();
                 updateGraphSeries(series2);
@@ -200,7 +206,7 @@ public class PalauteView extends Main {
 
     private Component createResponseTimes2() {
 
-        HorizontalLayout header = createHeader("Palautejako", "");
+        HorizontalLayout header = createHeader(messages.getString("feedbackHeader"), "");
 
         // Chart
         PlotOptionsPie options = new PlotOptionsPie();
@@ -221,19 +227,16 @@ public class PalauteView extends Main {
 
         Object valittuKurssiID = kurssiService.getNykyinenKurssiId();
 
-        if (valittuKurssiID == null)
+        if (valittuKurssiID != null)
 
         {
-            series.add(new DataSeriesItem("Hyvä", service.findAllGood().size()));
-            series.add(new DataSeriesItem("Neutraali", service.findAllNeutral().size()));
-            series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
-        } else {
+           
             Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
-            series2.add(new DataSeriesItem("Hyvä",
+            series2.add(new DataSeriesItem(messages.getString("good"),
                     service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-            series2.add(new DataSeriesItem("Neutraali",
+            series2.add(new DataSeriesItem(messages.getString("neutral"),
                     service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-            series2.add(new DataSeriesItem("Huono",
+            series2.add(new DataSeriesItem(messages.getString("bad"),
                     service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
         }
 

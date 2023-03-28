@@ -1,9 +1,12 @@
 package com.example.application.views.kiitos;
 
-import javax.annotation.security.RolesAllowed;
+import java.util.Locale;
 
+import javax.annotation.security.RolesAllowed;
+import java.util.ResourceBundle;
 import com.example.application.data.service.PalauteService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -21,10 +24,13 @@ import com.example.application.data.entity.Palaute;
 @Route(value = "kiitos", layout = MainLayout.class)	
 
 public class KiitosView extends VerticalLayout {
+	private ResourceBundle messages;
 	PalauteService service;
+	Locale currentLocale = TranslationUtils.getCurrentLocale();
 
 
 	public KiitosView(PalauteService service) {
+		messages = ResourceBundle.getBundle("messages", currentLocale);
 		this.service = service;
 		setSpacing(false);
 
@@ -32,14 +38,14 @@ public class KiitosView extends VerticalLayout {
 		img.setWidth("200px");
 		//configureGrid();
 		add(img);
-		Button palaa = new Button("Palaa takaisin");
+		Button palaa = new Button(messages.getString("goBack"));
 		palaa.addClickListener(e ->
 			palaa.getUI().ifPresent(ui ->
 				ui.navigate("koodi"))
 		);
 
 
-		add(new H2("Kiitos palautteesta!"), palaa);
+		add(new H2(messages.getString("thankYouForFeedback")), palaa);
 		// Grid<Palaute> grid = new Grid<>(Palaute.class);
 		// grid.setItems(service.findAllPalautteet());
 		// add(grid);
