@@ -46,26 +46,16 @@ public class KurssiRepositoryTest {
         User user1 = new User("testaaja", "tauvo", "test", "salasana", null);
         user = userRepository.save(user1);
 
-        kurssi1 = new Kurssi();
-        kurssi1.setNimi("Ohjelmointi 1");
-        kurssi1.setKoodi("OP1");
-        kurssi1.setAanestysAlkaa(Time.valueOf("09:00:00"));
-        kurssi1.setAanestysLoppuu(Time.valueOf("16:00:00"));
-        kurssi1.setAloitusPvm(Date.valueOf(LocalDate.of(2022, 1, 1)));
-        kurssi1.setLopetusPvm(Date.valueOf(LocalDate.of(2022, 12, 31)));
-        kurssi1.setAanestyspaivakoodi("123");
-        kurssi1.setUser(user);
+        kurssi1 = new Kurssi("Ohjelmointi 1", "OP1", Date.valueOf(LocalDate.of(2022, 1, 1)),
+                Date.valueOf(LocalDate.of(2022, 12, 31)), "123", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
+                user1);
+
         kurssiRepository.save(kurssi1);
 
-        kurssi2 = new Kurssi();
-        kurssi2.setNimi("Ohjelmointi 2");
-        kurssi2.setKoodi("OP2");
-        kurssi2.setAanestysAlkaa(Time.valueOf("09:00:00"));
-        kurssi2.setAanestysLoppuu(Time.valueOf("16:00:00"));
-        kurssi2.setAloitusPvm(Date.valueOf(LocalDate.of(2022, 1, 1)));
-        kurssi2.setLopetusPvm(Date.valueOf(LocalDate.of(2022, 12, 31)));
-        kurssi2.setAanestyspaivakoodi("234");
-        kurssi2.setUser(user);
+        kurssi2 = new Kurssi("Ohjelmointi 2", "OP2", Date.valueOf(LocalDate.of(2022, 1, 1)),
+                Date.valueOf(LocalDate.of(2022, 12, 31)), "234", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
+                user1);
+
         kurssiRepository.save(kurssi2);
     }
 
