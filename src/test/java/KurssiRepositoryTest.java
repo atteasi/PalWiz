@@ -48,13 +48,13 @@ public class KurssiRepositoryTest {
 
         kurssi1 = new Kurssi("Ohjelmointi 1", "OP1", Date.valueOf(LocalDate.of(2022, 1, 1)),
                 Date.valueOf(LocalDate.of(2022, 12, 31)), "123", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
-                user1);
+                user);
 
         kurssiRepository.save(kurssi1);
 
         kurssi2 = new Kurssi("Ohjelmointi 2", "OP2", Date.valueOf(LocalDate.of(2022, 1, 1)),
                 Date.valueOf(LocalDate.of(2022, 12, 31)), "234", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
-                user1);
+                user);
 
         kurssiRepository.save(kurssi2);
     }
