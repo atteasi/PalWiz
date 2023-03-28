@@ -87,12 +87,8 @@ public class KurssiRepositoryTest {
     @Test
     public void testUpdateKurssi() {
         kurssi1.setNimi("Ohjelmointi 3");
-        kurssiRepository.updateKurssi(kurssi1.getNimi(), kurssi1.getKoodi(),
-                kurssi1.getAanestysAlkaa(),
-                kurssi1.getAanestysLoppuu(),
-                kurssi1.getAloitusPvm(), kurssi1.getLopetusPvm(),
-                kurssi1.getAanestyspaivakoodi(), kurssi1.getId());
-        Kurssi kurssi = kurssiRepository.findKurssiById(kurssi1.getId());
+        kurssiService.muokkaaKurssia(kurssi1);
+        Kurssi kurssi = kurssiService.findKurssi(kurssi1.getId());
         assertEquals("Ohjelmointi 3", kurssi.getNimi());
 
     }
