@@ -22,7 +22,8 @@ import com.example.application.Application;
 import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.KurssiRepository;
-import com.example.application.data.service.UserRepository;
+import com.example.application.data.service.KurssiService;
+import com.example.application.data.service.UserService;
 
 @RunWith(SpringRunner.class)
 
@@ -35,7 +36,10 @@ public class KurssiRepositoryTest {
     private KurssiRepository kurssiRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private KurssiService kurssiService;
+
+    @Autowired
+    private UserService userService;
 
     private Kurssi kurssi1;
     private Kurssi kurssi2;
@@ -44,19 +48,19 @@ public class KurssiRepositoryTest {
     @Before
     public void setUp() {
         User user1 = new User("testaaja", "tauvo", "test", "salasana", null);
-        user = userRepository.save(user1);
+        user = userService.update(user1);
 
         kurssi1 = new Kurssi("Ohjelmointi 1", "OP1", Date.valueOf(LocalDate.of(2022, 1, 1)),
                 Date.valueOf(LocalDate.of(2022, 12, 31)), "123", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
                 user);
 
-        kurssiRepository.save(kurssi1);
+        kurssiService.saveKurssi(kurssi1);
 
         kurssi2 = new Kurssi("Ohjelmointi 2", "OP2", Date.valueOf(LocalDate.of(2022, 1, 1)),
                 Date.valueOf(LocalDate.of(2022, 12, 31)), "234", Time.valueOf("09:00:00"), Time.valueOf("16:00:00"),
                 user);
 
-        kurssiRepository.save(kurssi2);
+        kurssiService.saveKurssi(kurssi2);
     }
 
     @After
@@ -66,14 +70,14 @@ public class KurssiRepositoryTest {
 
     @Test
     public void testFindKurssiById() {
-        Kurssi kurssi = kurssiRepository.findKurssiById(kurssi1.getId());
+        Kurssi kurssi = kurssiService.findKurssi(kurssi1.getId());
         assertNotNull(kurssi);
         assertEquals(kurssi1.getNimi(), kurssi.getNimi());
     }
 
     @Test
     public void testFindKurssiByUserId() {
-        List<Kurssi> kurssit = kurssiRepository.findKurssiByUserId(kurssi1.getUser().getId());
+        List<Kurssi> kurssit = kurssiService.findUserKurssit(kurssi1.getUser().getId());
         assertNotNull(kurssit);
         assertEquals(2, kurssit.size());
         assertEquals(kurssi1.getNimi(), kurssit.get(0).getNimi());
