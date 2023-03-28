@@ -2,7 +2,6 @@ package com.example.application.data.entity;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,14 +37,15 @@ public class Kurssi {
 
 	}
 
-	public Kurssi(String n, String k, Date ap, Date lp, String apk, Time aa, Time al, User user) {
-		nimi = n;
-		koodi = k;
-		aloitusPvm = ap;
-		lopetusPvm = lp;
-		aanestyspaivakoodi = apk;
-		aanestysAlkaa = aa;
-		aanestysLoppuu = al;
+	public Kurssi(String nimi, String koodi, Date alkuPvm, Date loppuPvm, String aanestysPaivaKoodi, Time aanestysAlkaa,
+			Time aanestysLoppuu, User user) {
+		this.nimi = nimi;
+		this.koodi = koodi;
+		this.aloitusPvm = alkuPvm;
+		this.lopetusPvm = loppuPvm;
+		this.aanestyspaivakoodi = aanestysPaivaKoodi;
+		this.aanestysAlkaa = aanestysAlkaa;
+		this.aanestysLoppuu = aanestysLoppuu;
 		this.user = user;
 
 	}
@@ -112,6 +112,14 @@ public class Kurssi {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

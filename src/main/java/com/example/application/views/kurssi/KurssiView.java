@@ -50,14 +50,11 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 @Route(value = "kurssi", layout = MainLayout.class)
 @Uses(Icon.class)
 
-
-
-
 public class KurssiView extends Div {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private User user;
 	private String currentUserName;
-	
+
 	private TextField nimi = new TextField("Kurssin nimi");
 	private DatePicker aloitusPvm = new DatePicker("Aloitus päivämäärä");
 	private DatePicker lopetusPvm = new DatePicker("Lopetus päivämäärä");
@@ -69,14 +66,12 @@ public class KurssiView extends Div {
 	private Button save = new Button("Save");
 
 	public KurssiView(KurssiService ks, UserService userService) {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (!(authentication instanceof AnonymousAuthenticationToken)) {
-			user = userService.getByUsername(authentication.getName());
-    		}
-		
 
-		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			user = userService.getByUsername(authentication.getName());
+		}
+
 		DatePicker.DatePickerI18n suomiI18n = luoI18n();
 
 		LocalDate now = LocalDate.now(ZoneId.systemDefault());
@@ -88,26 +83,26 @@ public class KurssiView extends Div {
 
 		aloitusPvm.addValueChangeListener(e -> lopetusPvm.setMin(e.getValue()));
 		lopetusPvm.addValueChangeListener(e -> aloitusPvm.setMax(e.getValue()));
-		
+
 		checkboxGroup.setLabel("Minä päivinä tunteja pidetään?");
 		checkboxGroup.setItems("Maanantai", "Tiistai", "Keskiviikko", "Torstai",
-		        "Perjantai", "Lauantai", "Sunnuntai");
-		//checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-		
+				"Perjantai", "Lauantai", "Sunnuntai");
+		// checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+
 		palauteAlkaa.setLabel("Palautteen antaminen alkaa:");
 		palauteAlkaa.setStep(Duration.ofMinutes(15));
 		palauteLoppuu.setLabel("Palautteen antaminen loppuu:");
 		palauteLoppuu.setStep(Duration.ofMinutes(15));
 
 		muokkaaKurssia();
-		if(muokataanko) {
+		if (muokataanko) {
 			Kurssi kurssi = ComponentUtil.getData(UI.getCurrent(), Kurssi.class);
 			nimi.setValue(kurssi.getNimi());
 			aloitusPvm.setValue(kurssi.getAloitusPvm().toLocalDate());
 			lopetusPvm.setValue(kurssi.getLopetusPvm().toLocalDate());
 			palauteAlkaa.setValue(kurssi.getAanestysAlkaa().toLocalTime());
 			palauteLoppuu.setValue(kurssi.getAanestysLoppuu().toLocalTime());
-			
+
 		}
 		addClassName("kurssi-view");
 
@@ -137,26 +132,26 @@ public class KurssiView extends Div {
 			}
 
 			String[] viikonpaivat = {
-				"Sunnuntai",
-				"Maanantai",
-				"Tiistai",
-				"Keskiviikko",
-				"Torstai",
-				"Perjantai",
-				"Lauantai"
+					"Sunnuntai",
+					"Maanantai",
+					"Tiistai",
+					"Keskiviikko",
+					"Torstai",
+					"Perjantai",
+					"Lauantai"
 			};
 			Set<String> aanestyspaivat = checkboxGroup.getSelectedItems();
 			String viikonpaivaKoodi = "";
 
-			for(int i = 0; i < viikonpaivat.length; i++) {
-				if(aanestyspaivat.contains(viikonpaivat[i])){
-					viikonpaivaKoodi += Integer.toString(i+1);
+			for (int i = 0; i < viikonpaivat.length; i++) {
+				if (aanestyspaivat.contains(viikonpaivat[i])) {
+					viikonpaivaKoodi += Integer.toString(i + 1);
 				}
 			}
 
 			// ks = koodiService
 
-			if(muokataanko) {
+			if (muokataanko) {
 				Kurssi kurssi = ks.findKurssi(ks.getNykyinenKurssiId());
 				kurssi.setNimi(nimi.getValue());
 				kurssi.setKoodi(koodi);
@@ -168,15 +163,15 @@ public class KurssiView extends Div {
 				ks.muokkaaKurssia(kurssi);
 				Notification.show("Kurssia " + nimi.getValue() + " muokattu");
 			} else {
-			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
-					Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
-					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue()), user));
-			
-			Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
-			}		
-					save.getUI().ifPresent(ui ->
-           ui.navigate("kurssit"));
-			
+				ks.saveKurssi(new Kurssi(nimi.getValue(), koodi,
+						Date.valueOf(aloitusPvm.getValue().format(formatter)),
+						Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
+						Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue()), user));
+
+				Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
+			}
+			save.getUI().ifPresent(ui -> ui.navigate("kurssit"));
+
 		});
 	}
 
@@ -214,10 +209,8 @@ public class KurssiView extends Div {
 		return suomiI18n;
 	}
 
-	
 	private void muokkaaKurssia() {
-		if(ComponentUtil.getData(UI.getCurrent(), Kurssi.class) == null)
-		{
+		if (ComponentUtil.getData(UI.getCurrent(), Kurssi.class) == null) {
 			return;
 		}
 		muokataanko = true;

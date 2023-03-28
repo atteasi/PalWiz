@@ -56,6 +56,10 @@ public class Palaute {
 		kokonaismaara = maara;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public String toString() {
 		return "palaute id: " + id + ", kurssi: " + kurssi.getNimi() + ", vastaus: "
 				+ vastaus;
