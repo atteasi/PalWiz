@@ -44,12 +44,20 @@ public class MainLayout extends AppLayout {
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
+       // LanguageSelector languageSelector = new LanguageSelector();
+       // addToNavbar(languageSelector);
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
     }
 
     private void addDrawerContent() {
+        LanguageSelector languageSelector = new LanguageSelector();
+        languageSelector.getStyle().set("font-size", "var(--lumo-font-size-l)")
+        .set("left", "var(--lumo-space-l)").set("margin", "0")
+        .set("position", "absolute").set("font-size", "30px")
+        .set("top", "50px").set("width", "130px");
+
         H1 appName = new H1("PalWiz");
         appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
                 .set("left", "var(--lumo-space-l)").set("margin", "0")
@@ -58,7 +66,7 @@ public class MainLayout extends AppLayout {
         Header header = new Header(appName);
 
         Tabs tabs = createNavigation();
-        addToNavbar(header, tabs);
+        addToNavbar(header, tabs, languageSelector);
         createFooter();
     }
 
