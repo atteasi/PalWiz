@@ -46,22 +46,26 @@ public class MainLayout extends AppLayout {
 
     private void addDrawerContent() {
         LanguageSelector languageSelector = new LanguageSelector();
-        languageSelector.getStyle().set("font-size", "var(--lumo-font-size-l)")
-        .set("left", "var(--lumo-space-l)").set("margin", "0")
-        .set("position", "absolute").set("font-size", "30px")
-        .set("top", "50px").set("width", "130px");
-
+    
         H1 appName = new H1("PalWiz");
         appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
-                .set("left", "var(--lumo-space-l)").set("margin", "0")
-                .set("position", "absolute").set("font-size", "30px")
-                .set("top", "10px").set("width", "50px");
-        Header header = new Header(appName);
-
+                .set("margin", "0")
+                .set("font-size", "30px");
+    
+        // Create a HorizontalLayout to hold appName and languageSelector
+        com.vaadin.flow.component.orderedlayout.HorizontalLayout layout = new com.vaadin.flow.component.orderedlayout.HorizontalLayout();
+        layout.add(appName, languageSelector);
+        layout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
+        layout.setJustifyContentMode(com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode.BETWEEN);
+        layout.setWidth("100%");
+    
+        Header header = new Header(layout);
+    
         Tabs tabs = createNavigation();
-        addToNavbar(header, tabs, languageSelector);
+        addToNavbar(header, tabs);
         createFooter();
     }
+    
 
     private Tabs createNavigation() {
         // AppNav is not yet an official component.
