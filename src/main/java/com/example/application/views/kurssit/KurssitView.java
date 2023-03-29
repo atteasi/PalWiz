@@ -1,7 +1,9 @@
 package com.example.application.views.kurssit;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -13,6 +15,7 @@ import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.PalauteService;
 import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
@@ -48,22 +51,25 @@ public class KurssitView extends VerticalLayout {
 	private static Div hint;
 	private Kurssi poistettavaKurssi = new Kurssi();
 	private Kurssi muokattavaKurssi = new Kurssi();
+	Locale currentLocale = TranslationUtils.getCurrentLocale();
+	private ResourceBundle messages;
 
 
 	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService) {
 		this.kurssiService = service;
 		this.palauteService = palauteService;
+		messages = ResourceBundle.getBundle("messages", currentLocale);
 
 		ConfirmDialog dialog = new ConfirmDialog();
 
 		dialog.setText(
-				"Haluatko varmasti poistaa kurssin ja siihen liittyvät palautteet pysyvästi?");
+			messages.getString("removeCourse"));
 
 		dialog.setCancelable(true);
-		dialog.setCancelText("Peru");
+		dialog.setCancelText(messages.getString("cancel"));
 		// dialog.addCancelListener(event -> setStatus("Canceled"));
 
-		dialog.setConfirmText("Poista");
+		dialog.setConfirmText(messages.getString("remove"));
 		dialog.setConfirmButtonTheme("error primary");
 		dialog.addConfirmListener(event -> {
 			this.poistaKurssi(poistettavaKurssi);
@@ -80,13 +86,13 @@ public class KurssitView extends VerticalLayout {
 		img.setWidth("150px");
 		add(img);
 
-		add(new H2("Kurssit"));
+		add(new H2(messages.getString("courses")));
 		grid = new Grid<>(Kurssi.class, false);
 		// grid.addColumn(Kurssi::getId).setHeader("ID");
-		grid.addColumn(Kurssi::getNimi).setHeader("Nimi");
-		grid.addColumn(Kurssi::getKoodi).setHeader("Koodi");
-		grid.addColumn(Kurssi::getAloitusPvm).setHeader("Aloitus pvm");
-		grid.addColumn(Kurssi::getLopetusPvm).setHeader("Lopetus pvm");
+		grid.addColumn(Kurssi::getNimi).setHeader(messages.getString("name"));
+		grid.addColumn(Kurssi::getKoodi).setHeader(messages.getString("code"));
+		grid.addColumn(Kurssi::getAloitusPvm).setHeader(messages.getString("startDay"));
+		grid.addColumn(Kurssi::getLopetusPvm).setHeader(messages.getString("endDay"));
 
 		grid.addColumn(
 				new ComponentRenderer<>(Button::new, (button, kurssi) -> {
@@ -95,11 +101,11 @@ public class KurssitView extends VerticalLayout {
 							ButtonVariant.LUMO_TERTIARY);
 					button.addClickListener(e -> {
 						this.setPoistettavaKurssi(kurssi);
-						dialog.setHeader("Poista kurssi " + poistettavaKurssi.getNimi() + "?");
+						dialog.setHeader(messages.getString("removeCourse") + " " + poistettavaKurssi.getNimi() + "?");
 						dialog.open();
 					});
 					button.setIcon(new Icon(VaadinIcon.TRASH));
-				})).setHeader("Poista");
+				})).setHeader(messages.getString("remove"));
 
 		grid.addColumn(
 				new ComponentRenderer<>(Button::new, (button, kurssi) -> {
@@ -113,7 +119,7 @@ public class KurssitView extends VerticalLayout {
 						button.getUI().ifPresent(ui -> ui.navigate("kurssi"));
 					});
 					button.setIcon(new Icon(VaadinIcon.ADJUST));
-				})).setHeader("Muokkaa");
+				})).setHeader(messages.getString("edit"));
 
 		
 		kurssit = service.findUserKurssit(user.getId());
@@ -127,7 +133,7 @@ public class KurssitView extends VerticalLayout {
 		grid.addSelectionListener(selection -> {
 			Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
 			if (valittuKurssi.isPresent()) {
-				Notification.show(valittuKurssi.get().getNimi() + " valittu, " + valittuKurssi.get().getId());
+				Notification.show(valittuKurssi.get().getNimi() +" "+ messages.getString("chosen") + ", " +  + valittuKurssi.get().getId());
 				ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
 				service.setNykyinenKurssiId(valittuKurssi.get().getId());
 
@@ -136,7 +142,7 @@ public class KurssitView extends VerticalLayout {
 		});
 
 		hint = new Div();
-		hint.setText("Ei näytettäviä kursseja");
+		hint.setText(messages.getString("nothingToShow"));
 		hint.getStyle().set("padding", "var(--lumo-size-l)")
 				.set("text-align", "center").set("font-style", "italic")
 				.set("color", "var(--lumo-contrast-70pct)");

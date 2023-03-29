@@ -8,6 +8,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
@@ -23,6 +25,7 @@ import com.example.application.data.entity.User;
 import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
@@ -54,19 +57,24 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 
 
 public class KurssiView extends Div {
+	Locale currentLocale = TranslationUtils.getCurrentLocale();
+	private ResourceBundle messages = ResourceBundle.getBundle("messages", currentLocale);
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private User user;
 	private String currentUserName;
 	
-	private TextField nimi = new TextField("Kurssin nimi");
-	private DatePicker aloitusPvm = new DatePicker("Aloitus päivämäärä");
-	private DatePicker lopetusPvm = new DatePicker("Lopetus päivämäärä");
+	
+	
+	
+	private TextField nimi = new TextField(messages.getString("courseName"));
+	private DatePicker aloitusPvm = new DatePicker(messages.getString("courseStartDay"));
+	private DatePicker lopetusPvm = new DatePicker(messages.getString("courseEndDay"));
 	CheckboxGroup<String> checkboxGroup = new CheckboxGroup<>();
 	TimePicker palauteAlkaa = new TimePicker();
 	TimePicker palauteLoppuu = new TimePicker();
 
 	private boolean muokataanko = false;
-	private Button save = new Button("Save");
+	private Button save = new Button(messages.getString("save"));
 
 	public KurssiView(KurssiService ks, UserService userService) {
 		
@@ -89,14 +97,14 @@ public class KurssiView extends Div {
 		aloitusPvm.addValueChangeListener(e -> lopetusPvm.setMin(e.getValue()));
 		lopetusPvm.addValueChangeListener(e -> aloitusPvm.setMax(e.getValue()));
 		
-		checkboxGroup.setLabel("Minä päivinä tunteja pidetään?");
-		checkboxGroup.setItems("Maanantai", "Tiistai", "Keskiviikko", "Torstai",
-		        "Perjantai", "Lauantai", "Sunnuntai");
+		checkboxGroup.setLabel(messages.getString("whichDayCourse"));
+		checkboxGroup.setItems(messages.getString("monday"), messages.getString("tuesday"), messages.getString("wednesday"), messages.getString("thursday"),
+		messages.getString("friday"), messages.getString("saturday"), messages.getString("sunday"));
 		//checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 		
-		palauteAlkaa.setLabel("Palautteen antaminen alkaa:");
+		palauteAlkaa.setLabel(messages.getString("givingStart"));
 		palauteAlkaa.setStep(Duration.ofMinutes(15));
-		palauteLoppuu.setLabel("Palautteen antaminen loppuu:");
+		palauteLoppuu.setLabel(messages.getString("givingEnd"));
 		palauteLoppuu.setStep(Duration.ofMinutes(15));
 
 		muokkaaKurssia();
@@ -166,13 +174,13 @@ public class KurssiView extends Div {
 				kurssi.setAanestysAlkaa(Time.valueOf(palauteAlkaa.getValue()));
 				kurssi.setAanestysLoppuu(Time.valueOf(palauteLoppuu.getValue()));
 				ks.muokkaaKurssia(kurssi);
-				Notification.show("Kurssia " + nimi.getValue() + " muokattu");
+				Notification.show(messages.getString("courseA") + " " + nimi.getValue() + " " + messages.getString("edited"));
 			} else {
 			ks.saveKurssi(new Kurssi(nimi.getValue(), koodi, Date.valueOf(aloitusPvm.getValue().format(formatter)),
 					Date.valueOf(lopetusPvm.getValue().format(formatter)), viikonpaivaKoodi,
 					Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue()), user));
 			
-			Notification.show("Uusi kurssi nimeltä " + nimi.getValue() + " luotu");
+			Notification.show(messages.getString("newCourseName") + " " + nimi.getValue() + " " + messages.getString("created"));
 			}		
 					save.getUI().ifPresent(ui ->
            ui.navigate("kurssit"));
