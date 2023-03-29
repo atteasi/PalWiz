@@ -181,7 +181,7 @@ public class KurssiView extends Div {
 	}
 
 	private Component createTitle() {
-		return new H3("Kurssin tiedot");
+		return new H3(messages.getString("courseInfo"));
 	}
 
 	private Component createFormLayout() {

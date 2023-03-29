@@ -145,7 +145,7 @@ public class KurssitView extends VerticalLayout {
 		refreshGrid();
 	}
 
-	private void poistaKurssi(Kurssi kurssi) {
+	protected void poistaKurssi(Kurssi kurssi) {
 		if (kurssi == null)
 			return;
 		kurssit.remove(kurssi);
@@ -171,6 +171,14 @@ public class KurssitView extends VerticalLayout {
 	
 	private void setMuokattavaKurssi(Kurssi kurssi) {
 		muokattavaKurssi = kurssi;
+	}
+
+	public Grid<Kurssi> getGrid() {
+		return grid;
+	}
+	
+	public Div getHint() {
+		return hint;
 	}
 
 }
