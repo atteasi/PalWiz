@@ -5,11 +5,14 @@ import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -31,15 +34,27 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 public class KoodiView extends VerticalLayout {
 	KurssiService ks;
+	private ResourceBundle messages;
+
+	@PostConstruct
+    public void init() {
+        messages = TranslationUtils.getMessages();
+        
+        add(new H2(messages.getString("codeViewH1")));
+       
+    }
+	
+	
 
 	public KoodiView(KurssiService s) {
+		
 		ks = s;
 		setSpacing(false);
 		Calendar kalenteri = Calendar.getInstance();
 		Date tanaan = new Date();
 
 		kalenteri.setTime(tanaan);
-		add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
+		
 		TextField tf = new TextField();
 		tf.setPlaceholder("Kirjoita kurssin koodi");
 
