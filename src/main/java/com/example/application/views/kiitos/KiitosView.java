@@ -1,7 +1,6 @@
 package com.example.application.views.kiitos;
 
 import java.util.Locale;
-
 import javax.annotation.security.RolesAllowed;
 import java.util.ResourceBundle;
 import com.example.application.data.service.PalauteService;
@@ -9,13 +8,11 @@ import com.example.application.views.MainLayout;
 import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.example.application.data.entity.Palaute;
 
 
 @RolesAllowed(value = { "USER", "ADMIN" })

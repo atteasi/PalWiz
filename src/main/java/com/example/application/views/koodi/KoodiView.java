@@ -1,15 +1,12 @@
 package com.example.application.views.koodi;
 
 import java.util.Date;
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.annotation.security.RolesAllowed;
-
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
 import com.example.application.views.TranslationUtils;

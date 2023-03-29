@@ -2,15 +2,11 @@ package com.example.application.data.entity;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 

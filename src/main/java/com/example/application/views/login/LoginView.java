@@ -1,19 +1,17 @@
 package com.example.application.views.login;
 
-import com.example.application.data.entity.Palaute;
-import com.example.application.data.entity.User;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import com.example.application.data.service.UserService;
 import com.example.application.security.AuthenticatedUser;
-import com.example.application.views.kurssit.KurssitView;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.router.internal.RouteUtil;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -24,27 +22,30 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
     private final AuthenticatedUser authenticatedUser;
+    Locale currentLocale = TranslationUtils.getCurrentLocale();
+	ResourceBundle messages;
 
     public LoginView(AuthenticatedUser authenticatedUser, UserService service) {
         this.authenticatedUser = authenticatedUser;
         setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
+        messages = ResourceBundle.getBundle("messages", currentLocale);
 
         LoginI18n i18n = LoginI18n.createDefault();
         LoginI18n.Form i18nOma = i18n.getForm();
-        i18nOma.setTitle("Kirjaudu");
-        i18nOma.setUsername("Käyttäjänimi");
-        i18nOma.setPassword("Salasana");
-        i18nOma.setSubmit("Kirjaudu sisään");
-        i18nOma.setForgotPassword("Luo tunnukset");
+        i18nOma.setTitle(messages.getString("sign"));
+        i18nOma.setUsername(messages.getString("username"));
+        i18nOma.setPassword(messages.getString("password"));
+        i18nOma.setSubmit(messages.getString("login"));
+        i18nOma.setForgotPassword(messages.getString("createUser"));
         LoginI18n.ErrorMessage i18nErrorMessage = i18n.getErrorMessage();
-        i18nErrorMessage.setTitle("Väärä käyttäjätunnus tai salasana");
+        i18nErrorMessage.setTitle(messages.getString("errorUser"));
         i18nErrorMessage.setMessage(
-                "Tarkista että käyttäjätunnus ja salasana ovat oikein ja yritä uudestaan.");
+            messages.getString("checkStuff"));
 
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("PalWiz");
         i18n.getHeader().setDescription(
-                "Kirjaudu sisään omilla tunnuksillasi. Jos olet uusi käyttäjä, klikkaa Luo tunnukset -painiketta. ");
+            messages.getString("loginInfo"));
         i18n.setAdditionalInformation(null);
 
         addForgotPasswordListener(event -> {
