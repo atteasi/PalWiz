@@ -21,7 +21,6 @@ public class Kurssi {
 
 	@ManyToOne
 	private User user;
-
 	private String nimi;
 	private String koodi;
 	private Date aloitusPvm;
@@ -44,14 +43,6 @@ public class Kurssi {
 		aanestysLoppuu = al;
 		this.user = user;
 
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public Time getAanestysAlkaa() {
