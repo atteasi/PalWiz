@@ -31,6 +31,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 public class KoodiView extends VerticalLayout {
 	KurssiService ks;
+	TextField tf;
 
 	public KoodiView(KurssiService s) {
 		ks = s;
@@ -40,15 +41,18 @@ public class KoodiView extends VerticalLayout {
 
 		kalenteri.setTime(tanaan);
 		add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
-		TextField tf = new TextField();
+		tf = new TextField();
 		tf.setPlaceholder("Kirjoita kurssin koodi");
 
 		Button go = new Button("Äänestämään!");
 		go.addClickListener(clickEvent -> {
 			List<Kurssi> kurssit = ks.findKurssit();
+			if (!kurssit.contains(tf.getValue())) {
+				Notification.show("Kyseistä koodia ei ole olemassa! Tarkasta koodi!");
+			}
 			for (Kurssi k : kurssit) {
 				if (tf.getValue().equals(k.getKoodi())) {
-						if (tanaan.after(k.getAloitusPvm()) && tanaan.before(k.getLopetusPvm())) {
+					if (tanaan.after(k.getAloitusPvm()) && tanaan.before(k.getLopetusPvm())) {
 						String viikonpaiva = Integer.toString(kalenteri.get(Calendar.DAY_OF_WEEK));
 						System.out.println(viikonpaiva);
 						if (k.getAanestyspaivakoodi().contains(viikonpaiva)) {
