@@ -1,3 +1,4 @@
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
@@ -14,4 +15,5 @@ public class PalauteTest {
 		Palaute p = new Palaute(1, LocalDate.now(), kurssi);
 		assertEquals(LocalDate.now(), p.getPaivamaara(), "Päivämäärä on väärin");
 	}
+
 }
