@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDataba
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
 
+
 /**
  * The entry point of the Spring Boot application.
  *

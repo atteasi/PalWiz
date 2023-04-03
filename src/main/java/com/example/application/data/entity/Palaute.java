@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -46,6 +45,34 @@ public class Palaute {
 
 	public LocalDate getPaivamaara() {
 		return paivamaara;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getVastaus() {
+		return vastaus;
+	}
+
+	public void setVastaus(int vastaus) {
+		this.vastaus = vastaus;
+	}
+
+	public void setPaivamaara(LocalDate paivamaara) {
+		this.paivamaara = paivamaara;
+	}
+
+	public Kurssi getKurssi() {
+		return kurssi;
+	}
+
+	public void setKurssi(Kurssi kurssi) {
+		this.kurssi = kurssi;
 	}
 
 	public int getKokonaismaara() {

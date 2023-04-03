@@ -1,15 +1,15 @@
 package com.example.application.views.koodi;
 
 import java.util.Date;
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
-
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.annotation.security.RolesAllowed;
-
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.MainLayout;
+import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -31,20 +31,23 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 public class KoodiView extends VerticalLayout {
 	KurssiService ks;
-	TextField tf;
+
+	Locale currentLocale = TranslationUtils.getCurrentLocale();
+	ResourceBundle messages;
 
 	public KoodiView(KurssiService s) {
+		messages = ResourceBundle.getBundle("messages", currentLocale);
 		ks = s;
 		setSpacing(false);
 		Calendar kalenteri = Calendar.getInstance();
 		Date tanaan = new Date();
 
 		kalenteri.setTime(tanaan);
-		add(new H2("Tähän voit syöttää koodin, jolla pääset antamaan tunnista palautetta!"));
-		tf = new TextField();
-		tf.setPlaceholder("Kirjoita kurssin koodi");
+		add(new H2(messages.getString("koodiViewH2")));
+		TextField tf = new TextField();
+		tf.setPlaceholder(messages.getString("writeCode"));
 
-		Button go = new Button("Äänestämään!");
+		Button go = new Button(messages.getString("toVote"));
 		go.addClickListener(clickEvent -> {
 			List<Kurssi> kurssit = ks.findKurssit();
 			if (!kurssit.contains(tf.getValue())) {
@@ -62,13 +65,13 @@ public class KoodiView extends VerticalLayout {
 								ComponentUtil.setData(UI.getCurrent(), Kurssi.class, k);
 								go.getUI().ifPresent(ui -> ui.navigate("aanesta"));
 							} else {
-								Notification.show("Äänestys ei taida olla vielä auki!");
+								Notification.show(messages.getString("notOpenYet"));
 							}
 						} else {
-							Notification.show("Tänään ei voi antaa kyseiselle kursille palautetta!");
+							Notification.show(messages.getString("todayNoVote"));
 						}
 					} else {
-						Notification.show("Äänestys kyseiselle kurssille on joko loppunut tai ei ole vielä alkanut!");
+						Notification.show(messages.getString("itsEndOrComing"));
 					}
 				}
 			}
