@@ -107,7 +107,7 @@ public class KurssiView extends Div {
 			lopetusPvm.setValue(kurssi.getLopetusPvm().toLocalDate());
 			palauteAlkaa.setValue(kurssi.getAanestysAlkaa().toLocalTime());
 			palauteLoppuu.setValue(kurssi.getAanestysLoppuu().toLocalTime());
-			
+			ComponentUtil.setData(UI.getCurrent(), Kurssi.class, null);
 		}
 		addClassName("kurssi-view");
 
@@ -116,25 +116,8 @@ public class KurssiView extends Div {
 		add(createButtonLayout());
 
 		save.addClickListener(e -> {
-			int vuosi = Calendar.getInstance().get(Calendar.YEAR) % 100;
-			String koodi = nimi.getValue().substring(0, 4) + String.valueOf(vuosi);
 			List<Kurssi> kurssit = ks.findKurssit();
-			boolean onEnnestaan = false;
-			for (Kurssi k : kurssit) {
-				if (k.getKoodi().matches(koodi)) {
-					onEnnestaan = true;
-				}
-			}
-			if (onEnnestaan) {
-				int vanhojaKoodeja = 0;
-				for (Kurssi k : kurssit) {
-					String testattavaKoodi = k.getKoodi().substring(0, 6);
-					if (testattavaKoodi.matches(koodi)) {
-						vanhojaKoodeja++;
-					}
-				}
-				koodi += "(" + vanhojaKoodeja + ")";
-			}
+			String koodi = luoKoodi(nimi.getValue(), kurssit);
 
 			String[] viikonpaivat = {
 				"Sunnuntai",
@@ -214,12 +197,65 @@ public class KurssiView extends Div {
 		return suomiI18n;
 	}
 
+	private String luoKoodi(String nimi, List<Kurssi> kurssit) {
+		String vuosi = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) % 100);
+		/*String koodi = nimi.substring(0, 4) + vuosi;
+		boolean onEnnestaan = false;
+		for (Kurssi k : kurssit) {
+			if (k.getKoodi().matches(koodi)) {
+				onEnnestaan = true;
+				break;
+			}
+		}
+		if (onEnnestaan) {
+			int vanhojaKoodeja = 0;
+			for (Kurssi k : kurssit) {
+				String testattavaKoodi = k.getKoodi().substring(0, 6);
+				if (testattavaKoodi.matches(koodi)) {
+					vanhojaKoodeja++;
+				}
+			}
+			koodi += "(" + vanhojaKoodeja + ")";
+		}
+		 */
+		char[] nimiKirjaimet = new char[nimi.length()];
+		int isotKirjaimetMaara = 0;
+		for(int i = 0; i < nimiKirjaimet.length; i++) {
+			nimiKirjaimet[i] = nimi.charAt(i);
+		}
+		for(char kirjain: nimiKirjaimet) {
+			if(Character.isUpperCase(kirjain)) {
+				isotKirjaimetMaara++;
+			}
+		}
+		String koodi = "";
+		if(isotKirjaimetMaara >= 2) {
+			for(char kirjain: nimiKirjaimet) {
+				if(Character.isUpperCase(kirjain)) {
+					koodi += kirjain;
+				}
+			}
+		} else {
+			if(nimi.contains(" ")) {
+				koodi = nimi.substring(0, nimi.indexOf(" "));
+			} else if (nimi.length() > 4){
+				koodi = nimi.substring(0, 4);
+			}
+			else {
+				koodi = nimi;
+			}
+		}
+		koodi += vuosi;
+		return koodi;
+	}
 	
 	private void muokkaaKurssia() {
 		if(ComponentUtil.getData(UI.getCurrent(), Kurssi.class) == null)
 		{
 			return;
 		}
+		System.out.println("Muokataan kurssia");
 		muokataanko = true;
+		ComponentUtil.setData(UI.getCurrent(), String.class, null);
 	}
 }

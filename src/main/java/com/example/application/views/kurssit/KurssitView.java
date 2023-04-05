@@ -109,6 +109,7 @@ public class KurssitView extends VerticalLayout {
 					button.addClickListener(e -> {
 						this.setMuokattavaKurssi(kurssi);
 						ComponentUtil.setData(UI.getCurrent(), Kurssi.class, muokattavaKurssi);
+
 						kurssiService.setNykyinenKurssiId(muokattavaKurssi.getId());
 						button.getUI().ifPresent(ui -> ui.navigate("kurssi"));
 					});
