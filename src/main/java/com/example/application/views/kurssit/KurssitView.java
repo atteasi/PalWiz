@@ -126,15 +126,17 @@ public class KurssitView extends VerticalLayout {
 		getStyle().set("text-align", "center");
 
 		grid.addSelectionListener(selection -> {
-			Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
-			if (valittuKurssi.isPresent()) {
-				Notification.show(valittuKurssi.get().getNimi() +" "+ messages.getString("chosen") + ", " +  + valittuKurssi.get().getId());
-				ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
-				service.setNykyinenKurssiId(valittuKurssi.get().getId());
+    Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
+    if (valittuKurssi.isPresent()) {
+        Notification.show(valittuKurssi.get().getNimi() +" "+ messages.getString("chosen") + ", " +  + valittuKurssi.get().getId());
+        ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
+        kurssiService.setNykyinenKurssiId(valittuKurssi.get().getId());
 
-				getUI().ifPresent(ui -> ui.navigate("palaute"));
-			}
-		});
+        if (getUI().isPresent()) {
+            getUI().ifPresent(ui -> ui.navigate("palaute"));
+        }
+    }
+});
 
 		hint = new Div();
 		hint.setText(messages.getString("nothingToShow"));
