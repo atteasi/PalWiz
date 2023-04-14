@@ -217,6 +217,7 @@
             <configuration>
                 <excludes>
                     <exclude>**/*test*</exclude>
+										<exclude>**/*views*</exclude>
                 </excludes>
             </configuration>
         </plugin>
