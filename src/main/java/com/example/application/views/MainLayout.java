@@ -69,19 +69,11 @@ public class MainLayout extends AppLayout {
     }
 
     private Tabs createNavigation() {
-        // AppNav is not yet an official component.
-        // For documentation, visit https://github.com/vaadin/vcf-nav#readme
-
         Tabs tabs = new Tabs();
         tabs.getStyle().set("margin", "auto");
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
-            tabs.add(createTab(messages.getString("courses"), KurssitView.class), /*
-                                                                                   * createTab("Koodi",
-                                                                                   * KoodiView.class),
-                                                                                   * createTab("Äänestä",
-                                                                                   * AanestaView.class),
-                                                                                   */
+            tabs.add(createTab(messages.getString("courses"), KurssitView.class),
                     createTab(messages.getString("addCourse"), KurssiView.class));
             return tabs;
         } else {

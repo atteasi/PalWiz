@@ -13,10 +13,12 @@ import com.example.application.views.TranslationUtils;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -46,8 +48,11 @@ public class KoodiView extends VerticalLayout {
 		add(new H2(messages.getString("koodiViewH2")));
 		TextField tf = new TextField();
 		tf.setPlaceholder(messages.getString("writeCode"));
+		tf.addThemeVariants(TextFieldVariant.LUMO_ALIGN_CENTER);
 
 		Button go = new Button(messages.getString("toVote"));
+		go.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+				ButtonVariant.LUMO_CONTRAST);
 		go.addClickListener(clickEvent -> {
 			List<Kurssi> kurssit = ks.findKurssit();
 			if (!kurssit.contains(tf.getValue())) {
@@ -83,6 +88,7 @@ public class KoodiView extends VerticalLayout {
 		setJustifyContentMode(JustifyContentMode.CENTER);
 		setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 		getStyle().set("text-align", "center");
+		setClassName("koodi-view");
 	}
 
 }
