@@ -31,7 +31,8 @@ public class KiitosView extends VerticalLayout {
 		this.service = service;
 		setSpacing(false);
 
-		Image img = new Image("images/empty-plant.png", "placeholder plant");
+		Image img = new Image("images/empty-plant.png", "");
+        img.setAlt("placeholder plant"); 
 		img.setWidth("200px");
 		//configureGrid();
 		add(img);

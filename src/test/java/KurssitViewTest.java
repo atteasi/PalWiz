@@ -25,23 +25,27 @@ public class KurssitViewTest {
     private User user;
 
     @BeforeEach
-    public void setUp() {
-        kurssiService = mock(KurssiService.class);
-        userService = mock(UserService.class);
-        palauteService = mock(PalauteService.class);
-        user = new User();
-        user.setId(1L);
-        user.setUsername("testuser");
+public void setUp() {
+    kurssiService = mock(KurssiService.class);
+    userService = mock(UserService.class);
+    palauteService = mock(PalauteService.class);
+    user = new User();
+    user.setId(1L);
+    user.setUsername("testuser");
 
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(authentication.getPrincipal()).thenReturn("testuser");
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
+    Authentication authentication = mock(Authentication.class);
+    SecurityContext securityContext = mock(SecurityContext.class);
+    when(authentication.getPrincipal()).thenReturn("testuser");
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getByUsername("testuser")).thenReturn(user);
-    }
+    when(userService.getByUsername("testuser")).thenReturn(user);
+
+    when(kurssiService.findUserKurssit(anyLong())).thenReturn(new ArrayList<>());
+    doNothing().when(palauteService).poistaPalauteet(any(Kurssi.class));
+    doNothing().when(kurssiService).poistaKurssi(any(Kurssi.class));
+}
 
     @Test
     public void testCreateKurssitView() {

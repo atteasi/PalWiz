@@ -37,7 +37,7 @@ public class KiitosViewTest {
         assertNotNull(button, "Button component not found");
 
         assertEquals("200px", image.getWidth(), "Image width is incorrect");
-        assertEquals("placeholder plant", image.getAlt(),
-                "Image alt text is incorrect");
+        assertEquals("placeholder plant", image.getElement().getAttribute("alt"), "Image alt text is incorrect");
+
     }
 }
