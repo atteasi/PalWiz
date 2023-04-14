@@ -29,7 +29,7 @@ public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
     Locale currentLocale = TranslationUtils.getCurrentLocale();
-	private ResourceBundle messages;
+    private ResourceBundle messages;
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
 
@@ -37,8 +37,8 @@ public class MainLayout extends AppLayout {
         this.authenticatedUser = authenticatedUser;
         this.accessChecker = accessChecker;
         messages = ResourceBundle.getBundle("messages", currentLocale);
-       // LanguageSelector languageSelector = new LanguageSelector();
-       // addToNavbar(languageSelector);
+        // LanguageSelector languageSelector = new LanguageSelector();
+        // addToNavbar(languageSelector);
 
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
@@ -46,26 +46,27 @@ public class MainLayout extends AppLayout {
 
     private void addDrawerContent() {
         LanguageSelector languageSelector = new LanguageSelector();
-    
+        languageSelector.setClassName("language-selector");
+
         H1 appName = new H1("PalWiz");
         appName.getStyle().set("font-size", "var(--lumo-font-size-l)")
                 .set("margin", "0")
                 .set("font-size", "30px");
-    
+
         // Create a HorizontalLayout to hold appName and languageSelector
         com.vaadin.flow.component.orderedlayout.HorizontalLayout layout = new com.vaadin.flow.component.orderedlayout.HorizontalLayout();
         layout.add(appName, languageSelector);
         layout.setAlignItems(com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER);
         layout.setJustifyContentMode(com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode.BETWEEN);
         layout.setWidth("100%");
-    
+        layout.setPadding(true);
+
         Header header = new Header(layout);
-    
+
         Tabs tabs = createNavigation();
         addToNavbar(header, tabs);
         createFooter();
     }
-    
 
     private Tabs createNavigation() {
         // AppNav is not yet an official component.
@@ -76,9 +77,11 @@ public class MainLayout extends AppLayout {
         java.util.Optional<User> maybeUser = authenticatedUser.get();
         if (maybeUser.isPresent()) {
             tabs.add(createTab(messages.getString("courses"), KurssitView.class), /*
-                                                               * createTab("Koodi", KoodiView.class),
-                                                               * createTab("Äänestä", AanestaView.class),
-                                                               */
+                                                                                   * createTab("Koodi",
+                                                                                   * KoodiView.class),
+                                                                                   * createTab("Äänestä",
+                                                                                   * AanestaView.class),
+                                                                                   */
                     createTab(messages.getString("addCourse"), KurssiView.class));
             return tabs;
         } else {

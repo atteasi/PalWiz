@@ -48,7 +48,6 @@ public class KurssitView extends VerticalLayout {
 	Locale currentLocale = TranslationUtils.getCurrentLocale();
 	private ResourceBundle messages;
 
-
 	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService) {
 		this.kurssiService = service;
 		this.palauteService = palauteService;
@@ -57,7 +56,7 @@ public class KurssitView extends VerticalLayout {
 		ConfirmDialog dialog = new ConfirmDialog();
 
 		dialog.setText(
-			messages.getString("removeCourse"));
+				messages.getString("removeCourse"));
 
 		dialog.setCancelable(true);
 		dialog.setCancelText(messages.getString("cancel"));
@@ -116,7 +115,6 @@ public class KurssitView extends VerticalLayout {
 					button.setIcon(new Icon(VaadinIcon.ADJUST));
 				})).setHeader(messages.getString("edit"));
 
-		
 		kurssit = service.findUserKurssit(user.getId());
 		grid.setItems(kurssit);
 
@@ -126,17 +124,18 @@ public class KurssitView extends VerticalLayout {
 		getStyle().set("text-align", "center");
 
 		grid.addSelectionListener(selection -> {
-    Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
-    if (valittuKurssi.isPresent()) {
-        Notification.show(valittuKurssi.get().getNimi() +" "+ messages.getString("chosen") + ", " +  + valittuKurssi.get().getId());
-        ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
-        kurssiService.setNykyinenKurssiId(valittuKurssi.get().getId());
+			Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
+			if (valittuKurssi.isPresent()) {
+				// Notification.show(valittuKurssi.get().getNimi() +" "+
+				// messages.getString("chosen") + ", " + + valittuKurssi.get().getId());
+				ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
+				kurssiService.setNykyinenKurssiId(valittuKurssi.get().getId());
 
-        if (getUI().isPresent()) {
-            getUI().ifPresent(ui -> ui.navigate("palaute"));
-        }
-    }
-});
+				if (getUI().isPresent()) {
+					getUI().ifPresent(ui -> ui.navigate("palaute"));
+				}
+			}
+		});
 
 		hint = new Div();
 		hint.setText(messages.getString("nothingToShow"));
@@ -171,7 +170,7 @@ public class KurssitView extends VerticalLayout {
 	private void setPoistettavaKurssi(Kurssi kurssi) {
 		this.poistettavaKurssi = kurssi;
 	}
-	
+
 	private void setMuokattavaKurssi(Kurssi kurssi) {
 		muokattavaKurssi = kurssi;
 	}
@@ -179,7 +178,7 @@ public class KurssitView extends VerticalLayout {
 	public Grid<Kurssi> getGrid() {
 		return grid;
 	}
-	
+
 	public Div getHint() {
 		return hint;
 	}
