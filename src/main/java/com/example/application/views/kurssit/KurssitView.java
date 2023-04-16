@@ -24,6 +24,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
@@ -72,13 +73,14 @@ public class KurssitView extends VerticalLayout {
 			user = userService.getByUsername(authentication.getName());
 		}
 
-		setSpacing(false);
+		setSpacing(true);
 
 		Image img = new Image("images/empty-plant.png", "placeholder plant");
-		img.setWidth("150px");
-		add(img);
+		img.setWidth("90px");
+		// add(img);
 
-		add(new H2(messages.getString("courses")));
+		add(new H2(messages.getString("courses") + " 📊  🗂 📚 "));
+
 		grid = new Grid<>(Kurssi.class, false);
 		// grid.addColumn(Kurssi::getId).setHeader("ID");
 		grid.addColumn(Kurssi::getNimi).setHeader(messages.getString("name"));

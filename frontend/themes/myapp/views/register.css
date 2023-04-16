@@ -3,7 +3,7 @@
 }
 
 .language-selector {
-  width: 100px;
+  width: 58px;
   font-size: small;
 }
 
@@ -12,10 +12,6 @@
 }
 
 @media only screen and (max-width: 500px) {
-  .language-selector {
-    width: 110px;
-  }
-
   .otsikko {
     margin-top: 110px;
   }
