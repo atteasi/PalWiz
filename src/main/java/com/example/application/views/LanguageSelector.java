@@ -11,10 +11,10 @@ public class LanguageSelector extends Select<String> {
     private final Map<String, Locale> languageMap;
 
     public LanguageSelector() {
-        setLabel("Language");
+        // setLabel("Language");
         languageMap = new HashMap<>();
-        languageMap.put("English", new Locale("en", "EN"));
-        languageMap.put("Suomi", new Locale("fi", "FI"));
+        languageMap.put("en", new Locale("en", "EN"));
+        languageMap.put("fi", new Locale("fi", "FI"));
 
         setItems(languageMap.keySet());
         addValueChangeListener(event -> updateLanguage(event.getValue()));
@@ -26,7 +26,7 @@ public class LanguageSelector extends Select<String> {
                 .filter(entry -> entry.getValue().equals(locale))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElse("English"); // Default to "English" if the locale is not found in the map
+                .orElse("en"); // Default to "English" if the locale is not found in the map
     }
 
     private void updateLanguage(String language) {
