@@ -5,6 +5,10 @@ vaadin-button.round-button {
   margin: 35px 15px 15px 15px;
 }
 
+.rbutton {
+  width: 200px;
+}
+
 div.otsikko {
   margin-top: 25px;
 }
@@ -13,11 +17,18 @@ div.otsikko {
   vaadin-button.round-button {
     display: block;
     margin-top: 5px;
+    height: 130px;
+    width: 130px;
   }
+
+  .rbutton {
+    width: 130px;
+  }
+
   div.otsikko {
     margin: 0px;
   }
   h2.aanestysOtsikko {
-    margin-top: 5px;
+    margin: 5px 10px;
   }
 }

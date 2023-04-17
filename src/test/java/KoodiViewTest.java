@@ -1,3 +1,4 @@
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.koodi.KoodiView;
@@ -11,6 +12,7 @@ import org.mockito.Mockito;
 public class KoodiViewTest {
 
     @Test
+
     @DisplayName("Test that KoodiView contains expected components")
     public void testKoodiViewComponents() {
         KurssiService mockKurssiService = Mockito.mock(KurssiService.class);
@@ -35,7 +37,10 @@ public class KoodiViewTest {
         assertNotNull(button, "Button component not found");
 
         // You can also test the TextField placeholder and Button text if necessary
-        // assertEquals("Expected TextField placeholder", textField.getPlaceholder(), "TextField placeholder is incorrect");
-        // assertEquals("Expected Button text", button.getText(), "Button text is incorrect");
+        // assertEquals("Expected TextField placeholder", textField.getPlaceholder(),
+
+        // "TextField placeholder is incorrect");
+        // assertEquals("Expected Button text", button.getText(),
+        // "Button text is incorrect");
     }
 }

@@ -2,3 +2,5 @@
 @import url('./views/oppitunnit-view.css');
 @import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');
 @import url('./views/kurssi-view.css');
+@import url('./views/register.css');
+@import url('./views/koodi-view.css');

@@ -24,7 +24,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
@@ -48,7 +48,6 @@ public class KurssitView extends VerticalLayout {
 	Locale currentLocale = TranslationUtils.getCurrentLocale();
 	private ResourceBundle messages;
 
-
 	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService) {
 		this.kurssiService = service;
 		this.palauteService = palauteService;
@@ -57,7 +56,7 @@ public class KurssitView extends VerticalLayout {
 		ConfirmDialog dialog = new ConfirmDialog();
 
 		dialog.setText(
-			messages.getString("removeCourse"));
+				messages.getString("removeCourse"));
 
 		dialog.setCancelable(true);
 		dialog.setCancelText(messages.getString("cancel"));
@@ -74,13 +73,14 @@ public class KurssitView extends VerticalLayout {
 			user = userService.getByUsername(authentication.getName());
 		}
 
-		setSpacing(false);
+		setSpacing(true);
 
 		Image img = new Image("images/empty-plant.png", "placeholder plant");
-		img.setWidth("150px");
-		add(img);
+		img.setWidth("90px");
+		// add(img);
 
-		add(new H2(messages.getString("courses")));
+		add(new H2(messages.getString("courses") + " 📊  🗂 📚 "));
+
 		grid = new Grid<>(Kurssi.class, false);
 		// grid.addColumn(Kurssi::getId).setHeader("ID");
 		grid.addColumn(Kurssi::getNimi).setHeader(messages.getString("name"));
@@ -116,7 +116,6 @@ public class KurssitView extends VerticalLayout {
 					button.setIcon(new Icon(VaadinIcon.ADJUST));
 				})).setHeader(messages.getString("edit"));
 
-		
 		kurssit = service.findUserKurssit(user.getId());
 		grid.setItems(kurssit);
 
@@ -126,17 +125,18 @@ public class KurssitView extends VerticalLayout {
 		getStyle().set("text-align", "center");
 
 		grid.addSelectionListener(selection -> {
-    Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
-    if (valittuKurssi.isPresent()) {
-        Notification.show(valittuKurssi.get().getNimi() +" "+ messages.getString("chosen") + ", " +  + valittuKurssi.get().getId());
-        ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
-        kurssiService.setNykyinenKurssiId(valittuKurssi.get().getId());
+			Optional<Kurssi> valittuKurssi = selection.getFirstSelectedItem();
+			if (valittuKurssi.isPresent()) {
+				// Notification.show(valittuKurssi.get().getNimi() +" "+
+				// messages.getString("chosen") + ", " + + valittuKurssi.get().getId());
+				ComponentUtil.setData(UI.getCurrent(), "kurssi", valittuKurssi.get().getId());
+				kurssiService.setNykyinenKurssiId(valittuKurssi.get().getId());
 
-        if (getUI().isPresent()) {
-            getUI().ifPresent(ui -> ui.navigate("palaute"));
-        }
-    }
-});
+				if (getUI().isPresent()) {
+					getUI().ifPresent(ui -> ui.navigate("palaute"));
+				}
+			}
+		});
 
 		hint = new Div();
 		hint.setText(messages.getString("nothingToShow"));
@@ -171,7 +171,7 @@ public class KurssitView extends VerticalLayout {
 	private void setPoistettavaKurssi(Kurssi kurssi) {
 		this.poistettavaKurssi = kurssi;
 	}
-	
+
 	private void setMuokattavaKurssi(Kurssi kurssi) {
 		muokattavaKurssi = kurssi;
 	}
@@ -179,7 +179,7 @@ public class KurssitView extends VerticalLayout {
 	public Grid<Kurssi> getGrid() {
 		return grid;
 	}
-	
+
 	public Div getHint() {
 		return hint;
 	}

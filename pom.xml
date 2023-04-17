@@ -98,13 +98,13 @@
 			<scope>runtime</scope>
 			<version>8.0.30</version>
 		</dependency>
-		<!--
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
-		-->
+	
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -194,6 +194,35 @@
 					<release>11</release>
 				</configuration>
 			</plugin>
+			<build>
+    <plugins>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <excludes>
+                    <exclude>**/*test*</exclude>
+                </excludes>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
 		</plugins>
 	</build>
 

@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 public class AanestaViewTest {
 
     @Test
+
     @DisplayName("Test that AanestaView contains expected components")
     public void testAanestaViewComponents() {
         PalauteService mockPalauteService = Mockito.mock(PalauteService.class);

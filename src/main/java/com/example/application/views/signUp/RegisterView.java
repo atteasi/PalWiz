@@ -25,93 +25,97 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 @Route("register")
 public class RegisterView extends Composite {
-	Locale currentLocale = TranslationUtils.getCurrentLocale();
-	ResourceBundle messages = ResourceBundle.getBundle("messages", currentLocale);
-	private final UserService service;
-	
-	
-	
-	public RegisterView(UserService service) {
-		this.service = service;
-		initContent();
-		
-		
-	}
+    Locale currentLocale = TranslationUtils.getCurrentLocale();
+    ResourceBundle messages = ResourceBundle.getBundle("messages", currentLocale);
+    private final UserService service;
 
-	@Override
-protected Component initContent() {
-    LanguageSelector languageSelector = new LanguageSelector();
+    public RegisterView(UserService service) {
+        this.service = service;
+        initContent();
 
-    TextField firstName = new TextField(messages.getString("name"));
-    TextField surName = new TextField(messages.getString("lastName"));
-    TextField username = new TextField(messages.getString("username"));
-    PasswordField password1 = new PasswordField(messages.getString("password"));
-    PasswordField password2 = new PasswordField(messages.getString("makeSure"));
-    password1.setErrorMessage(messages.getString("errorEmpty"));
+    }
 
-    VerticalLayout formLayout = new VerticalLayout(
-            new H2(messages.getString("register")),
-            firstName, surName,
-            username,
-            password1,
-            password2,
-            new Button(messages.getString("send"), event -> {
-                if (password1.isEmpty()) {
-                    Notification notif = new Notification(messages.getString("emptyPassword"), 2000);
-                    notif.open();
-                } else if (password2.isEmpty()) {
-                    Notification notif = new Notification(messages.getString("emptyPassword"), 2000);
-                    notif.open();
-                } else {
-                    register(
-                            firstName.getValue(),
-                            surName.getValue(),
-                            username.getValue(),
-                            password1.getValue(),
-                            password2.getValue()
-                    );
-                }
-            })
-    );
+    @Override
+    protected Component initContent() {
+        LanguageSelector languageSelector = new LanguageSelector();
+        languageSelector.setClassName("language-selector");
 
-    formLayout.setAlignItems(FlexLayout.Alignment.CENTER);
-    formLayout.setPadding(true);
-    formLayout.setSpacing(true);
-    formLayout.setWidth("400px");
-    formLayout.getStyle().set("margin", "auto");
-    formLayout.getStyle().set("margin-top", "50px");
+        TextField firstName = new TextField(messages.getString("name"));
+        TextField surName = new TextField(messages.getString("lastName"));
+        TextField username = new TextField(messages.getString("username"));
+        PasswordField password1 = new PasswordField(messages.getString("password"));
+        PasswordField password2 = new PasswordField(messages.getString("makeSure"));
+        password1.setErrorMessage(messages.getString("errorEmpty"));
 
-    languageSelector.getStyle().set("position", "absolute");
-    languageSelector.getStyle().set("top", "10px");
-    languageSelector.getStyle().set("left", "10px");
+        firstName.setWidth("300px");
+        surName.setWidth("300px");
+        username.setWidth("300px");
+        password1.setWidth("300px");
+        password2.setWidth("300px");
+        password2.addClassName("save-button");
 
-    Div mainLayout = new Div();
-    mainLayout.add(languageSelector);
-    mainLayout.add(formLayout);
-    mainLayout.setWidth("100%");
-    mainLayout.setHeight("100%");
+        H2 otsikko = new H2(messages.getString("register"));
+        otsikko.addClassName("otsikko");
 
-    return mainLayout;
-}
+        VerticalLayout formLayout = new VerticalLayout(
+                otsikko,
+                firstName, surName,
+                username,
+                password1,
+                password2,
+                new Button(messages.getString("send"), event -> {
+                    if (password1.isEmpty()) {
+                        Notification notif = new Notification(messages.getString("emptyPassword"), 2000);
+                        notif.open();
+                    } else if (password2.isEmpty()) {
+                        Notification notif = new Notification(messages.getString("emptyPassword"), 2000);
+                        notif.open();
+                    } else {
+                        register(
+                                firstName.getValue(),
+                                surName.getValue(),
+                                username.getValue(),
+                                password1.getValue(),
+                                password2.getValue());
+                    }
+                }));
 
+        formLayout.setAlignItems(FlexLayout.Alignment.CENTER);
+        formLayout.setPadding(true);
+        formLayout.setSpacing(false);
+        formLayout.setWidth("400px");
+        formLayout.getStyle().set("margin", "auto");
+        formLayout.getStyle().set("margin-top", "8px");
 
-	private void register(String firstName, String surName, String username, String password1, String password2) {
-		if (username.trim().isEmpty()) {
-			Notification.show(messages.getString("addUserName"));
-		} 
-		else if(service.getByUsername(username) != null) {
-			Notification.show(messages.getString("usernameTaken"));
-		}
-		else if (password1.isEmpty()) {
-		
-		} else if (password2.isEmpty()) {
+        languageSelector.getStyle().set("position", "absolute");
+        languageSelector.getStyle().set("top", "10px");
+        languageSelector.getStyle().set("left", "25px");
 
-		} else {
-			Set<Role> roles = new HashSet();
-			roles.add(Role.ADMIN);
-			service.update(new User(firstName, surName, username, password1, roles));
-			Notification.show(messages.getString("newUserNamed") + " " + username + " " + messages.getString("created"));
-			
-		}
-	}
+        Div mainLayout = new Div();
+        mainLayout.add(languageSelector);
+        mainLayout.add(formLayout);
+        mainLayout.setWidth("100%");
+        mainLayout.setHeight("100%");
+
+        return mainLayout;
+    }
+
+    private void register(String firstName, String surName, String username, String password1, String password2) {
+        if (username.trim().isEmpty()) {
+            Notification.show(messages.getString("addUserName"));
+        } else if (service.getByUsername(username) != null) {
+            Notification.show(messages.getString("usernameTaken"));
+        } else if (password1.isEmpty()) {
+
+        } else if (password2.isEmpty()) {
+
+        } else {
+            Set<Role> roles = new HashSet();
+            roles.add(Role.ADMIN);
+            service.update(new User(firstName, surName, username, password1, roles));
+            Notification
+                    .show(messages.getString("newUserNamed") + " " + username + " " + messages.getString("created"));
+
+        }
+    }
 }

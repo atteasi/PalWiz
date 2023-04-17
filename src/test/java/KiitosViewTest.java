@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 public class KiitosViewTest {
 
     @Test
+
     @DisplayName("Test that KiitosView contains expected components")
     public void testKiitosViewComponents() {
         PalauteService mockPalauteService = Mockito.mock(PalauteService.class);

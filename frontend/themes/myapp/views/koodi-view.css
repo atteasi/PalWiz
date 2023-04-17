@@ -1,0 +1,26 @@
+.koodi-view vaadin-text-field {
+  margin-bottom: 25px;
+  width: 27vw;
+  max-width: 300px;
+  min-width: 200px;
+}
+
+.koodi-view h2 {
+  margin-bottom: 35px;
+}
+
+.koodi-view vaadin-text-field {
+  margin-bottom: 3px;
+}
+
+.koodi-view vaadin-text-field input {
+  padding: 2px 7px;
+}
+
+.koodi-view vaadin-button {
+  width: 27vw;
+  max-width: 300px;
+  min-width: 200px;
+}
+
+/* This is a single-line comment */

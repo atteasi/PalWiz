@@ -28,8 +28,9 @@ public class KurssiService {
 	}
 
 	public void saveKurssi(Kurssi kurssi) {
-		if (kurssi == null) {
-			System.err.println("Kurssi is null. Joku nyt mättää");
+		if (kurssi == null || kurssi.getNimi() == null) {
+			System.err.println("Kurssi is null tai nimi null. Joku nyt mättää");
+			System.out.println(kurssi.getNimi());
 			return;
 		}
 		kurssiRepository.save(kurssi);
@@ -47,9 +48,10 @@ public class KurssiService {
 		kurssiRepository.delete(kurssi);
 		;
 	}
-	
+
 	public void muokkaaKurssia(Kurssi kurssi) {
-		kurssiRepository.updateKurssi(kurssi.getNimi(), kurssi.getKoodi(), kurssi.getAanestysAlkaa(), kurssi.getAanestysLoppuu(),
+		kurssiRepository.updateKurssi(kurssi.getNimi(), kurssi.getKoodi(), kurssi.getAanestysAlkaa(),
+				kurssi.getAanestysLoppuu(),
 				kurssi.getAloitusPvm(), kurssi.getLopetusPvm(), kurssi.getAanestyspaivakoodi(), kurssi.getId());
 	}
 
