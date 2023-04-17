@@ -39,7 +39,7 @@ import com.example.application.data.entity.User;
 public class KurssitView extends VerticalLayout {
 	KurssiService kurssiService;
 	PalauteService palauteService;
-	private User user;
+	private User user = null;
 	Grid<Kurssi> grid;
 	List<Kurssi> kurssit;
 	private static Div hint;
