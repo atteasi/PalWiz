@@ -194,12 +194,6 @@
 					<release>11</release>
 				</configuration>
 			</plugin>
-			<build>
-    <plugins>
-
-    </plugins>
-</build>
-
 		</plugins>
 	</build>
 
