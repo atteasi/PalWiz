@@ -50,9 +50,8 @@ public class KurssiService {
 	}
 
 	public void muokkaaKurssia(Kurssi kurssi) {
-		kurssiRepository.updateKurssi(kurssi.getNimi(), kurssi.getKoodi(), kurssi.getAanestysAlkaa(),
-				kurssi.getAanestysLoppuu(),
-				kurssi.getAloitusPvm(), kurssi.getLopetusPvm(), kurssi.getAanestyspaivakoodi(), kurssi.getId());
+		kurssiRepository.updateKurssi(kurssi.getNimi(), kurssi.getKoodi(),
+				kurssi.getAloitusPvm(), kurssi.getLopetusPvm(), kurssi.getId());
 	}
 
 }

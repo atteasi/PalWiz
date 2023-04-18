@@ -19,10 +19,9 @@ public interface KurssiRepository extends JpaRepository<Kurssi, Long>, JpaSpecif
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE Kurssi k SET k.nimi = :nimi, k.koodi = :koodi, k.aanestysAlkaa = :alkaa, k.aanestysLoppuu = :loppuu,"
-			+ "k.aloitusPvm = :aloituspvm, k.lopetusPvm = :lopetuspvm, k.aanestyspaivakoodi = :aanestyskoodi "
+	@Query("UPDATE Kurssi k SET k.nimi = :nimi, k.koodi = :koodi,"
+			+ "k.aloitusPvm = :aloituspvm, k.lopetusPvm = :lopetuspvm "
 			+ "WHERE k.id = :id")
-	void updateKurssi(@Param("nimi") String nimi, @Param("koodi") String koodi, @Param("alkaa") Time alkaa,
-			@Param("loppuu") Time loppuu, @Param("aloituspvm") Date aloitusPvm, @Param("lopetuspvm") Date lopetusPvm, @Param("aanestyskoodi") String aanestyskoodi,
+	void updateKurssi(@Param("nimi") String nimi, @Param("koodi") String koodi,  @Param("aloituspvm") Date aloitusPvm, @Param("lopetuspvm") Date lopetusPvm,
 			@Param("id") int id);
 }

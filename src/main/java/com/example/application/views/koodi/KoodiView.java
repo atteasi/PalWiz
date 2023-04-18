@@ -54,6 +54,7 @@ public class KoodiView extends VerticalLayout {
 		go.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
 				ButtonVariant.LUMO_CONTRAST);
 		go.addClickListener(clickEvent -> {
+			/*
 			List<Kurssi> kurssit = ks.findKurssit();
 			if (!kurssit.contains(tf.getValue())) {
 				Notification.show("Kyseistä koodia ei ole olemassa! Tarkasta koodi!");
@@ -79,7 +80,7 @@ public class KoodiView extends VerticalLayout {
 						Notification.show(messages.getString("itsEndOrComing"));
 					}
 				}
-			}
+			}*/
 		});
 
 		add(tf, go);

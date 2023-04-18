@@ -2,8 +2,6 @@ package com.example.application.data.entity;
 
 import java.sql.Date;
 import java.sql.Time;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "kurssi")
@@ -28,53 +25,22 @@ public class Kurssi {
 	private String koodi;
 	private Date aloitusPvm;
 	private Date lopetusPvm;
-	private String aanestyspaivakoodi;
-	private Time aanestysAlkaa;
-	private Time aanestysLoppuu;
 
 	public Kurssi() {
 
 	}
 
-	public Kurssi(String nimi, String koodi, Date alkuPvm, Date loppuPvm, String aanestysPaivaKoodi, Time aanestysAlkaa,
-			Time aanestysLoppuu, User user) {
-		this.nimi = nimi;
-		this.koodi = koodi;
-		this.aloitusPvm = alkuPvm;
-		this.lopetusPvm = loppuPvm;
-		this.aanestyspaivakoodi = aanestysPaivaKoodi;
-		this.aanestysAlkaa = aanestysAlkaa;
-		this.aanestysLoppuu = aanestysLoppuu;
+	public Kurssi(String n, String k, Date ap, Date lp, User user) {
+		nimi = n;
+		koodi = k;
+		aloitusPvm = ap;
+		lopetusPvm = lp;
 		this.user = user;
 
 	}
 
-	public Time getAanestysAlkaa() {
-		return aanestysAlkaa;
-	}
-
-	public void setAanestysAlkaa(Time aanestysAlkaa) {
-		this.aanestysAlkaa = aanestysAlkaa;
-	}
-
-	public Time getAanestysLoppuu() {
-		return aanestysLoppuu;
-	}
-
-	public void setAanestysLoppuu(Time aanestysLoppuu) {
-		this.aanestysLoppuu = aanestysLoppuu;
-	}
-
 	public String getNimi() {
 		return nimi;
-	}
-
-	public String getAanestyspaivakoodi() {
-		return aanestyspaivakoodi;
-	}
-
-	public void setAanestyspaivakoodi(String aanestyspaivakoodi) {
-		this.aanestyspaivakoodi = aanestyspaivakoodi;
 	}
 
 	public void setNimi(String nimi) {
@@ -111,14 +77,6 @@ public class Kurssi {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }
