@@ -6,6 +6,7 @@ import java.sql.Time;
 @Entity
 @Table(name = "aanestys")
 public class AanestysAjankohta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -13,18 +14,20 @@ public class AanestysAjankohta {
     @ManyToOne
     private Kurssi kurssi;
 
-    //0=su, 1=ma, 2=ti..... 6=la
+    //1=su, 2=ma, 3=ti..... 7=la
     private int paiva;
     private Time aanestysAlkaa;
     private Time aanestysLoppuu;
 
-    public AanestysAjankohta(Kurssi kurssi, int paiva, Time aanestysAlkaa, Time aanestysLoppuu){
+    public AanestysAjankohta(Kurssi kurssi, int paiva, Time aanestysAlkaa, Time aanestysLoppuu) {
         this.kurssi = kurssi;
         this.paiva = paiva;
         this.aanestysAlkaa = aanestysAlkaa;
         this.aanestysLoppuu = aanestysLoppuu;
     }
-    public AanestysAjankohta() {}
+
+    public AanestysAjankohta() {
+    }
 
     public int getId() {
         return id;

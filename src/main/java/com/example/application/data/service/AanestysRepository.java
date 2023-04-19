@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface AanestysRepository extends JpaRepository<AanestysAjankohta, Long>, JpaSpecificationExecutor<AanestysAjankohta> {
-    //AanestysAjankohta findAanestysAjankohtaByKurssiId(@Param("kurssi_id") int id);
+    List<AanestysAjankohta> findAanestysAjankohtaByKurssi(@Param("kurssi_id") Kurssi kurssi);
 
 }
