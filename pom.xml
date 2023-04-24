@@ -98,13 +98,13 @@
 			<scope>runtime</scope>
 			<version>8.0.30</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-	
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -266,30 +266,38 @@
 						</configuration>
 					</plugin>
 					<plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*test*</exclude>
-												<exclude>com/example/application/components/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.7</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<excludes>
+								 <exclude>**/*Test.*</exclude>
+								<exclude>com/example/application/components/appnav/**</exclude>
+								<exclude>com/example/application/security/**</exclude>
+								<exclude>com/vaadin/**</exclude>
+								<exclude>com/example/application/components/**</exclude>
+								<exclude>com/example/application/security/**</exclude>
+								<exclude>com/vaadin/**</exclude>
+								<exclude>com/example/application/components/**</exclude>
+								<exclude>com/example/application/security/**</exclude>
+								<exclude>testbench/**</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
