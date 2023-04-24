@@ -286,6 +286,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*test*</exclude>
+												<exclude>com/example/application/components/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
