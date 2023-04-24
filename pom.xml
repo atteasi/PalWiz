@@ -283,7 +283,9 @@
 								</goals>
 							</execution>
 						</executions>
+						
 						<configuration>
+						 <argLine>${argLine}</argLine>
 							<excludes>
 								 <exclude>**/*Test.*</exclude>
 								<exclude>com/example/application/components/appnav/**</exclude>
@@ -296,6 +298,7 @@
 								<exclude>com/example/application/security/**</exclude>
 								<exclude>testbench/**</exclude>
 							</excludes>
+							  <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 						</configuration>
 					</plugin>
 				</plugins>
