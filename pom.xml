@@ -297,6 +297,7 @@
 								<exclude>com/example/application/security/**</exclude>
 								<exclude>testbench/**</exclude>
 							</excludes>
+							  <propertyName>jacoco.agent.argLine</propertyName>
 							  <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 						</configuration>
 					</plugin>
@@ -305,7 +306,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M5</version>
 						 <configuration>
-            <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.6.3.201306030806/org.jacoco.agent-0.6.3.201306030806-runtime.jar=destfile=${project.build.directory}\jacoco.exec</argLine>
+            <argLine>${jacoco.agent.argLine}</argLine>
       </configuration>
         </plugin>
 				</plugins>
