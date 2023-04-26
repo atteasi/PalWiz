@@ -9,11 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.application.data.entity.Kurssi;
 import com.example.application.data.entity.Palaute;
-
-import net.bytebuddy.asm.Advice.Local;
 
 public interface PalauteRepository extends JpaRepository<Palaute, Long>, JpaSpecificationExecutor<Palaute> {
 	@Query("SELECT p FROM Palaute p WHERE "
