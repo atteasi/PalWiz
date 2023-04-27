@@ -47,7 +47,6 @@ public class KurssiService {
 
     public void poistaKurssi(Kurssi kurssi) {
         kurssiRepository.delete(kurssi);
-        ;
     }
 
     public void muokkaaKurssia(Kurssi kurssi) {
