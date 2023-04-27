@@ -1,5 +1,7 @@
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.example.application.data.service.AanestysService;
 import com.example.application.data.service.KurssiService;
 import com.example.application.views.koodi.KoodiView;
 import com.vaadin.flow.component.button.Button;
@@ -16,7 +18,8 @@ public class KoodiViewTest {
     @DisplayName("Test that KoodiView contains expected components")
     public void testKoodiViewComponents() {
         KurssiService mockKurssiService = Mockito.mock(KurssiService.class);
-        KoodiView koodiView = new KoodiView(mockKurssiService);
+        AanestysService mockAanestysService = Mockito.mock(AanestysService.class);
+        KoodiView koodiView = new KoodiView(mockKurssiService, mockAanestysService);
 
         H2 h2 = null;
         TextField textField = null;
