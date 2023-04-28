@@ -74,7 +74,6 @@ public class KurssiRepositoryTest {
         assertEquals(kurssi1.getNimi(), kurssi.getNimi());
     }
 
-    /*
     @Test
     public void testFindKurssiByUserId() {
         List<Kurssi> kurssit = kurssiService.findUserKurssit(kurssi1.getUser().getId());
@@ -83,7 +82,7 @@ public class KurssiRepositoryTest {
         assertEquals(kurssi1.getNimi(), kurssit.get(0).getNimi());
 
     }
-    */
+
     @Test
     public void testUpdateKurssi() {
         kurssi1.setNimi("Ohjelmointi 3");

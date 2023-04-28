@@ -79,4 +79,8 @@ public class Kurssi {
         this.id = id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
 }
