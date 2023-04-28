@@ -58,10 +58,17 @@ vaadin-scroller[slot='drawer'][overflow~='bottom'] {
 
 vaadin-tabs {
   max-width: 218px;
+  margin-left: 120px !important;
 }
 
 vaadin-menu-bar {
   margin: 0px 20px;
+}
+
+@media only screen and (max-width: 1050px) {
+  vaadin-tabs {
+    margin-left: 0px !important;
+  }
 }
 
 @media only screen and (max-width: 730px) {

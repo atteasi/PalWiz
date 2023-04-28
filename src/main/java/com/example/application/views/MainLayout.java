@@ -83,7 +83,7 @@ public class MainLayout extends AppLayout {
         row.add(tabs, 1);
         Div div = new Div();
         div.setClassName("tayte-div");
-        // div.setWidth("30px");
+        // div.setWidth("0px");
         row.add(div, 1);
         board.addRow(row);
 
