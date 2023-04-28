@@ -8,13 +8,11 @@ Projekti on Java-ohjelmointikielellä toteutettu Vaadin sovellus, joka hyödynt�
 
 Sovelluksen ovat kehittäneet Atte Asikainen, Juho Ahola, Eveliina Heino ja Sebastian Wolf.
 
-
 ## Sovelluksen käyttöönotto
 
 Sovellus on toteutettu Maven projektina. Voit kloonata projektin GitHubista omalle koneellesi ja sen jälkeen avata sen mieleisessäsi IDE:ssä tavallisen Maven projektin tapaan. Vaadin tukee muun muassa Eclipseä, IntelliJ IDEA, NetBeansia ja VS Codea. [Tarkemmat ohjeet löytyvät täältä.](https://vaadin.com/docs/latest/guide/step-by-step/importing). Koneella tulee olla asennettuna Node.js. Noden voi ladata osoitteesta [nodejs.org](https://nodejs.org/en/). Sovellus käynnistetään `Application.java`-tiedostosta.
 
 Sovellusta pääset käyttämään osoitteessa: []().
-
 
 ## Projektin rakenne
 
@@ -40,6 +38,9 @@ JAR tiedoston, joka sisältää kaikki tarvittavat asiat tuotantoon viemiseksi. 
 Voit käynnistää JAR-tiedoston komennolla:
 `java -jar target/myapp-1.0-SNAPSHOT.jar`
 
+## Sovelluksen testaus
+
+Sovellusta on testattu monin tavoin koko prosessin ajan. Testien tekemiseen on käytetty [JUnit5:sta](https://junit.org/junit5/) ja [Mockitoa](https://site.mockito.org/). Testit on ajettu Jenkinsissä, jossa on seurattu testien läpimenoa ja testien trendiä. Testikattavuusraportti on generoitu säännöllisesti Eclipsessä. Testikattavuuden generoimisessa hyödynnetään Mavenin [Surefire-pluginia](https://maven.apache.org/surefire/maven-surefire-report-plugin/).
 
 ## Hyödyllisiä linkkejä
 
