@@ -51,6 +51,8 @@ public class KurssiViewTest {
         String expectedMessage = "Cannot save: KurssiView is not in a valid state";
         String actualMessage = exception.getMessage();
 
+        System.out.println(actualMessage);
+
         assertTrue(actualMessage.contains(expectedMessage));
     }
 }

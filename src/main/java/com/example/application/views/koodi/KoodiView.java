@@ -29,14 +29,13 @@ import com.example.application.data.entity.Kurssi;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @AnonymousAllowed
-@RolesAllowed(value = {"USER", "ADMIN"})
+@RolesAllowed(value = { "USER", "ADMIN" })
 @PageTitle("Koodi")
 @Route(value = "koodi", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 
 public class KoodiView extends VerticalLayout {
     KurssiService ks;
-
 
     Locale currentLocale = TranslationUtils.getCurrentLocale();
     ResourceBundle messages;
@@ -60,9 +59,6 @@ public class KoodiView extends VerticalLayout {
         go.addClickListener(clickEvent -> {
 
             List<Kurssi> kurssit = ks.findKurssit();
-            if (!kurssit.contains(tf.getValue())) {
-                Notification.show("Kyseistä koodia ei ole olemassa! Tarkasta koodi!");
-            }
             for (Kurssi k : kurssit) {
                 if (tf.getValue().equals(k.getKoodi())) {
                     List<AanestysAjankohta> aanestysAjankohdat = as.findByKurssi(k);
