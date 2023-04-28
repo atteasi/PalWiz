@@ -43,5 +43,6 @@ public class PalauteTest2 {
         assertEquals(LocalDate.of(2023, 4, 2), palaute.getPaivamaara());
         assertEquals(10, palaute.getKokonaismaara());
         assertEquals(newKurssi, palaute.getKurssi());
+
     }
 }
