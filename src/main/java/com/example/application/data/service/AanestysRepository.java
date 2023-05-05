@@ -11,7 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Interface for the feedback time repository
+ */
 public interface AanestysRepository extends JpaRepository<AanestysAjankohta, Long>, JpaSpecificationExecutor<AanestysAjankohta> {
+    /**
+     * Lists all the feedback times in the database based on the course id
+     *
+     * @param kurssi The course id that we want the times from
+     * @return List of feedback times
+     */
     List<AanestysAjankohta> findAanestysAjankohtaByKurssi(@Param("kurssi_id") Kurssi kurssi);
 
     @Transactional
