@@ -83,7 +83,7 @@ public class MainLayout extends AppLayout {
         row.add(tabs, 1);
         Div div = new Div();
         div.setClassName("tayte-div");
-        // div.setWidth("30px");
+        // div.setWidth("0px");
         row.add(div, 1);
         board.addRow(row);
 
@@ -98,11 +98,12 @@ public class MainLayout extends AppLayout {
         java.util.Optional<User> maybeUser = authenticatedUser.get();
 
         if (maybeUser.isPresent()) {
+
             tabs.add(createTab(messages.getString("courses"), KurssitView.class),
                     createTab(messages.getString("addCourse"), KurssiView.class));
             return tabs;
         } else {
-            tabs.add(createTab(messages.getString("code"), KoodiView.class));
+            tabs.setVisible(false);
             return tabs;
         }
     }

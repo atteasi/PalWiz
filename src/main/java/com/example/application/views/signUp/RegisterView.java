@@ -80,6 +80,9 @@ public class RegisterView extends Composite {
                     }
                 }));
 
+        Button palaa = new Button(messages.getString("goBack"));
+		palaa.addClickListener(e -> palaa.getUI().ifPresent(ui -> ui.navigate("koodi")));
+        formLayout.add(palaa);
         formLayout.setAlignItems(FlexLayout.Alignment.CENTER);
         formLayout.setPadding(true);
         formLayout.setSpacing(false);

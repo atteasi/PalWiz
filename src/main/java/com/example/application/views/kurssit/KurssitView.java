@@ -8,6 +8,8 @@ import javax.annotation.security.RolesAllowed;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.example.application.data.service.AanestysService;
 import com.example.application.data.service.KurssiService;
 import com.example.application.data.service.PalauteService;
 import com.example.application.data.service.UserService;
@@ -39,6 +41,7 @@ import com.example.application.data.entity.User;
 public class KurssitView extends VerticalLayout {
 	KurssiService kurssiService;
 	PalauteService palauteService;
+	AanestysService aanestysService;
 	private User user = null;
 	Grid<Kurssi> grid;
 	List<Kurssi> kurssit;
@@ -48,9 +51,10 @@ public class KurssitView extends VerticalLayout {
 	Locale currentLocale = TranslationUtils.getCurrentLocale();
 	private ResourceBundle messages;
 
-	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService) {
+	public KurssitView(KurssiService service, UserService userService, PalauteService palauteService, AanestysService aanestysService) {
 		this.kurssiService = service;
 		this.palauteService = palauteService;
+		this.aanestysService = aanestysService;
 		messages = ResourceBundle.getBundle("messages", currentLocale);
 
 		ConfirmDialog dialog = new ConfirmDialog();
@@ -153,6 +157,7 @@ public class KurssitView extends VerticalLayout {
 			return;
 		kurssit.remove(kurssi);
 		palauteService.poistaPalauteet(kurssi);
+		aanestysService.poistaAanestykset(kurssi);
 		kurssiService.poistaKurssi(kurssi);
 		refreshGrid();
 	}

@@ -34,4 +34,8 @@ public class AanestysService {
         return repository.findAanestysAjankohtaByKurssi(k);
     }
 
+    public void poistaAanestykset(Kurssi kurssi) {
+        repository.deleteAanestykset(kurssi);
+    }
+
 }

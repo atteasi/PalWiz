@@ -54,6 +54,7 @@ public class KurssiView extends Div {
     private ResourceBundle messages = ResourceBundle.getBundle("messages", currentLocale);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private User user;
+    AanestysService aanestysService;
     private String currentUserName;
 
     TimePicker[] pickers = new TimePicker[14];
@@ -77,6 +78,8 @@ public class KurssiView extends Div {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             user = userService.getByUsername(authentication.getName());
         }
+
+        this.aanestysService = aanestysService;
 
         String[] viikonpaivat = {
                 messages.getString("monday"),
@@ -114,6 +117,12 @@ public class KurssiView extends Div {
             nimi.setValue(kurssi.getNimi());
             aloitusPvm.setValue(kurssi.getAloitusPvm().toLocalDate());
             lopetusPvm.setValue(kurssi.getLopetusPvm().toLocalDate());
+            List<AanestysAjankohta> lista = aanestysService.findByKurssi(kurssi);
+            for (AanestysAjankohta aa: lista) {
+                if (aa.getPaiva() == 1) {
+                    items[6].setValue(true);
+                } else { items[aa.getPaiva()-2].setValue(true); }
+            }
             ComponentUtil.setData(UI.getCurrent(), Kurssi.class, null);
         }
         addClassName("kurssi-view");
@@ -139,6 +148,8 @@ public class KurssiView extends Div {
                 kurssi.setKoodi(koodi);
                 kurssi.setAloitusPvm(Date.valueOf(aloitusPvm.getValue().format(formatter)));
                 kurssi.setLopetusPvm(Date.valueOf(lopetusPvm.getValue().format(formatter)));
+                aanestysService.poistaAanestykset(kurssi);
+                tsekkaaBoksitJaLuoAanestykset(kurssi);
                 ks.muokkaaKurssia(kurssi);
                 Notification.show(messages.getString("courseA") + " " + nimi.getValue() + " " + messages.getString("edited"));
             } else {
@@ -147,18 +158,7 @@ public class KurssiView extends Div {
                 ks.saveKurssi(kurssi);
                 //Time.valueOf(palauteAlkaa.getValue()), Time.valueOf(palauteLoppuu.getValue())
                 Notification.show(messages.getString("newCourseName") + " " + nimi.getValue() + " " + messages.getString("created"));
-                int i = 0;
-                int j = 2;
-                for (Checkbox cb : items) {
-                    if (cb.getValue()) {
-                        aanestysService.update(new AanestysAjankohta(kurssi, j, Time.valueOf(pickers[i].getValue()), Time.valueOf(pickers[i + 1].getValue())));
-                    }
-                    i = i + 2;
-                    j++;
-                    if (j >= 7) {
-                        j = 1;
-                    }
-                }
+                tsekkaaBoksitJaLuoAanestykset(kurssi);
             }
             save.getUI().ifPresent(ui ->
                     ui.navigate("kurssit"));
@@ -176,10 +176,10 @@ public class KurssiView extends Div {
         for (int i = 0; i < pickers.length; i++) {
             TimePicker picker = new TimePicker();
             if ((i + 1) % 2 == 0) {
-                picker.setLabel("Palautteen antaminen loppuu " + paivat[day] + "na:");
+                picker.setLabel(messages.getString("feedbackEnd") + " " + paivat[day] + messages.getString("na"));
                 day++;
             } else {
-                picker.setLabel("Palautteen antaminen alkaa " + paivat[day] + "na:");
+                picker.setLabel(messages.getString("feedbackStart") + " " + paivat[day] + messages.getString("na"));
             }
             picker.setVisible(false);
             pickers[i] = picker;
@@ -215,14 +215,14 @@ public class KurssiView extends Div {
 
     private DatePicker.DatePickerI18n luoI18n() {
         DatePicker.DatePickerI18n suomiI18n = new DatePicker.DatePickerI18n();
-        suomiI18n.setMonthNames(List.of("Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu",
-                "Heinäkuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"));
+        suomiI18n.setMonthNames(List.of(messages.getString("january"), messages.getString("february"), messages.getString("march"), messages.getString("april"), messages.getString("may"), messages.getString("june"),
+        messages.getString("july"), messages.getString("august"), messages.getString("september"), messages.getString("october"), messages.getString("november"), messages.getString("december")));
         suomiI18n.setWeekdays(
-                List.of("Sunnuntai", "Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai"));
-        suomiI18n.setWeekdaysShort(List.of("Su", "Ma", "Ti", "Ke", "To", "Pe", "La"));
-        suomiI18n.setWeek("Viikko");
-        suomiI18n.setToday("Tänään");
-        suomiI18n.setCancel("Peru");
+                List.of(messages.getString("sunday"), messages.getString("monday"), messages.getString("tuesday"), messages.getString("wednesday"), messages.getString("thursday"), messages.getString("friday"), messages.getString("saturday")));
+        suomiI18n.setWeekdaysShort(List.of(messages.getString("sun"), messages.getString("mon"), messages.getString("tue"), messages.getString("wed"), messages.getString("thu"), messages.getString("fri"), messages.getString("sat")));
+        suomiI18n.setWeek(messages.getString("week"));
+        suomiI18n.setToday(messages.getString("today"));
+        suomiI18n.setCancel(messages.getString("cancel"));
         suomiI18n.setFirstDayOfWeek(1);
         return suomiI18n;
     }
@@ -263,7 +263,7 @@ public class KurssiView extends Div {
         if (ComponentUtil.getData(UI.getCurrent(), Kurssi.class) == null) {
             return;
         }
-        System.out.println("Muokataan kurssia");
+        System.out.println(messages.getString("modifyCourse") );
         muokataanko = true;
         ComponentUtil.setData(UI.getCurrent(), String.class, null);
     }
@@ -343,5 +343,39 @@ public class KurssiView extends Div {
             }
         });
         return items;
+    }
+
+    public void tsekkaaBoksitJaLuoAanestykset(Kurssi kurssi) {
+        int i = 0;
+        int j = 2;
+        for (Checkbox cb : items) {
+            if (cb.getValue()) {
+                aanestysService.update(new AanestysAjankohta(kurssi, j, Time.valueOf(pickers[i].getValue()), Time.valueOf(pickers[i + 1].getValue())));
+            }
+            i = i + 2;
+            j++;
+            if (j > 7) {
+                j = 1;
+            }
+        }
+    }
+
+	public Object getNimi() {
+		return null;
+	}
+
+    public Object getAloitusPvm() {
+        return null;
+    }
+
+    public Object getLopetusPvm() {
+        return null;
+    }
+
+    public void save() {
+    }
+
+    public Object isValid() {
+        return null;
     }
 }
