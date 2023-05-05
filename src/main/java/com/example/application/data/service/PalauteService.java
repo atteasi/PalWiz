@@ -28,6 +28,10 @@ public class PalauteService {
         this.palauteRepository = palauteRepository;
     }
 
+    public List<Palaute> findAllPalautteet(){
+        return palauteRepository.findAll();
+    }
+
     /**
      * Method used to find all good feedbacks from a certain course
      *
@@ -152,5 +156,6 @@ public class PalauteService {
     public void poistaPalauteet(Kurssi kurssi) {
         palauteRepository.deleteKurssilla(kurssi);
     }
+
 
 }
