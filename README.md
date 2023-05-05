@@ -10,7 +10,11 @@ Sovelluksen ovat kehittäneet Atte Asikainen, Juho Ahola, Eveliina Heino ja Seba
 
 ## Sovelluksen käyttöönotto
 
-Sovellus on toteutettu Maven projektina. Voit kloonata projektin GitHubista omalle koneellesi ja sen jälkeen avata sen mieleisessäsi IDE:ssä tavallisen Maven projektin tapaan. Vaadin tukee muun muassa Eclipseä, IntelliJ IDEA, NetBeansia ja VS Codea. [Tarkemmat ohjeet löytyvät täältä.](https://vaadin.com/docs/latest/guide/step-by-step/importing). Koneella tulee olla asennettuna Node.js. Noden voi ladata osoitteesta [nodejs.org](https://nodejs.org/en/). Sovellus käynnistetään `Application.java`-tiedostosta.
+Sovellus on toteutettu Maven projektina. Voit kloonata projektin GitHubista omalle koneellesi ja sen jälkeen avata sen mieleisessäsi IDE:ssä tavallisen Maven projektin tapaan. Vaadin tukee muun muassa Eclipseä, IntelliJ IDEA, NetBeansia ja VS Codea. [Tarkemmat ohjeet löytyvät täältä.](https://vaadin.com/docs/latest/guide/step-by-step/importing). Koneella tulee olla asennettuna Node.js. Noden voi ladata osoitteesta [nodejs.org](https://nodejs.org/en/). Tarvittaessa aja komento `npm init` sovelluksen juurihakemistossa. Sovelluksessa käytetään Java 11:sta.
+
+Sovelluksen tietokanta sijaitsee Metropolian Educloud-palvelimella virtuaalikoneella. Virtuaalikone on tilattu Juhon nimellä ja sen käyttöaika loppuu toko-/kesäkuussa 2023. Tietokannan käyttöä varten käyttäjä tarvitsee koneelleen tiedoston, jossa on tarvittavat tiedot tietokantayhteyden muodostamiseen. Oikea polku tiedoston sijaintiin tulee käydä muokkaamassa `application.properties` -tiedostoon, kohtaan `spring.config.import="optional:file:/Users/omaPolku/db.properties"`. Application.properties -tiedosto löytty kansiosta: src\main\resources. Jos sovellusta käytetään Metropolian verkon ulkopuolella, tulee käyttää Metropolian VPN-yhteyttä.
+
+Sovellus käynnistetään `Application.java`-tiedostosta. Tiedosto löytyy polulta: src\main\java\com\example\application\Application.java.
 
 ## Projektin rakenne
 
