@@ -47,7 +47,7 @@ public class Palaute {
 		return paivamaara;
 	}
 
-	public int getId() {
+	/*public int getId() {
 		return id;
 	}
 
@@ -61,7 +61,7 @@ public class Palaute {
 
 	public void setVastaus(int vastaus) {
 		this.vastaus = vastaus;
-	}
+	}*/
 
 	public void setPaivamaara(LocalDate paivamaara) {
 		this.paivamaara = paivamaara;
@@ -83,9 +83,9 @@ public class Palaute {
 		kokonaismaara = maara;
 	}
 
-	public String toString() {
+	/*public String toString() {
 		return "palaute id: " + id + ", kurssi: " + kurssi.getNimi() + ", vastaus: "
 				+ vastaus;
-	}
+	}*/
 
 }

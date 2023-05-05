@@ -54,9 +54,10 @@ public class PalauteView extends Main {
     PalauteService service;
     KurssiService kurssiService;
     DataSeries series2 = new DataSeries();
+    Chart chart = new Chart(ChartType.PIE);
     Chart chart2 = new Chart(ChartType.PIE);
     Locale currentLocale = TranslationUtils.getCurrentLocale();
-	private ResourceBundle messages;
+    private ResourceBundle messages;
 
     public PalauteView(PalauteService service, KurssiService kService) {
         messages = ResourceBundle.getBundle("messages", currentLocale);
@@ -65,85 +66,93 @@ public class PalauteView extends Main {
         addClassName("palaute-view");
 
         Board board = new Board();
-        board.addRow(createServiceHealth(), createResponseTimes2());
+        board.addRow(palauteNakyma(), luoPiirakkaGraafi(), createResponseTimes());
         add(board);
     }
 
-    private Component createHighlight(String title, String value, Double percentage) {
-        VaadinIcon icon = VaadinIcon.ARROW_UP;
-        String prefix = "";
-        String theme = "badge";
+    // private Component createHighlight(String title, String value, Double
+    // percentage) {
+    // VaadinIcon icon = VaadinIcon.ARROW_UP;
+    // String prefix = "";
+    // String theme = "badge";
 
-        if (percentage == 0) {
-            prefix = "±";
-        } else if (percentage > 0) {
-            prefix = "+";
-            theme += " success";
-        } else if (percentage < 0) {
-            icon = VaadinIcon.ARROW_DOWN;
-            theme += " error";
-        }
+    // if (percentage == 0) {
+    // prefix = "±";
+    // } else if (percentage > 0) {
+    // prefix = "+";
+    // theme += " success";
+    // } else if (percentage < 0) {
+    // icon = VaadinIcon.ARROW_DOWN;
+    // theme += " error";
+    // }
 
-        H2 h2 = new H2(title);
-        h2.addClassNames(FontWeight.NORMAL, Margin.NONE, TextColor.SECONDARY, FontSize.XSMALL);
+    // H2 h2 = new H2(title);
+    // h2.addClassNames(FontWeight.NORMAL, Margin.NONE, TextColor.SECONDARY,
+    // FontSize.XSMALL);
 
-        Span span = new Span(value);
-        span.addClassNames(FontWeight.SEMIBOLD, FontSize.XXXLARGE);
+    // Span span = new Span(value);
+    // span.addClassNames(FontWeight.SEMIBOLD, FontSize.XXXLARGE);
 
-        Icon i = icon.create();
-        i.addClassNames(BoxSizing.BORDER, Padding.XSMALL);
+    // Icon i = icon.create();
+    // i.addClassNames(BoxSizing.BORDER, Padding.XSMALL);
 
-        Span badge = new Span(i, new Span(prefix + percentage.toString()));
-        badge.getElement().getThemeList().add(theme);
+    // Span badge = new Span(i, new Span(prefix + percentage.toString()));
+    // badge.getElement().getThemeList().add(theme);
 
-        VerticalLayout layout = new VerticalLayout(h2, span, badge);
-        layout.addClassName(Padding.LARGE);
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        return layout;
-    }
+    // VerticalLayout layout = new VerticalLayout(h2, span, badge);
+    // layout.addClassName(Padding.LARGE);
+    // layout.setPadding(false);
+    // layout.setSpacing(false);
+    // return layout;
+    // }
 
-    private Component createViewEvents() {
-        // Header
-        Select year = new Select();
-        year.setItems("2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021");
-        year.setValue("2021");
-        year.setWidth("100px");
+    // private Component createViewEvents() {
+    // // Header
+    // Select year = new Select();
+    // year.setItems("2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018",
+    // "2019", "2020", "2021");
+    // year.setValue("2021");
+    // year.setWidth("100px");
 
-        HorizontalLayout header = createHeader("View events", "City/month");
-        header.add(year);
+    // HorizontalLayout header = createHeader("View events", "City/month");
+    // header.add(year);
 
-        // Chart
-        Chart chart = new Chart(ChartType.AREASPLINE);
-        Configuration conf = chart.getConfiguration();
-        conf.getChart().setStyledMode(true);
+    // // Chart
+    // Chart chart = new Chart(ChartType.AREASPLINE);
+    // Configuration conf = chart.getConfiguration();
+    // conf.getChart().setStyledMode(true);
 
-        XAxis xAxis = new XAxis();
-        xAxis.setCategories("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-        conf.addxAxis(xAxis);
+    // XAxis xAxis = new XAxis();
+    // xAxis.setCategories("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+    // "Sep", "Oct", "Nov", "Dec");
+    // conf.addxAxis(xAxis);
 
-        conf.getyAxis().setTitle("Values");
+    // conf.getyAxis().setTitle("Values");
 
-        PlotOptionsAreaspline plotOptions = new PlotOptionsAreaspline();
-        plotOptions.setPointPlacement(PointPlacement.ON);
-        plotOptions.setMarker(new Marker(false));
-        conf.addPlotOptions(plotOptions);
+    // PlotOptionsAreaspline plotOptions = new PlotOptionsAreaspline();
+    // plotOptions.setPointPlacement(PointPlacement.ON);
+    // plotOptions.setMarker(new Marker(false));
+    // conf.addPlotOptions(plotOptions);
 
-        conf.addSeries(new ListSeries("Berlin", 189, 191, 291, 396, 501, 403, 609, 712, 729, 942, 1044, 1247));
-        conf.addSeries(new ListSeries("London", 138, 246, 248, 348, 352, 353, 463, 573, 778, 779, 885, 887));
-        conf.addSeries(new ListSeries("New York", 65, 65, 166, 171, 293, 302, 308, 317, 427, 429, 535, 636));
-        conf.addSeries(new ListSeries("Tokyo", 0, 11, 17, 123, 130, 142, 248, 349, 452, 454, 458, 462));
+    // conf.addSeries(new ListSeries("Berlin", 189, 191, 291, 396, 501, 403, 609,
+    // 712, 729, 942, 1044, 1247));
+    // conf.addSeries(new ListSeries("London", 138, 246, 248, 348, 352, 353, 463,
+    // 573, 778, 779, 885, 887));
+    // conf.addSeries(new ListSeries("New York", 65, 65, 166, 171, 293, 302, 308,
+    // 317, 427, 429, 535, 636));
+    // conf.addSeries(new ListSeries("Tokyo", 0, 11, 17, 123, 130, 142, 248, 349,
+    // 452, 454, 458, 462));
 
-        // Add it all together
-        VerticalLayout viewEvents = new VerticalLayout(header, chart);
-        viewEvents.addClassName(Padding.LARGE);
-        viewEvents.setPadding(false);
-        viewEvents.setSpacing(false);
-        viewEvents.getElement().getThemeList().add("spacing-l");
-        return viewEvents;
-    }
+    // // Add it all together
+    // VerticalLayout viewEvents = new VerticalLayout(header, chart);
+    // viewEvents.addClassName(Padding.LARGE);
+    // viewEvents.setPadding(false);
+    // viewEvents.setSpacing(false);
+    // viewEvents.getElement().getThemeList().add("spacing-l");
+    // return viewEvents;
+    // }
 
-    private Component createServiceHealth() {
+    private Component palauteNakyma() {
         Kurssi kurzzi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
         HorizontalLayout header = createHeader(kurzzi.getNimi(), kurzzi.getKoodi());
 
@@ -176,32 +185,32 @@ public class PalauteView extends Main {
             }
         });
 
-        VerticalLayout serviceHealth = new VerticalLayout(header, grid);
-        serviceHealth.addClassName(Padding.LARGE);
-        serviceHealth.setPadding(false);
-        serviceHealth.setSpacing(false);
-        serviceHealth.getElement().getThemeList().add("spacing-l");
-        return serviceHealth;
+        VerticalLayout palauteNakyma = new VerticalLayout(header, grid);
+        palauteNakyma.addClassName(Padding.LARGE);
+        palauteNakyma.setPadding(false);
+        palauteNakyma.setSpacing(false);
+        palauteNakyma.getElement().getThemeList().add("spacing-l");
+        return palauteNakyma;
     }
 
     private DataSeries updateGraphSeries(DataSeries series) {
         Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
-        series.add(new DataSeriesItem("Hyvä",
+        series.add(new DataSeriesItem(messages.getString("good"),
                 service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-        series.add(new DataSeriesItem("Neutraali",
+        series.add(new DataSeriesItem(messages.getString("neutral"),
                 service.findAllNeutralByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
-        series.add(new DataSeriesItem("Huono",
+        series.add(new DataSeriesItem(messages.getString("bad"),
                 service.findAllBadByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
         return series;
     }
 
-    private Component createResponseTimes2() {
+    private Component luoPiirakkaGraafi() {
 
         HorizontalLayout header = createHeader(messages.getString("feedbackHeader"), "");
 
         // Chart
         PlotOptionsPie options = new PlotOptionsPie();
-        options.setCenter("300", "200");
+        options.setCenter("200", "150");
         options.setSize("65%");
         options.setAllowPointSelect(true);
         options.setCursor(Cursor.POINTER);
@@ -221,7 +230,7 @@ public class PalauteView extends Main {
         if (valittuKurssiID != null)
 
         {
-           
+
             Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
             series2.add(new DataSeriesItem(messages.getString("good"),
                     service.findAllGoodByIDAndDate(kurssi, service.getNykyinenPalautePvm()).size()));
@@ -234,24 +243,33 @@ public class PalauteView extends Main {
         conf.addSeries(series2);
 
         // Add it all together
-        VerticalLayout serviceHealth = new VerticalLayout(header, chart2);
-        return serviceHealth;
+        VerticalLayout palauteNakyma = new VerticalLayout(header, chart2);
+        return palauteNakyma;
     }
 
     // Tämä oli vertailukohtana toiselle piechartille
     private Component createResponseTimes() {
 
-        HorizontalLayout header = createHeader("Palautejako", "");
+        HorizontalLayout header = createHeader(messages.getString("feedbackHeaderAll"), "");
 
         // Chart
-        Chart chart = new Chart(ChartType.PIE);
+        PlotOptionsPie options = new PlotOptionsPie();
+        options.setCenter("200", "150");
+        options.setSize("65%");
+        options.setAllowPointSelect(true);
+        options.setCursor(Cursor.POINTER);
+        options.setShowInLegend(true);
+
         Configuration conf = chart.getConfiguration();
         conf.getChart().setStyledMode(true);
+        conf.setPlotOptions(options);
         chart.setThemeName("gradient");
+        conf.getLegend().setLabelFormat("{name} - ({y})");
+        conf.getLegend().setAlign(HorizontalAlign.RIGHT);
 
         DataSeries series = new DataSeries();
 
-        Object valittuKurssiID = ComponentUtil.getData(UI.getCurrent(), "kurssi");
+        Object valittuKurssiID = kurssiService.getNykyinenKurssiId();
         VaadinSession.getCurrent().setAttribute("kurssiID", valittuKurssiID);
 
         if (valittuKurssiID == null)
@@ -263,21 +281,22 @@ public class PalauteView extends Main {
              * series.add(new DataSeriesItem("Huono", service.findAllBad().size()));
              */
         } else {
-            Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID);
-            series.add(new DataSeriesItem("Hyvä", service.findAllGoodByID(kurssi).size()));
-            series.add(new DataSeriesItem("Neutraali", service.findAllNeutralByID(kurssi).size()));
-            series.add(new DataSeriesItem("Huono", service.findAllBadByID(kurssi).size()));
+            // Kurssi kurssi = kurssiService.findKurssi((int) valittuKurssiID);
+            Kurssi kurssi = kurssiService.findKurssi(kurssiService.getNykyinenKurssiId());
+            series.add(new DataSeriesItem(messages.getString("good"), service.findAllGoodByID(kurssi).size()));
+            series.add(new DataSeriesItem(messages.getString("neutral"), service.findAllNeutralByID(kurssi).size()));
+            series.add(new DataSeriesItem(messages.getString("bad"), service.findAllBadByID(kurssi).size()));
         }
 
         conf.addSeries(series);
 
         // Add it all together
-        VerticalLayout serviceHealth = new VerticalLayout(header, chart);
-        serviceHealth.addClassName(Padding.LARGE);
-        serviceHealth.setPadding(false);
-        serviceHealth.setSpacing(false);
-        serviceHealth.getElement().getThemeList().add("spacing-l");
-        return serviceHealth;
+        VerticalLayout palauteNakyma = new VerticalLayout(header, chart);
+        // palauteNakyma.addClassName(Padding.LARGE);
+        // palauteNakyma.setPadding(false);
+        // palauteNakyma.setSpacing(false);
+        // palauteNakyma.getElement().getThemeList().add("spacing-l");
+        return palauteNakyma;
     }
 
     private HorizontalLayout createHeader(String title, String subtitle) {
