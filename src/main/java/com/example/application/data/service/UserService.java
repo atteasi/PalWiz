@@ -1,6 +1,6 @@
 /**
  * Service class for managing user data.
- * 
+ *
  * @author YourName
  * @version 1.0
  * @since 1.0
@@ -8,12 +8,17 @@
 package com.example.application.data.service;
 
 import com.example.application.data.entity.User;
+
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service used to communicate between the User and the database
+ */
 @Service
 public class UserService {
 
@@ -44,7 +49,7 @@ public class UserService {
      * @param username the username of the user to be retrieved
      * @return the User with the specified username, or null if not found
      */
-    public User getByUsername(String username){
+    public User getByUsername(String username) {
         return repository.findByUsername(username);
     }
 
